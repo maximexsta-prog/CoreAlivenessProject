@@ -1361,5 +1361,55 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
 //# sourceURL=/wp-includes/js/wp-emoji-loader.min.js
 </script>
 
+<script>
+(function() {
+    function mailchimpJSONP(email, callback) {
+        var callbackName = 'mc_' + Date.now();
+        var script = document.createElement('script');
+        script.src = 'https://corealivenessproject.us1.list-manage.com/subscribe/post-json'
+            + '?u=3c0ff8a8671173635efa43a3e'
+            + '&id=15cf5c91f1'
+            + '&f_id=001c85e5f0'
+            + '&EMAIL=' + encodeURIComponent(email)
+            + '&c=' + callbackName;
+        window[callbackName] = function(data) {
+            delete window[callbackName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+            callback(data);
+        };
+        script.onerror = function() {
+            delete window[callbackName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+            callback({ result: 'error', msg: 'Une erreur réseau est survenue. Veuillez réessayer.' });
+        };
+        document.head.appendChild(script);
+    }
+
+    document.addEventListener('submit', function(e) {
+        var form = e.target;
+        if (!form.classList.contains('jkit-mailchimp-form')) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var emailInput = form.querySelector('input[name="EMAIL"]');
+        var msgDiv = form.querySelector('.jkit-mailchimp-message');
+        var submitBtn = form.querySelector('button[type="submit"]');
+        if (!emailInput || !emailInput.value) return;
+        if (msgDiv) { msgDiv.className = 'jkit-mailchimp-message'; msgDiv.innerHTML = ''; }
+        if (submitBtn) submitBtn.disabled = true;
+        mailchimpJSONP(emailInput.value, function(data) {
+            if (submitBtn) submitBtn.disabled = false;
+            if (data.result === 'success') {
+                window.location.href = '/merci-retraite-dws/';
+            } else {
+                if (msgDiv) {
+                    msgDiv.className = 'jkit-mailchimp-message error';
+                    msgDiv.innerHTML = data.msg || 'Une erreur est survenue. Veuillez réessayer.';
+                }
+            }
+        });
+    }, true);
+})();
+</script>
+
 </body>
 </html>
