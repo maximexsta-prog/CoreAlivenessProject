@@ -1477,7 +1477,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
 /* FR/EN language toggle — snapshot-based, SEO-safe */
 (function() {
     var norm = function(t) {
-        return (t||'').replace(/['']/g,"'").replace(/ /g,' ').replace(/–/g,'-').replace(/[\n\r]+/g,' ').replace(/\s+/g,' ').trim();
+        return (t||'').replace(/[\u2018\u2019]/g,"'").replace(/\u00a0/g,' ').replace(/[\u2013\u2014]/g,'-').replace(/[\n\r]+/g,' ').replace(/\s+/g,' ').trim();
     };
 
     /* ─── TEXT dictionary (FR → EN, textContent-based) ─── */
@@ -1668,7 +1668,10 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         "Un ou plusieurs guides locaux seront presents aux cotes de Maxime pour vous donner acces aux meilleurs sites d'escalade.": "One or more local guides will be alongside Maxime to give you access to the best climbing spots.",
         "Cette expédition est née de ce lien fort avec la baie, de l'envie d'en faire découvrir les plus beaux secteurs, et de proposer bien plus qu'une simple sortie. Un ou plusieurs guides locaux seront présents aux côtés de Maxime pour vous donner accès aux meilleurs sites d'escalade.": "This expedition was born from a deep connection to the bay — the desire to share its most beautiful sectors and offer far more than a simple day out. One or more local guides will be alongside Maxime to give you access to the best climbing spots.",
         "Cette expedition est nee de ce lien fort avec la baie, de l'envie d'en faire decouvrir les plus beaux secteurs, et de proposer bien plus qu'une simple sortie. Un ou plusieurs guides locaux seront presents aux cotes de Maxime pour vous donner acces aux meilleurs sites d'escalade.": "This expedition was born from a deep connection to the bay — the desire to share its most beautiful sectors and offer far more than a simple day out. One or more local guides will be alongside Maxime to give you access to the best climbing spots.",
-    };
+        /* FAQ8 - two separate paragraphs */
+        "Non. Rejoindre la liste ne réserve pas automatiquement une place et ne t'engage à rien.": "No. Joining the list does not automatically reserve a spot and commits you to nothing.",
+        "Le format 2026 est en préparation. Cette page sert à recueillir l'intérêt et à constituer une liste d'attente. Les inscriptions ne sont pas encore ouvertes et aucun paiement n'est accepté pour le moment. Le format final, les dates exactes, le prix, l'opérateur local et les prochaines étapes seront confirmés avant l'ouverture officielle.": "The 2026 format is in development. This page is to gather interest and build a waitlist. Registrations are not yet open and no payment is accepted at this time. The final format, exact dates, price, local operator, and next steps will be confirmed before the official opening.",
+        };
 
     /* ─── HTML dictionary (FR → EN, innerHTML-based, for rich content) ─── */
     var TH = {
