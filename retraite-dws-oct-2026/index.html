@@ -145,9 +145,64 @@ html, body {
     overflow-x: hidden !important;
     width: 100vw !important;
     position: relative !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 .site-footer { display: none !important; }
+
+/* Remove white gap below dark footer bar */
+.elementor-46 .elementor-element.elementor-element-6cf00120 {
+    margin-bottom: 0 !important;
+}
+
+/* Reorder footer columns: Politique left, icons center, FR/EN right */
+.elementor-46 .elementor-element.elementor-element-6cf00120.e-con {
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+.elementor-46 .elementor-element.elementor-element-99a5878 {
+    order: 1 !important;
+}
+.elementor-46 .elementor-element.elementor-element-c6bd307 {
+    order: 2 !important;
+}
+.elementor-46 .elementor-element.elementor-element-b536e73 {
+    order: 3 !important;
+}
+
+/* FR/EN language toggle button */
+#dws-lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 20px 12px 16px;
+}
+#dws-lang-toggle button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    padding: 2px 0;
+    opacity: 0.35;
+    transition: opacity 0.2s, font-weight 0.1s;
+    text-transform: uppercase;
+    font-family: inherit;
+    line-height: 1;
+}
+#dws-lang-toggle button.active {
+    opacity: 1;
+    font-weight: 700;
+}
+#dws-lang-toggle .lang-sep {
+    color: #666;
+    font-size: 11px;
+    line-height: 1;
+    pointer-events: none;
+}
 
 @media (max-width: 1024px) {
     .elementor-46 .elementor-element.elementor-element-67b4a934 {
@@ -1298,6 +1353,11 @@ document.addEventListener('dragstart', function(e) {
 		<div class="elementor-element elementor-element-6cf00120 e-con-full e-flex e-con e-parent" data-id="6cf00120" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
 		<div class="elementor-element elementor-element-b536e73 e-flex e-con-boxed e-con e-child" data-id="b536e73" data-element_type="container" data-e-type="container">
 					<div class="e-con-inner">
+					<div id="dws-lang-toggle">
+						<button id="btn-fr" onclick="setLang('fr')" class="active" aria-label="Version française">FR</button>
+						<span class="lang-sep">/</span>
+						<button id="btn-en" onclick="setLang('en')" aria-label="English version">EN</button>
+					</div>
 					</div>
 				</div>
 		<div class="elementor-element elementor-element-c6bd307 e-flex e-con-boxed e-con e-child" data-id="c6bd307" data-element_type="container" data-e-type="container">
@@ -1401,6 +1461,183 @@ var ekit_config = {"ajaxurl":"/wp-admin/admin-ajax.php","nonce":"0efe198f51"};
 /*! This file is auto-generated */
 const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(window._wpemojiSettings=a,"wpEmojiSettingsSupports"),s=["flag","emoji"];function i(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function c(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0);const a=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);return t.every((e,t)=>e===a[t])}function p(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var n=e.getImageData(16,16,1,1);for(let e=0;e<n.data.length;e++)if(0!==n.data[e])return!1;return!0}function u(e,t,n,a){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!a(e,"\ud83e\u1fac8")}return!1}function f(e,t,n,a){let r;const o=(r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):document.createElement("canvas")).getContext("2d",{willReadFrequently:!0}),s=(o.textBaseline="top",o.font="600 32px Arial",{});return e.forEach(e=>{s[e]=t(o,e,n,a)}),s}function r(e){var t=document.createElement("script");t.src=e,t.defer=!0,document.head.appendChild(t)}a.supports={everything:!0,everythingExceptFlag:!0},new Promise(t=>{let n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),c.toString(),p.toString()].join(",")+"));",a=new Blob([e],{type:"text/javascript"});const r=new Worker(URL.createObjectURL(a),{name:"wpTestEmojiSupports"});return void(r.onmessage=e=>{i(n=e.data),r.terminate(),t(n)})}catch(e){}i(n=f(s,u,c,p))}t(n)}).then(e=>{for(const n in e)a.supports[n]=e[n],a.supports.everything=a.supports.everything&&a.supports[n],"flag"!==n&&(a.supports.everythingExceptFlag=a.supports.everythingExceptFlag&&a.supports[n]);var t;a.supports.everythingExceptFlag=a.supports.everythingExceptFlag&&!a.supports.flag,a.supports.everything||((t=a.source||{}).concatemoji?r(t.concatemoji):t.wpemoji&&t.twemoji&&(r(t.twemoji),r(t.wpemoji)))});
 //# sourceURL=/wp-includes/js/wp-emoji-loader.min.js
+</script>
+
+<script>
+/* FR/EN language toggle — snapshot-based, SEO-safe */
+(function() {
+    var norm = function(t) {
+        return (t || '').replace(/[‘’]/g,"'").replace(/ /g,' ').replace(/–/g,'-').replace(/—/g,'—').trim();
+    };
+
+    var T = {
+        /* H1 */
+        'Retraite DWS et escalade au Vietnam': 'DWS Retreat & Climbing in Vietnam',
+        /* H2 */
+        "Une aventure d'escalade unique au monde": 'A Climbing Adventure Unlike Any Other',
+        "Une aventure d'escalade unique au monde": 'A Climbing Adventure Unlike Any Other',
+        "DWS, escalade et vie sur l'eau dans la région de la baie d'Halong": 'DWS, Climbing & Life on the Water in Halong Bay',
+        "DWS, escalade et vie sur l'eau dans la region de la baie d'Halong": 'DWS, Climbing & Life on the Water in Halong Bay',
+        "Ce qui est prévu :": "What's Planned:",
+        "Ce qui est prévu :": "What's Planned:",
+        "Ce qui est prevu :": "What's Planned:",
+        "Voici ce que quelques participants ont retenu de leur expérience.": "Here's what some participants took away from their experience.",
+        "Des mots partagés par des personnes qui ont déjà grimpe avec Max dans la baie.": 'Words shared by people who have already climbed with Max in the bay.',
+        "Des mots partagés par des personnes qui ont déjà grimpé avec Max dans la baie.": 'Words shared by people who have already climbed with Max in the bay.',
+        "L'itinéraire du voyage": 'The Trip Itinerary',
+        "L'itineraire du voyage": 'The Trip Itinerary',
+        'Votre hôte': 'Your Host',
+        "Votre hote": 'Your Host',
+        'Voyage multi-aventure': 'Multi-Adventure Journey',
+        'Escalade sur corde sur les îles': 'Roped Climbing on the Islands',
+        'Escalade sur corde sur les iles': 'Roped Climbing on the Islands',
+        'Explorez les lagons cachés en SUP ou en kayak': 'Explore Hidden Lagoons by SUP or Kayak',
+        'Explorez les lagons caches en SUP ou en kayak': 'Explore Hidden Lagoons by SUP or Kayak',
+        'Visites des villages flottants traditionnels': 'Visits to Traditional Floating Villages',
+        'Partagez des repas vietnamien après la grimpe': 'Share Vietnamese Meals After Climbing',
+        'Partagez des repas vietnamien apres la grimpe': 'Share Vietnamese Meals After Climbing',
+        'Sessions guidées de yoga sur la plage': 'Guided Beach Yoga Sessions',
+        'Sessions guidees de yoga sur la plage': 'Guided Beach Yoga Sessions',
+        'Couchers de soleils et nuits sur la baie': 'Sunsets & Nights on the Bay',
+        "Ce qui est prévu": "What's Included",
+        "Ce qui est prevu": "What's Included",
+        'Questions fréquentes': 'Frequently Asked Questions',
+        'Questions frequentes': 'Frequently Asked Questions',
+        /* H3 */
+        'Jour 1 : Arrivée': 'Day 1: Arrival',
+        'Jour 1 : Arrivée': 'Day 1: Arrival',
+        'Jour 1 : Arrivee': 'Day 1: Arrival',
+        'Jour 2-3 : Immersion': 'Days 2-3: Immersion',
+        'Jour 2-3 : Immersion': 'Days 2-3: Immersion',
+        'Jour 4 : Plus loin dans la baie': 'Day 4: Deeper into the Bay',
+        'Jour 4 : Plus loin dans la baie': 'Day 4: Deeper into the Bay',
+        'Jour 5 : Journée phare': 'Day 5: Highlight Day',
+        'Jour 5 : Journee phare': 'Day 5: Highlight Day',
+        'Jour 5 : Journée phare': 'Day 5: Highlight Day',
+        'Jour 6 : Départ': 'Day 6: Departure',
+        'Jour 6 : Départ': 'Day 6: Departure',
+        'Jour 6 : Depart': 'Day 6: Departure',
+        'Exemple de journée de grimpe': 'Sample Climbing Day',
+        'Exemple de journee de grimpe': 'Sample Climbing Day',
+        'Inclus': 'Included',
+        'À prévoir de ton côté': 'What to Bring',
+        'A prevoir de ton cote': 'What to Bring',
+        /* Buttons */
+        'Expédition signature de 6 jours': '6-Day Signature Expedition',
+        'Expedition signature de 6 jours': '6-Day Signature Expedition',
+        'Politique de confidentialité': 'Privacy Policy',
+        'Politique de confidentialite': 'Privacy Policy',
+        'REJOINDRE LA LISTE': 'JOIN THE LIST',
+        'Rejoindre la liste': 'Join the list',
+        /* Placeholders */
+        'Votre courriel': 'Your email',
+        /* List items */
+        "Période envisagée : dernière semaine d'octobre 2026": 'Target period: last week of October 2026',
+        "Periode envisagee : derniere semaine d'octobre 2026": 'Target period: last week of October 2026',
+        "Ce n'est pas simplement une aventure de  Deep water solo, mais également :": 'This is not just a Deep Water Solo adventure — it also includes:',
+        "Ce n'est pas simplement une aventure de  Deep water solo, mais egalement :": 'This is not just a Deep Water Solo adventure — it also includes:',
+        'FAQs': 'FAQs',
+        /* Paragraphs */
+        "5 jours dans la région de la baie d'Halong pour grimper, sauter, explorer et vivre sur l'eau en petit groupe.": "5 days in Halong Bay to climb, jump, explore and live on the water in a small group.",
+        "5 jours dans la region de la baie d'Halong pour grimper, sauter, explorer et vivre sur l'eau en petit groupe.": "5 days in Halong Bay to climb, jump, explore and live on the water in a small group.",
+        "Les inscriptions ne sont pas encore ouvertes. Rejoins la liste d'attente pour recevoir les détails en premier.": "Registrations aren't open yet. Join the waitlist to receive details first.",
+        "Les inscriptions ne sont pas encore ouvertes. Rejoins la liste d'attente pour recevoir les details en premier.": "Registrations aren't open yet. Join the waitlist to receive details first.",
+        "Opérée localement avec un partenaire vietnamien agréé.": 'Operated locally with a licensed Vietnamese partner.',
+        "Operee localement avec un partenaire vietnamien agree.": 'Operated locally with a licensed Vietnamese partner.',
+        "L'ordre des activités restera flexible selon la météo, les marées, la mer et le niveau du groupe.": 'The schedule will remain flexible depending on weather, tides, sea conditions and group level.',
+        "L'ordre des activites restera flexible selon la meteo, les marees, la mer et le niveau du groupe.": 'The schedule will remain flexible depending on weather, tides, sea conditions and group level.',
+        "La liste finale sera confirmée avant l'ouverture officielle des inscriptions.": 'The final list will be confirmed before the official opening of registrations.',
+        "La liste finale sera confirmee avant l'ouverture officielle des inscriptions.": 'The final list will be confirmed before the official opening of registrations.',
+        "Reste à l'affût.": 'Stay tuned.',
+        "Reste a l'affut.": 'Stay tuned.',
+        "On peaufine encore les derniers détails. Inscris-toi pour être averti dès que les places sont disponibles et recevoir le guide de la retraite par courriel. Aucun spam. Juste l'essentiel pour ton aventure.": "We're still fine-tuning the last details. Sign up to be notified as soon as spots are available and receive the retreat guide by email. No spam. Just the essentials for your adventure.",
+        "On peaufine encore les derniers details. Inscris-toi pour etre averti des que les places sont disponibles et recevoir le guide de la retraite par courriel. Aucun spam. Juste l'essentiel pour ton aventure.": "We're still fine-tuning the last details. Sign up to be notified as soon as spots are available and receive the retreat guide by email. No spam. Just the essentials for your adventure.",
+        "Maxime est un guide québécois spécialisé en escalade extérieure et Deep Water Solo. Il connaît bien Cat Ba et la région de la baie d'Halong, où il a guidé et travaillé sur le terrain.": "Maxime is a Quebec-based guide specializing in outdoor climbing and Deep Water Solo. He knows Cat Ba and the Halong Bay region well, having guided and worked on the ground there.",
+        "Son approche combine aventure, gestion des conditions, attention au groupe et création d'expériences.": "His approach combines adventure, conditions management, group awareness and experience-building.",
+        "Son approche combine aventure, gestion des conditions, attention au groupe et creation d'experiences.": "His approach combines adventure, conditions management, group awareness and experience-building.",
+    };
+
+    var SELECTORS_ELEM = 'h1,h2,h3,.elementor-button-text';
+    var SELECTORS_PARA = '.elementor-widget-text-editor p,.elementor-icon-list-text';
+    var SELECTORS_BTN  = 'button.jkit-mailchimp-submit';
+    var lang = 'fr';
+
+    function snapshot() {
+        document.querySelectorAll(SELECTORS_ELEM).forEach(function(el) {
+            if (!el.dataset.frText) el.dataset.frText = el.textContent.trim();
+        });
+        document.querySelectorAll(SELECTORS_PARA).forEach(function(el) {
+            if (!el.dataset.frHtml) el.dataset.frHtml = el.innerHTML;
+            if (!el.dataset.frText) el.dataset.frText = el.textContent.trim();
+        });
+        document.querySelectorAll(SELECTORS_BTN).forEach(function(el) {
+            var tn = Array.from(el.childNodes).find(function(n){ return n.nodeType===3 && n.textContent.trim(); });
+            if (tn && !el.dataset.frText) el.dataset.frText = tn.textContent.trim();
+        });
+        document.querySelectorAll('input[placeholder]').forEach(function(el) {
+            if (!el.dataset.frPh) el.dataset.frPh = el.getAttribute('placeholder');
+        });
+    }
+
+    function applyEN() {
+        document.querySelectorAll(SELECTORS_ELEM).forEach(function(el) {
+            var key = norm(el.dataset.frText || el.textContent);
+            if (T[key]) el.textContent = T[key];
+        });
+        document.querySelectorAll(SELECTORS_PARA).forEach(function(el) {
+            var key = norm(el.dataset.frText || el.textContent);
+            if (T[key]) el.textContent = T[key];
+        });
+        document.querySelectorAll(SELECTORS_BTN).forEach(function(el) {
+            var tn = Array.from(el.childNodes).find(function(n){ return n.nodeType===3 && n.textContent.trim(); });
+            if (tn) { var key = norm(el.dataset.frText||tn.textContent); if (T[key]) tn.textContent = T[key]; }
+        });
+        document.querySelectorAll('input[placeholder]').forEach(function(el) {
+            var key = norm(el.dataset.frPh||el.getAttribute('placeholder'));
+            if (T[key]) el.setAttribute('placeholder', T[key]);
+        });
+    }
+
+    function applyFR() {
+        document.querySelectorAll(SELECTORS_ELEM).forEach(function(el) {
+            if (el.dataset.frText) el.textContent = el.dataset.frText;
+        });
+        document.querySelectorAll(SELECTORS_PARA).forEach(function(el) {
+            if (el.dataset.frHtml) el.innerHTML = el.dataset.frHtml;
+        });
+        document.querySelectorAll(SELECTORS_BTN).forEach(function(el) {
+            var tn = Array.from(el.childNodes).find(function(n){ return n.nodeType===3 && n.textContent.trim(); });
+            if (tn && el.dataset.frText) tn.textContent = el.dataset.frText;
+        });
+        document.querySelectorAll('input[placeholder]').forEach(function(el) {
+            if (el.dataset.frPh) el.setAttribute('placeholder', el.dataset.frPh);
+        });
+    }
+
+    function setButtons(l) {
+        var bf = document.getElementById('btn-fr');
+        var be = document.getElementById('btn-en');
+        if (!bf || !be) return;
+        bf.classList.toggle('active', l==='fr');
+        be.classList.toggle('active', l==='en');
+    }
+
+    window.setLang = function(toLang) {
+        if (toLang === lang) return;
+        lang = toLang;
+        if (toLang === 'en') applyEN(); else applyFR();
+        setButtons(toLang);
+        document.documentElement.lang = toLang;
+        try { localStorage.setItem('cap_lang', toLang); } catch(e){}
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        snapshot();
+        var saved; try { saved = localStorage.getItem('cap_lang'); } catch(e){}
+        if (saved === 'en') { lang = 'fr'; window.setLang('en'); }
+        else setButtons('fr');
+    });
+})();
 </script>
 
 <script>
