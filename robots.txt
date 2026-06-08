@@ -40,5 +40,29 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+User-agent: AI2Bot
+Allow: /
+
 Sitemap: https://corealivenessproject.com/sitemap_index.xml
 Llms-txt: https://corealivenessproject.com/llms.txt
