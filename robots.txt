@@ -1,8 +1,44 @@
 User-agent: *
 Disallow: /wp-admin/
 Allow: /wp-admin/admin-ajax.php
+Disallow: /wp-content/uploads/wpo/wpo-plugins-tables-list.json
+
+# AI search crawlers — explicitly allowed
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
 
 Sitemap: https://corealivenessproject.com/sitemap_index.xml
-
-User-agent: *
-Disallow: /wp-content/uploads/wpo/wpo-plugins-tables-list.json
+Llms-txt: https://corealivenessproject.com/llms.txt
