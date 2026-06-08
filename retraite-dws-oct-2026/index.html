@@ -1537,6 +1537,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         'Le programme est-il fixe ?': 'Is the program fixed?',
         'Est-ce que rejoindre la liste réserve une place ?': 'Does joining the list reserve a spot?',
         /* Buttons */
+        "REJOINDRE LA LISTE D'ATTENTE": 'JOIN THE WAITLIST',
         'Expédition signature de 6 jours': '6-Day Signature Expedition',
         'Expedition signature de 6 jours': '6-Day Signature Expedition',
         'Politique de confidentialité': 'Privacy Policy',
@@ -1710,6 +1711,9 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         document.querySelectorAll('.elementor-widget-text-editor .elementor-widget-container > div').forEach(function(el) {
             if (!el.dataset.frHtml) el.dataset.frHtml = el.innerHTML;
         });
+        document.querySelectorAll('.jkit-button-wrapper').forEach(function(el) {
+            if (!el.dataset.frHtml) el.dataset.frHtml = el.innerHTML;
+        });
         document.querySelectorAll(SELECTORS_BTN).forEach(function(el) {
             var tn = Array.from(el.childNodes).find(function(n){ return n.nodeType===3 && n.textContent.trim(); });
             if (tn && !el.dataset.frText) el.dataset.frText = tn.textContent.trim();
@@ -1749,6 +1753,14 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
                 }
             });
         });
+        document.querySelectorAll('.jkit-button-wrapper').forEach(function(el) {
+            el.childNodes.forEach(function(node) {
+                if (node.nodeType === 3 && node.textContent.trim()) {
+                    var key = norm(node.textContent);
+                    if (T[key]) node.textContent = T[key];
+                }
+            });
+        });
         document.querySelectorAll(SELECTORS_BTN).forEach(function(el) {
             var tn = Array.from(el.childNodes).find(function(n){ return n.nodeType===3 && n.textContent.trim(); });
             if (tn) { var key = norm(el.dataset.frText||tn.textContent); if (T[key]) tn.textContent = T[key]; }
@@ -1776,6 +1788,9 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
             if (el.dataset.frText) el.textContent = el.dataset.frText;
         });
         document.querySelectorAll('.elementor-widget-text-editor .elementor-widget-container > div').forEach(function(el) {
+            if (el.dataset.frHtml) el.innerHTML = el.dataset.frHtml;
+        });
+        document.querySelectorAll('.jkit-button-wrapper').forEach(function(el) {
             if (el.dataset.frHtml) el.innerHTML = el.dataset.frHtml;
         });
         document.querySelectorAll(SELECTORS_BTN).forEach(function(el) {
