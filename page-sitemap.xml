@@ -1,46 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/main-sitemap.xsl"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
-		<loc>/</loc>
+		<loc>https://corealivenessproject.com/</loc>
 		<lastmod>2026-05-02T21:28:53+00:00</lastmod>
 	</url>
 	<url>
-		<loc>/retraite-dws-oct-2026/</loc>
-		<lastmod>2026-05-26T11:53:05+00:00</lastmod>
+		<loc>https://corealivenessproject.com/retraite-dws-oct-2026/</loc>
+		<lastmod>2026-06-08T00:00:00+00:00</lastmod>
 		<image:image>
-			<image:loc>/wp-content/uploads/2026/05/Logo-white-life-dedicated-to-adventure-Roboto-font.png</image:loc>
+			<image:loc>https://corealivenessproject.com/wp-content/uploads/2026/05/IMG-20260331-WA0156-6.jpg</image:loc>
+			<image:title>Retraite Deep Water Solo – Baie de Lan Ha, Vietnam</image:title>
 		</image:image>
 		<image:image>
-			<image:loc>/wp-content/uploads/2026/05/image-8-772x1024.jpg</image:loc>
+			<image:loc>https://corealivenessproject.com/wp-content/uploads/2026/05/image-8-772x1024.jpg</image:loc>
 		</image:image>
 		<image:image>
-			<image:loc>/wp-content/uploads/2026/05/PXL_20260331_034613844.MP_-scaled-1-771x1024.jpg</image:loc>
+			<image:loc>https://corealivenessproject.com/wp-content/uploads/2026/05/PXL_20260331_034613844.MP_-scaled-1-771x1024.jpg</image:loc>
 		</image:image>
 		<image:image>
-			<image:loc>/wp-content/uploads/2026/05/IMG-20260331-WA0647-scaled-1-768x1024.jpg</image:loc>
+			<image:loc>https://corealivenessproject.com/wp-content/uploads/2026/05/IMG-20260331-WA0647-scaled-1-768x1024.jpg</image:loc>
 		</image:image>
 		<image:image>
-			<image:loc>/wp-content/uploads/2026/05/unnamed.webp</image:loc>
+			<image:loc>https://corealivenessproject.com/wp-content/uploads/2026/05/unnamed.webp</image:loc>
 		</image:image>
 		<image:image>
-			<image:loc>/wp-content/plugins/elementor/assets/images/placeholder.png</image:loc>
-		</image:image>
-		<image:image>
-			<image:loc>/wp-content/uploads/2026/05/IMG-20260331-WA0647-scaled-1-768x1024.jpg</image:loc>
-		</image:image>
-		<image:image>
-			<image:loc>/wp-content/uploads/2026/05/PXL_20260331_034613844.MP_-scaled-1-771x1024.jpg</image:loc>
+			<image:loc>https://corealivenessproject.com/wp-content/uploads/2026/06/claire-dws.png</image:loc>
+			<image:title>Claire – témoignage retraite DWS</image:title>
 		</image:image>
 	</url>
 	<url>
-		<loc>/merci-retraite-dws/</loc>
-		<lastmod>2026-05-25T20:37:34+00:00</lastmod>
-		<image:image>
-			<image:loc>/wp-content/uploads/2026/05/Logo-white-life-dedicated-to-adventure-Roboto-font.png</image:loc>
-		</image:image>
-	</url>
-	<url>
-		<loc>/politique-de-confidentialite/</loc>
+		<loc>https://corealivenessproject.com/politique-de-confidentialite/</loc>
 		<lastmod>2026-05-05T04:11:05+00:00</lastmod>
 	</url>
 </urlset>
