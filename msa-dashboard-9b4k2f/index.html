@@ -247,7 +247,7 @@ let rows = [], lastHash = '', activeFilter = '', searchQ = '', sortCol = -1, sor
 
 // ── Fetch ──────────────────────────────────────────────────
 async function load() {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&t=${Date.now()}`;
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Dashboard%20Mt.%20Saint-Anne&t=${Date.now()}`;
   try {
     const res = await fetch(url);
     const txt = await res.text();
