@@ -1,483 +1,308 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mt. Saint-Anne — Dashboard Logis</title>
-  <style>
-    :root {
-      --green-dark: #1E3A2F;
-      --green-mid: #253F33;
-      --green-card: #1A2D22;
-      --green-card2: #1F3428;
-      --orange: #E8602A;
-      --gold: #C4982A;
-      --bg: #111C16;
-      --border: rgba(255,255,255,0.07);
-      --text: #ECE9E2;
-      --muted: #7A9485;
-      --red: #C0392B;
-      --green-ok: #27AE60;
-      --blue: #3A8EAA;
-      --r: 8px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Segoe UI', sans-serif; min-height: 100vh; font-size: 14px; }
-
-    /* Header */
-    .header {
-      background: var(--green-dark);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .header-left { display: flex; align-items: center; gap: 14px; }
-    .header-title { font-size: 15px; font-weight: 600; }
-    .header-sub { font-size: 11px; color: var(--muted); }
-    .sync-badge {
-      display: flex; align-items: center; gap: 7px;
-      font-size: 12px; color: var(--muted);
-      background: rgba(0,0,0,0.25); padding: 5px 13px;
-      border-radius: 20px; border: 1px solid var(--border);
-    }
-    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-ok); }
-    .dot.live { animation: pulse 2s infinite; }
-    .dot.loading { background: var(--gold); animation: blink 0.7s infinite; }
-    .dot.err { background: var(--red); }
-    @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(39,174,96,.4)} 50%{opacity:.8;box-shadow:0 0 0 5px rgba(39,174,96,0)} }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-    /* Main */
-    .main { padding: 20px 24px; max-width: 1600px; margin: 0 auto; }
-
-    /* KPIs */
-    .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
-    .kpi { background: var(--green-card); border: 1px solid var(--border); border-radius: var(--r); padding: 15px 17px; }
-    .kpi-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
-    .kpi-val { font-size: 28px; font-weight: 700; line-height: 1; }
-    .kpi-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
-    .c-blue  { color: #5DADE2; }
-    .c-orange{ color: var(--orange); }
-    .c-green { color: #2ECC71; }
-    .c-gold  { color: var(--gold); }
-    .c-red   { color: #E74C3C; }
-
-    /* Filters */
-    .toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
-    .fbtn {
-      padding: 5px 14px; border-radius: 20px;
-      border: 1px solid var(--border); background: transparent;
-      color: var(--muted); font-size: 12px; cursor: pointer; transition: all .15s;
-    }
-    .fbtn:hover { border-color: var(--orange); color: var(--text); }
-    .fbtn.on { background: var(--orange); border-color: var(--orange); color: #fff; font-weight: 600; }
-    .search {
-      margin-left: auto; background: var(--green-card); border: 1px solid var(--border);
-      border-radius: 6px; padding: 5px 12px; color: var(--text); font-size: 12px;
-      width: 200px; outline: none;
-    }
-    .search:focus { border-color: var(--orange); }
-    .search::placeholder { color: var(--muted); }
-
-    /* Table */
-    .table-wrap { background: var(--green-card); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
-    .table-scroll { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 860px; }
-    thead tr { background: var(--green-card2); border-bottom: 1px solid var(--border); }
-    th {
-      padding: 9px 13px; text-align: left; font-size: 10px; font-weight: 600;
-      color: var(--muted); text-transform: uppercase; letter-spacing: .06em;
-      white-space: nowrap; cursor: pointer; user-select: none;
-    }
-    th:hover { color: var(--text); }
-    th.sort-asc::after  { content: ' ↑'; color: var(--orange); }
-    th.sort-desc::after { content: ' ↓'; color: var(--orange); }
-    tbody tr { border-bottom: 1px solid var(--border); cursor: pointer; transition: background .1s; }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: rgba(255,255,255,.03); }
-    tbody tr.sel { background: rgba(232,96,42,.08); }
-    td { padding: 9px 13px; font-size: 13px; white-space: nowrap; vertical-align: middle; }
-    .empty { color: var(--muted); font-style: italic; font-size: 12px; }
-
-    /* Badges */
-    .badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 2px 9px; border-radius: 12px; font-size: 11px; font-weight: 600;
-    }
-    .badge::before { content:''; width:5px; height:5px; border-radius:50%; }
-    .b-contacte  { background:rgba(232,96,42,.18);  color:#F07848; }  .b-contacte::before  { background:var(--orange); }
-    .b-refuse    { background:rgba(192,57,43,.18);   color:#E74C3C; }  .b-refuse::before    { background:var(--red); }
-    .b-confirme  { background:rgba(39,174,96,.18);   color:#2ECC71; }  .b-confirme::before  { background:var(--green-ok); }
-    .b-discussion{ background:rgba(58,142,170,.18);  color:#5DADE2; }  .b-discussion::before{ background:var(--blue); }
-    .b-default   { background:rgba(255,255,255,.07); color:var(--muted); } .b-default::before { background:var(--muted); }
-    .profit-pos  { color:#2ECC71; font-weight:600; }
-    .profit-neg  { color:var(--red); font-weight:600; }
-
-    /* Detail panel */
-    .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:200; }
-    .overlay.open { display:block; }
-    .panel {
-      position:fixed; right:0; top:0; bottom:0; width:460px;
-      background:var(--green-card2); border-left:1px solid var(--border);
-      overflow-y:auto; padding:24px;
-      transform:translateX(100%); transition:transform .22s ease; z-index:201;
-    }
-    .panel.open { transform:translateX(0); }
-    .close-btn { float:right; background:none; border:none; color:var(--muted); font-size:20px; cursor:pointer; }
-    .close-btn:hover { color:var(--text); }
-    .p-title { font-size:17px; font-weight:700; margin-bottom:4px; padding-right:28px; }
-    .p-sub   { font-size:12px; color:var(--muted); margin-bottom:20px; }
-    .p-sect  { margin-bottom:18px; }
-    .p-sect-title { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:6px; }
-    .p-grid  { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-    .p-field { background:rgba(0,0,0,.2); border-radius:6px; padding:8px 10px; }
-    .p-field.full { grid-column:1/-1; }
-    .p-flabel{ font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:3px; }
-    .p-fval  { font-size:13px; line-height:1.45; white-space:pre-wrap; word-break:break-word; }
-    .profit-cards { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
-    .profit-card {
-      background:rgba(39,174,96,.08); border:1px solid rgba(39,174,96,.2);
-      border-radius:8px; padding:12px; text-align:center;
-    }
-    .pc-label { font-size:10px; color:var(--muted); margin-bottom:4px; }
-    .pc-val   { font-size:22px; font-weight:700; color:#2ECC71; }
-    .action-box {
-      background:rgba(232,96,42,.08); border:1px solid rgba(232,96,42,.2);
-      border-radius:8px; padding:12px; font-size:13px; line-height:1.5; white-space:pre-wrap;
-    }
-    .no-data { text-align:center; padding:50px 20px; color:var(--muted); }
-    .no-data h3 { font-size:15px; margin-bottom:6px; }
-    .footer { text-align:center; padding:18px; color:var(--muted); font-size:11px; border-top:1px solid var(--border); margin-top:20px; }
-    @media(max-width:600px){ .main{padding:12px;} .panel{width:100%;} .kpis{grid-template-columns:repeat(2,1fr);} }
-  </style>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mt. Saint-Anne — Dashboard Logis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#252c3a;
+  --txt:#e6edf3; --dim:#8b97a8; --faint:#5b6677;
+  --green:#3fb950; --green-bg:rgba(63,185,80,.12);
+  --yellow:#d29922; --yellow-bg:rgba(210,153,34,.12);
+  --red:#f85149; --red-bg:rgba(248,81,73,.12);
+  --blue:#58a6ff; --blue-bg:rgba(88,166,255,.12);
+  --accent:#7ee2b8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font:14px/1.5 Inter,system-ui,sans-serif;padding:28px 32px 60px}
+a{color:var(--blue);text-decoration:none}
+header{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+h1{font-size:26px;font-weight:800;letter-spacing:-.5px}
+.sub{color:var(--dim);font-size:13px;margin-bottom:22px}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--dim);background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:4px 12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+.dot.err{background:var(--red);box-shadow:0 0 8px var(--red);animation:none}
+@keyframes pulse{50%{opacity:.4}}
+.toolbar{margin-left:auto;display:flex;gap:10px;align-items:center}
+.btn{background:var(--panel);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:6px 14px;font-size:12.5px;cursor:pointer;font-family:inherit}
+.btn:hover{border-color:var(--blue)}
+/* hero */
+.hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:26px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.card .k{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--faint);font-weight:600;margin-bottom:8px}
+.card .v{font-size:22px;font-weight:700;line-height:1.25}
+.card .v.small{font-size:14.5px;font-weight:600}
+.card.red .v{color:var(--red)} .card.green .v{color:var(--green)} .card.yellow .v{color:var(--yellow)} .card.blue .v{color:var(--blue)}
+/* layout */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:18px}
+section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;overflow:auto}
+section.wide{grid-column:1/-1}
+h2{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+h2 .n{color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.6px;padding:6px 10px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--dim)}
+td:first-child{color:var(--txt);font-weight:500}
+tr:last-child td{border-bottom:none}
+tr.changed td{animation:flash 2.5s}
+@keyframes flash{0%{background:var(--blue-bg)}100%{background:transparent}}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.p-green{color:var(--green);background:var(--green-bg)}
+.p-yellow{color:var(--yellow);background:var(--yellow-bg)}
+.p-red{color:var(--red);background:var(--red-bg)}
+.p-blue{color:var(--blue);background:var(--blue-bg)}
+.p-grey{color:var(--dim);background:var(--panel2)}
+.num{font-family:'JetBrains Mono',monospace;font-size:12.5px;text-align:right;white-space:nowrap}
+td.num{color:var(--txt)}
+.num.pos{color:var(--green)} .num.neg{color:var(--red)}
+.kv{display:grid;gap:6px}
+.kv .row{display:grid;grid-template-columns:200px 1fr;gap:12px;padding:7px 10px;border-radius:8px;background:var(--panel2)}
+.kv .row b{color:var(--dim);font-weight:600;font-size:12.5px}
+.note{font-size:12px;color:var(--faint);margin-top:10px;line-height:1.5}
+.foot{margin-top:26px;color:var(--faint);font-size:12px;display:flex;gap:16px;flex-wrap:wrap}
+#err{display:none;background:var(--red-bg);border:1px solid var(--red);color:var(--red);border-radius:10px;padding:10px 16px;margin-bottom:18px;font-size:13px}
+</style>
 </head>
 <body>
-
-<div class="header">
-  <div class="header-left">
-    <svg width="28" height="28" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-      <rect x="22" y="4" width="3" height="10" fill="white" opacity=".7"/>
-      <polygon points="0,19 16,6 32,19 29,21 16,10 3,21" fill="white"/>
-      <rect x="12" y="22" width="3" height="3" fill="#C4982A"/>
-      <rect x="17" y="22" width="3" height="3" fill="#C4982A"/>
-      <rect x="12" y="26" width="3" height="3" fill="#C4982A"/>
-      <rect x="17" y="26" width="3" height="3" fill="#C4982A"/>
-    </svg>
-    <div>
-      <div class="header-title">Mt. Saint-Anne — Dashboard Logis</div>
-      <div class="header-sub">Logis pour Travailleurs · RLT</div>
-    </div>
+<header>
+  <h1>Mt. Saint-Anne — Dashboard Logis</h1>
+  <span class="live"><span class="dot" id="dot"></span><span id="livetxt">connexion…</span></span>
+  <div class="toolbar">
+    <button class="btn" onclick="poll(true)">↻ Actualiser</button>
+    <a class="btn" href="https://docs.google.com/spreadsheets/d/1-u1J6LrIUyj7wBG8mHKZt8jIq-T9V6q0w2ebytm9uFI/edit" target="_blank">✎ Modifier dans Sheets</a>
   </div>
-  <div class="sync-badge">
-    <div class="dot loading" id="dot"></div>
-    <span id="syncTxt">Chargement…</span>
-  </div>
-</div>
-
-<div class="main">
-  <div class="kpis">
-    <div class="kpi"><div class="kpi-label">Propriétés</div><div class="kpi-val c-blue"  id="k-total">—</div><div class="kpi-sub">suivies</div></div>
-    <div class="kpi"><div class="kpi-label">Actifs</div>      <div class="kpi-val c-orange" id="k-active">—</div><div class="kpi-sub">en cours</div></div>
-    <div class="kpi"><div class="kpi-label">Profit / mois</div><div class="kpi-val c-green" id="k-month">—</div><div class="kpi-sub">meilleur prospect</div></div>
-    <div class="kpi"><div class="kpi-label">Profit / an</div>  <div class="kpi-val c-gold"  id="k-year">—</div><div class="kpi-sub">meilleur prospect</div></div>
-    <div class="kpi"><div class="kpi-label">Loyer moy.</div>   <div class="kpi-val c-blue"  id="k-rent">—</div><div class="kpi-sub">par mois</div></div>
-    <div class="kpi"><div class="kpi-label">Refusés</div>      <div class="kpi-val c-red"   id="k-ref">—</div><div class="kpi-sub">propriétés</div></div>
-  </div>
-
-  <div class="toolbar" id="toolbar">
-    <button class="fbtn on" onclick="filter('',this)">Tous</button>
-    <input class="search" placeholder="Rechercher…" oninput="search(this.value)" id="searchEl">
-  </div>
-
-  <div class="table-wrap">
-    <div class="table-scroll">
-      <table>
-        <thead>
-          <tr>
-            <th onclick="sortBy(0)">#</th>
-            <th onclick="sortBy(1)">Statut</th>
-            <th onclick="sortBy(2)">Proprio</th>
-            <th onclick="sortBy(3)">Adresse / secteur</th>
-            <th onclick="sortBy(4)">Dispo</th>
-            <th onclick="sortBy(5)">Loyer / mois</th>
-            <th onclick="sortBy(6)">Ch.</th>
-            <th onclick="sortBy(7)">Places</th>
-            <th onclick="sortBy(8)">Coût / place</th>
-            <th onclick="sortBy(9)">Profit / mois</th>
-            <th onclick="sortBy(10)">Profit / an</th>
-            <th onclick="sortBy(11)">Meublée</th>
-            <th onclick="sortBy(12)">Bail flex.</th>
-            <th>Prochaine action</th>
-          </tr>
-        </thead>
-        <tbody id="tbody">
-          <tr><td colspan="14"><div class="no-data"><h3>Chargement…</h3></div></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="footer">Logis pour Travailleurs · RLT · Synchronisé avec Google Sheets · actualisation toutes les 5 s</div>
-</div>
-
-<div class="overlay" id="overlay" onclick="closePanel()"></div>
-<div class="panel" id="panel">
-  <button class="close-btn" onclick="closePanel()">×</button>
-  <div id="panelBody"></div>
+</header>
+<div class="sub">Miroir en direct de Google Sheets · actualisation toutes les <span id="ivl">10</span>s · les modifications dans Sheets apparaissent ici automatiquement</div>
+<div id="err"></div>
+<div class="hero" id="hero"></div>
+<div class="grid" id="grid"></div>
+<div class="foot">
+  <span>Source: Google Sheets — onglet « Dashboard Mt. Saint-Anne »</span>
+  <span id="stamp"></span>
 </div>
 
 <script>
-const SHEET_ID = '1-u1J6LrIUyj7wBG8mHKZt8jIq-T9V6q0w2ebytm9uFI';
+const SHEET_ID = "1-u1J6LrIUyj7wBG8mHKZt8jIq-T9V6q0w2ebytm9uFI";
+const SHEET_NAME = "Dashboard Mt. Saint-Anne";
+const POLL_MS = 10000;
 
-// Column indices (0-based) matching the sheet
-const C = {
-  order:0, rank:1, status:2, dateFound:3, link:4, owner:5, address:6,
-  avail:7, rent:8, rooms:9, spots:10, costMonth:11, costWeek:12,
-  furnished:13, flexLease:14, ownerOpen:15, contact:16, nextAction:17,
-  notes:18, photos:19, monthlyProfit:20, yearlyProfit:21,
-  winterVerdict:22, winterProfit:23
+/* ── JSONP fetch (no CORS, no API key) ── */
+let reqSeq = 0;
+function fetchSheet() {
+  return new Promise((resolve, reject) => {
+    const id = "gviz_cb_" + (++reqSeq);
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_NAME)}&headers=1&tqx=out:json;responseHandler:${id}&_=${Date.now()}`;
+    const s = document.createElement("script");
+    window[id] = resp => { cleanup(); resp.status === "ok" ? resolve(resp.table) : reject(new Error(resp.errors?.[0]?.detailed_message || "sheet error")); };
+    function cleanup() { delete window[id]; s.remove(); clearTimeout(t); }
+    const t = setTimeout(() => { cleanup(); reject(new Error("timeout")); }, 15000);
+    s.onerror = () => { cleanup(); reject(new Error("network / sharing error")); };
+    s.src = url; document.head.appendChild(s);
+  });
+}
+
+const cellV = c => (c && c.v != null) ? String(c.f ?? c.v).trim() : "";
+const toRows = table => table.rows.map(r => (r.c || []).map(cellV));
+const toHeaders = table => (table.cols || []).map(c => c.label || "");
+
+/* ── column index map ── */
+const COL = {
+  order: 0, rank: 1, status: 2, dateFound: 3, link: 4,
+  owner: 5, address: 6, avail: 7, rent: 8, rooms: 9,
+  spots: 10, costMonth: 11, costWeek: 12, furnished: 13,
+  flexLease: 14, ownerOpen: 15, contact: 16, nextAction: 17,
+  notes: 18, photos: 19, monthlyProfit: 20, yearlyProfit: 21,
+  winterVerdict: 22, winterProfit: 23
 };
 
-let rows = [], lastHash = '', activeFilter = '', searchQ = '', sortCol = -1, sortDir = 1, selRow = null;
+/* ── helpers ── */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-// ── Fetch ──────────────────────────────────────────────────
-async function load() {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Dashboard%20Mt.%20Saint-Anne&t=${Date.now()}`;
-  try {
-    const res = await fetch(url);
-    const txt = await res.text();
-    const json = JSON.parse(txt.match(/setResponse\(([\s\S]*?)\);?\s*$/)[1]);
-    const newHash = txt.length + '|' + (json.table?.rows?.length || 0);
-    if (newHash === lastHash) {
-      setSyncState('live', 'En direct · ' + now());
-      return;
-    }
-    lastHash = newHash;
-    rows = (json.table?.rows || []).map(r =>
-      (r.c || []).map(cell => {
-        if (!cell) return '';
-        if (cell.f) return cell.f;     // formatted value (preserves $1,200 etc.)
-        if (cell.v === null || cell.v === undefined) return '';
-        return String(cell.v);
-      })
-    );
-    renderAll();
-    setSyncState('live', 'En direct · ' + now());
-  } catch(e) {
-    setSyncState('err', 'Erreur de connexion');
-  }
-}
+const statusPill = s => {
+  if (!s) return "";
+  const l = s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+  let cls = "p-grey";
+  if (/contact/.test(l)) cls = "p-yellow";
+  else if (/refus/.test(l)) cls = "p-red";
+  else if (/confirm/.test(l)) cls = "p-green";
+  else if (/discussion/.test(l)) cls = "p-blue";
+  else if (/oui|yes/.test(l)) cls = "p-green";
+  else if (/non|no\b/.test(l)) cls = "p-red";
+  else if (/confirmer|tbd|waiting|attendre/.test(l)) cls = "p-yellow";
+  return `<span class="pill ${cls}">${esc(s)}</span>`;
+};
 
-// ── Render all ─────────────────────────────────────────────
-function renderAll() { renderKPIs(); renderFilterBtns(); renderTable(); }
-
-function renderKPIs() {
-  set('k-total', rows.length);
-  const active = rows.filter(r => !/refus/i.test(r[C.status] || '')).length;
-  set('k-active', active);
-  const mp = rows.map(r => parseNum(r[C.monthlyProfit])).filter(n => n > 0);
-  const yp = rows.map(r => parseNum(r[C.yearlyProfit])).filter(n => n > 0);
-  const rents = rows.map(r => parseNum(r[C.rent])).filter(n => n > 0);
-  set('k-month', mp.length ? fmt(Math.max(...mp)) : '—');
-  set('k-year',  yp.length ? fmt(Math.max(...yp)) : '—');
-  set('k-rent',  rents.length ? fmt(rents.reduce((a,b)=>a+b,0)/rents.length) : '—');
-  set('k-ref', rows.filter(r => /refus/i.test(r[C.status] || '')).length);
-}
-
-function renderFilterBtns() {
-  const statuses = [...new Set(rows.map(r => r[C.status]).filter(Boolean))];
-  const tb = document.getElementById('toolbar');
-  tb.querySelectorAll('.fbtn:not(:first-child)').forEach(b => b.remove());
-  const search = document.getElementById('searchEl');
-  statuses.forEach(s => {
-    const b = document.createElement('button');
-    b.className = 'fbtn' + (activeFilter === s ? ' on' : '');
-    b.textContent = s;
-    b.onclick = () => filter(s, b);
-    tb.insertBefore(b, search);
-  });
-}
-
-function renderTable() {
-  let data = rows.filter(r => {
-    const matchF = !activeFilter || r[C.status] === activeFilter;
-    const matchS = !searchQ || r.some(v => v.toLowerCase().includes(searchQ));
-    return matchF && matchS;
-  });
-
-  if (sortCol >= 0) {
-    const colMap = [C.order,C.status,C.owner,C.address,C.avail,C.rent,C.rooms,C.spots,C.costMonth,C.monthlyProfit,C.yearlyProfit,C.furnished,C.flexLease];
-    const ci = colMap[sortCol];
-    data = [...data].sort((a,b) => {
-      const av = parseNum(a[ci]) || a[ci] || '';
-      const bv = parseNum(b[ci]) || b[ci] || '';
-      return av < bv ? -sortDir : av > bv ? sortDir : 0;
-    });
-  }
-
-  if (!data.length) {
-    document.getElementById('tbody').innerHTML = '<tr><td colspan="14"><div class="no-data"><h3>Aucun résultat</h3></div></td></tr>';
-    return;
-  }
-
-  document.getElementById('tbody').innerHTML = data.map((r, i) => {
-    const mp = parseNum(r[C.monthlyProfit]);
-    const yp = parseNum(r[C.yearlyProfit]);
-    const isSel = selRow === r;
-    return `<tr class="${isSel?'sel':''}" onclick='openPanel(${i})'>
-      <td>${r[C.order] || i+1}</td>
-      <td>${badge(r[C.status])}</td>
-      <td>${x(r[C.owner])}</td>
-      <td>${x(r[C.address])}</td>
-      <td>${x(r[C.avail])}</td>
-      <td>${x(r[C.rent])}</td>
-      <td>${x(r[C.rooms])}</td>
-      <td>${x(r[C.spots])}</td>
-      <td>${x(r[C.costMonth])}</td>
-      <td class="${mp>0?'profit-pos':mp<0?'profit-neg':''}">${mp?fmt(mp):'<span class="empty">—</span>'}</td>
-      <td class="${yp>0?'profit-pos':yp<0?'profit-neg':''}">${yp?fmt(yp):'<span class="empty">—</span>'}</td>
-      <td>${yesno(r[C.furnished])}</td>
-      <td>${yesno(r[C.flexLease])}</td>
-      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis">${x(r[C.nextAction])}</td>
-    </tr>`;
-  }).join('');
-
-  // store filtered data for panel lookup
-  window._filtered = data;
-}
-
-// ── Detail panel ───────────────────────────────────────────
-function openPanel(i) {
-  const r = window._filtered[i];
-  selRow = r;
-  renderTable();
-  const mp = parseNum(r[C.monthlyProfit]);
-  const yp = parseNum(r[C.yearlyProfit]);
-  const wp = parseNum(r[C.winterProfit]);
-
-  document.getElementById('panelBody').innerHTML = `
-    <div class="p-title">${e(r[C.address]) || 'Propriété'}</div>
-    <div class="p-sub">${badge(r[C.status])} &nbsp;·&nbsp; ${e(r[C.owner])||'—'} &nbsp;·&nbsp; ${e(r[C.dateFound])||'—'}</div>
-
-    <div class="profit-cards">
-      <div class="profit-card"><div class="pc-label">Profit / mois</div><div class="pc-val">${mp?fmt(mp):'—'}</div></div>
-      <div class="profit-card"><div class="pc-label">Profit / an</div><div class="pc-val">${yp?fmt(yp):'—'}</div></div>
-    </div>
-
-    ${r[C.nextAction]?`<div class="p-sect"><div class="p-sect-title">Prochaine action</div><div class="action-box">${e(r[C.nextAction])}</div></div>`:''}
-
-    <div class="p-sect">
-      <div class="p-sect-title">Financier</div>
-      <div class="p-grid">
-        ${pf('Loyer / mois',r[C.rent])} ${pf('Chambres',r[C.rooms])}
-        ${pf('Places possibles',r[C.spots])} ${pf('Coût / place / mois',r[C.costMonth])}
-        ${pf('Coût / place / sem.',r[C.costWeek])} ${pf('Rang priorité',r[C.rank])}
-      </div>
-    </div>
-
-    <div class="p-sect">
-      <div class="p-sect-title">Logement</div>
-      <div class="p-grid">
-        ${pf('Disponible',r[C.avail])} ${pf('Meublée?',r[C.furnished])}
-        ${pf('Bail flexible?',r[C.flexLease])} ${pf('Proprio ouvert?',r[C.ownerOpen])}
-      </div>
-    </div>
-
-    <div class="p-sect">
-      <div class="p-sect-title">Hiver</div>
-      <div class="p-grid">
-        ${pf('Verdict hiver',r[C.winterVerdict])} ${pf('Profit annuel hiver',wp?fmt(wp):r[C.winterProfit])}
-      </div>
-    </div>
-
-    <div class="p-sect">
-      <div class="p-sect-title">Contact & notes</div>
-      <div class="p-grid">
-        ${pff('Contact',r[C.contact])}
-        ${pff('Notes',r[C.notes])}
-        ${r[C.link]&&r[C.link]!=='À ajouter'?`<div class="p-field full"><div class="p-flabel">Annonce</div><div class="p-fval"><a href="${e(r[C.link])}" target="_blank" rel="noopener" style="color:var(--blue)">${e(r[C.link])}</a></div></div>`:''}
-        ${r[C.photos]?`<div class="p-field full"><div class="p-flabel">Photos</div><div class="p-fval"><a href="${e(r[C.photos])}" target="_blank" rel="noopener" style="color:var(--blue)">${e(r[C.photos])}</a></div></div>`:''}
-      </div>
-    </div>
-  `;
-  document.getElementById('overlay').classList.add('open');
-  document.getElementById('panel').classList.add('open');
-}
-
-function closePanel() {
-  selRow = null;
-  document.getElementById('overlay').classList.remove('open');
-  document.getElementById('panel').classList.remove('open');
-  renderTable();
-}
-
-// ── Sort / filter / search ─────────────────────────────────
-function filter(val, btn) {
-  activeFilter = val;
-  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  renderTable();
-}
-function search(val) { searchQ = val.toLowerCase(); renderTable(); }
-function sortBy(col) {
-  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = 1; }
-  document.querySelectorAll('th').forEach((th,i) => {
-    th.classList.remove('sort-asc','sort-desc');
-    if (i === col) th.classList.add(sortDir===1?'sort-asc':'sort-desc');
-  });
-  renderTable();
-}
-
-// ── Helpers ────────────────────────────────────────────────
-function badge(s) {
-  if (!s) return '<span class="badge b-default">—</span>';
-  const n = s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
-  let c = 'b-default';
-  if (n.includes('contact')) c = 'b-contacte';
-  else if (n.includes('refus'))  c = 'b-refuse';
-  else if (n.includes('confirm'))c = 'b-confirme';
-  else if (n.includes('discuss'))c = 'b-discussion';
-  return `<span class="badge ${c}">${e(s)}</span>`;
-}
-function yesno(v) {
-  if (!v) return '<span class="empty">—</span>';
-  const lv = v.toLowerCase();
-  if (lv.includes('oui')||lv==='yes') return '<span style="color:#2ECC71;font-size:12px;font-weight:600">✓ Oui</span>';
-  if (lv.includes('non')||lv==='no')  return '<span style="color:var(--red);font-size:12px">✗ Non</span>';
-  return `<span style="font-size:12px">${e(v)}</span>`;
-}
-function pf(label, val) {
-  return `<div class="p-field"><div class="p-flabel">${label}</div><div class="p-fval">${val||'<span class="empty">—</span>'}</div></div>`;
-}
-function pff(label, val) {
-  return `<div class="p-field full"><div class="p-flabel">${label}</div><div class="p-fval">${e(val)||'<span class="empty">—</span>'}</div></div>`;
-}
-function fmt(n) { return '$' + Math.round(n).toLocaleString('fr-CA'); }
-function parseNum(v) {
-  if (!v) return 0;
-  const n = parseFloat(String(v).replace(/[^0-9.\-]/g,''));
+const parseNum = v => {
+  const n = parseFloat(String(v || '').replace(/[^0-9.\-]/g, ''));
   return isNaN(n) ? 0 : n;
-}
-function e(s) {
-  if (!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function x(v) { return v ? e(v) : '<span class="empty">—</span>'; }
-function now() { return new Date().toLocaleTimeString('fr-CA',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
-function set(id, val) { document.getElementById(id).textContent = val; }
-function setSyncState(state, txt) {
-  document.getElementById('dot').className = 'dot ' + state;
-  document.getElementById('syncTxt').textContent = txt;
+};
+
+const fmtMoney = n => {
+  if (!n) return '—';
+  return '$' + Math.round(n).toLocaleString('fr-CA');
+};
+
+const numClass = n => n > 0 ? 'num pos' : n < 0 ? 'num neg' : 'num';
+
+/* ── render ── */
+let lastSnapshot = "";
+
+function render(rows) {
+  const data = rows.filter(r => r.some(c => c)); // skip blank rows
+
+  /* ── Hero KPIs ── */
+  const total = data.length;
+  const active = data.filter(r => !/refus/i.test(r[COL.status] || '')).length;
+  const monthlyProfits = data.map(r => parseNum(r[COL.monthlyProfit])).filter(n => n > 0);
+  const yearlyProfits  = data.map(r => parseNum(r[COL.yearlyProfit])).filter(n => n > 0);
+  const rents = data.map(r => parseNum(r[COL.rent])).filter(n => n > 0);
+  const refused = data.filter(r => /refus/i.test(r[COL.status] || '')).length;
+
+  const bestMonthly = monthlyProfits.length ? Math.max(...monthlyProfits) : 0;
+  const bestYearly  = yearlyProfits.length  ? Math.max(...yearlyProfits)  : 0;
+  const avgRent     = rents.length ? rents.reduce((a,b)=>a+b,0)/rents.length : 0;
+
+  document.getElementById("hero").innerHTML = [
+    ["Propriétés suivies",  total,                 "blue",   false],
+    ["Prospects actifs",    active,                "green",  false],
+    ["Meilleur profit/mois",fmtMoney(bestMonthly), "green",  true],
+    ["Meilleur profit/an",  fmtMoney(bestYearly),  "yellow", true],
+    ["Loyer moyen",         fmtMoney(avgRent),     "",       true],
+    ["Refusés",             refused,               refused > 0 ? "red" : "", false],
+  ].map(([k, v, cls, small]) =>
+    `<div class="card ${cls}"><div class="k">${k}</div><div class="v ${small?'small':''}">${v}</div></div>`
+  ).join("");
+
+  /* ── Section helpers ── */
+  const tbl = (headers, rows, cellFn) =>
+    `<table><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr>${rows.map(r=>`<tr>${cellFn(r)}</tr>`).join('')}</table>`;
+
+  /* ── 01 Toutes les propriétés ── */
+  const sortedData = [...data].sort((a,b) => {
+    const ra = parseNum(a[COL.rank]) || 999;
+    const rb = parseNum(b[COL.rank]) || 999;
+    return ra - rb;
+  });
+
+  const propHtml = sortedData.length ? tbl(
+    ["#","Statut","Proprio","Adresse / secteur","Dispo","Loyer/mois","Places","Coût/place","Profit/mois","Profit/an","Meublée","Bail flex."],
+    sortedData,
+    r => {
+      const mp = parseNum(r[COL.monthlyProfit]);
+      const yp = parseNum(r[COL.yearlyProfit]);
+      return `
+        <td>${esc(r[COL.rank] || r[COL.order] || '—')}</td>
+        <td>${statusPill(r[COL.status])}</td>
+        <td>${esc(r[COL.owner] || '—')}</td>
+        <td>${esc(r[COL.address] || '—')}</td>
+        <td>${esc(r[COL.avail] || '—')}</td>
+        <td class="num">${esc(r[COL.rent] || '—')}</td>
+        <td class="num">${esc(r[COL.spots] || '—')}</td>
+        <td class="num">${esc(r[COL.costMonth] || '—')}</td>
+        <td class="${numClass(mp)}">${fmtMoney(mp)}</td>
+        <td class="${numClass(yp)}">${fmtMoney(yp)}</td>
+        <td>${statusPill(r[COL.furnished])}</td>
+        <td>${statusPill(r[COL.flexLease])}</td>`;
+    }
+  ) : '<div class="note">Aucune propriété.</div>';
+
+  /* ── 02 Prochaines actions ── */
+  const actionRows = sortedData.filter(r => r[COL.nextAction]);
+  const actionsHtml = actionRows.length ? `<div class="kv">${actionRows.map(r =>
+    `<div class="row" style="grid-template-columns:180px 1fr">
+      <b>${esc(r[COL.owner] || '—')} <span style="color:var(--faint);font-weight:400">· ${esc(r[COL.address] || '').split('/')[0].trim()}</span></b>
+      <span>${esc(r[COL.nextAction])}</span>
+    </div>`
+  ).join('')}</div>` : '<div class="note">Aucune action définie.</div>';
+
+  /* ── 03 Notes & détails ── */
+  const noteRows = sortedData.filter(r => r[COL.notes]);
+  const notesHtml = noteRows.length ? `<div class="kv">${noteRows.map(r =>
+    `<div class="row" style="grid-template-columns:180px 1fr">
+      <b>${esc(r[COL.owner] || '—')}</b>
+      <span style="white-space:pre-wrap">${esc(r[COL.notes])}</span>
+    </div>`
+  ).join('')}</div>` : '<div class="note">Aucune note.</div>';
+
+  /* ── 04 Analyse financière ── */
+  const finHtml = sortedData.length ? tbl(
+    ["Proprio","Adresse","Loyer/mois","Ch.","Places","Coût/place/mois","Profit/mois","Profit/an","Verdict hiver","Profit hiver/an"],
+    sortedData,
+    r => {
+      const mp = parseNum(r[COL.monthlyProfit]);
+      const yp = parseNum(r[COL.yearlyProfit]);
+      const wp = parseNum(r[COL.winterProfit]);
+      return `
+        <td>${esc(r[COL.owner] || '—')}</td>
+        <td>${esc(r[COL.address] || '—')}</td>
+        <td class="num">${esc(r[COL.rent] || '—')}</td>
+        <td class="num">${esc(r[COL.rooms] || '—')}</td>
+        <td class="num">${esc(r[COL.spots] || '—')}</td>
+        <td class="num">${esc(r[COL.costMonth] || '—')}</td>
+        <td class="${numClass(mp)}">${fmtMoney(mp)}</td>
+        <td class="${numClass(yp)}">${fmtMoney(yp)}</td>
+        <td>${statusPill(r[COL.winterVerdict])}</td>
+        <td class="${numClass(wp)}">${fmtMoney(wp)}</td>`;
+    }
+  ) : '<div class="note">Aucune donnée financière.</div>';
+
+  /* ── 05 Détails par propriété ── */
+  const detailHtml = sortedData.map(r => {
+    const fields = [
+      ["Contact", r[COL.contact]],
+      ["Disponible", r[COL.avail]],
+      ["Meublée?", r[COL.furnished]],
+      ["Bail flexible?", r[COL.flexLease]],
+      ["Proprio ouvert?", r[COL.ownerOpen]],
+      ["Statut", r[COL.status]],
+      ["Date trouvé", r[COL.dateFound]],
+    ].filter(([,v]) => v);
+
+    const linkHtml = (r[COL.link] && r[COL.link] !== 'À ajouter')
+      ? `<div class="row" style="grid-template-columns:160px 1fr"><b>Annonce</b><span><a href="${esc(r[COL.link])}" target="_blank" rel="noopener">${esc(r[COL.link])}</a></span></div>` : '';
+
+    return `<h3 style="font-size:13px;font-weight:700;color:var(--accent);margin:14px 0 8px">${esc(r[COL.owner] || '—')} · ${esc(r[COL.address] || '—')} ${statusPill(r[COL.status])}</h3>
+    <div class="kv">
+      ${fields.map(([k,v]) => `<div class="row" style="grid-template-columns:160px 1fr"><b>${k}</b><span>${/oui|non|yes|no|refus|contact|confirm|discu/i.test(v)?statusPill(v):esc(v)}</span></div>`).join('')}
+      ${linkHtml}
+    </div>`;
+  }).join('') || '<div class="note">Aucune propriété.</div>';
+
+  document.getElementById("grid").innerHTML = `
+    <section class="wide"><h2><span class="n">01</span>Toutes les propriétés <span class="pill p-blue">${sortedData.length} propriété${sortedData.length!==1?'s':''}</span></h2>${propHtml}</section>
+    <section><h2><span class="n">02</span>Prochaines actions</h2>${actionsHtml}</section>
+    <section><h2><span class="n">03</span>Notes & contexte</h2>${notesHtml}</section>
+    <section class="wide"><h2><span class="n">04</span>Analyse financière</h2>${finHtml}</section>
+    <section class="wide"><h2><span class="n">05</span>Détails par propriété</h2>${detailHtml}</section>`;
 }
 
-// ── Boot ───────────────────────────────────────────────────
-load();
-setInterval(load, 5000);
+/* ── polling loop ── */
+async function poll(manual) {
+  try {
+    const table = await fetchSheet();
+    const rows = toRows(table);
+    const snap = JSON.stringify(rows);
+    const changed = snap !== lastSnapshot;
+    if (changed) { render(rows); lastSnapshot = snap; }
+    document.getElementById("dot").classList.remove("err");
+    document.getElementById("livetxt").textContent = "en direct · sync " + new Date().toLocaleTimeString('fr-CA');
+    document.getElementById("stamp").textContent = changed && !manual && lastSnapshot ? "Mis à jour depuis Sheets à l'instant" : "";
+    document.getElementById("err").style.display = "none";
+  } catch(e) {
+    document.getElementById("dot").classList.add("err");
+    document.getElementById("livetxt").textContent = "connexion perdue — nouvelle tentative";
+    const eb = document.getElementById("err");
+    eb.style.display = "block";
+    eb.textContent = "Impossible d'atteindre Google Sheets (" + e.message + "). Vérifiez que le partage est 'Tout le monde avec le lien'.";
+  }
+}
+
+document.getElementById("ivl").textContent = POLL_MS / 1000;
+poll(); setInterval(poll, POLL_MS);
 </script>
 </body>
 </html>
