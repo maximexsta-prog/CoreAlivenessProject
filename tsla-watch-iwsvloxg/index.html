@@ -136,6 +136,44 @@ async function refreshQuote() {
   } catch (e) { /* offline or rate-limited: keep last shown values */ }
 }
 if (FINNHUB_KEY) { refreshQuote(); setInterval(refreshQuote, 60000); }
+
+// ---- Real-time trade stream (websocket) ----
+// Finnhub pushes each TSLA trade as it happens during market hours.
+// The 60s poll above stays as baseline (previous close for the % calc, off-hours price).
+let prevClose = null, lastPaint = 0;
+async function getPrevClose() {
+  try {
+    const q = await (await fetch(`https://finnhub.io/api/v1/quote?symbol=TSLA&token=${FINNHUB_KEY}`)).json();
+    if (q.pc) prevClose = q.pc;
+  } catch (e) {}
+}
+function paintPrice(p) {
+  const now = Date.now();
+  if (now - lastPaint < 500) return;   // max ~2 updates/sec, keeps the page calm
+  lastPaint = now;
+  const $ = id => document.getElementById(id);
+  $('price').textContent = `$${p.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+  if (prevClose) {
+    const chg = (p / prevClose - 1) * 100, up = chg >= 0;
+    $('delta').textContent = `${up ? '▲' : '▼'} ${Math.abs(chg).toFixed(2)}%`;
+    $('delta').className = 'delta ' + (up ? 'up' : 'down');
+  }
+  $('live').style.display = 'inline';
+  $('stamp').textContent = `real-time ${new Date().toLocaleTimeString()} · signals computed daily at 6 PM`;
+}
+function startStream() {
+  if (!FINNHUB_KEY) return;
+  const ws = new WebSocket(`wss://ws.finnhub.io?token=${FINNHUB_KEY}`);
+  ws.onopen = () => ws.send(JSON.stringify({type:'subscribe', symbol:'TSLA'}));
+  ws.onmessage = ev => {
+    const m = JSON.parse(ev.data);
+    if (m.type === 'trade' && m.data && m.data.length) paintPrice(m.data[m.data.length-1].p);
+  };
+  ws.onclose = () => setTimeout(startStream, 5000);   // auto-reconnect
+  ws.onerror = () => ws.close();
+}
+getPrevClose();
+startStream();
 </script>
 </body>
 </html>
