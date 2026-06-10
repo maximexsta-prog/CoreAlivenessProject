@@ -39,7 +39,7 @@
 <body>
 <header>
   <h1><span class="tick">TSLA</span> Watch — Mission Control</h1>
-  <div class="stamp" id="stamp"></div>
+  <div class="stamp"><span id="live" style="display:none;color:var(--green);font-weight:700">● LIVE</span> <span id="stamp"></span></div>
 </header>
 
 <div class="banner" id="banner"></div>
@@ -115,6 +115,27 @@ if (!d) {
   ctx.fillText(d.history.dates[0], P+40, H-2);
   ctx.textAlign = 'right'; ctx.fillText(d.history.dates[n-1], W-P, H-2);
 }
+
+// ---- Live quote refresh (every 60s) ----
+// Paste your free Finnhub API key below (finnhub.io -> free signup -> API key).
+// Leave empty to keep daily-only mode; the page works fine without it.
+const FINNHUB_KEY = '';
+async function refreshQuote() {
+  try {
+    const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=TSLA&token=${FINNHUB_KEY}`);
+    if (!res.ok) return;
+    const q = await res.json();          // c = current, pc = previous close
+    if (!q.c) return;
+    const $ = id => document.getElementById(id);
+    $('price').textContent = `$${q.c.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+    const chg = (q.c / q.pc - 1) * 100, up = chg >= 0;
+    $('delta').textContent = `${up ? '▲' : '▼'} ${Math.abs(chg).toFixed(2)}%`;
+    $('delta').className = 'delta ' + (up ? 'up' : 'down');
+    $('live').style.display = 'inline';
+    $('stamp').textContent = `live quote ${new Date().toLocaleTimeString()} · signals computed daily at 6 PM`;
+  } catch (e) { /* offline or rate-limited: keep last shown values */ }
+}
+if (FINNHUB_KEY) { refreshQuote(); setInterval(refreshQuote, 60000); }
 </script>
 </body>
 </html>
