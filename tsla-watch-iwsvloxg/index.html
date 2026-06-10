@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>TSLA Watch</title>
+<style>
+  :root{
+    --bg:#0b0e14; --panel:#131826; --panel2:#1a2133; --line:#232c44;
+    --text:#e8ecf4; --muted:#8b95ab; --green:#34d399; --red:#f87171;
+    --amber:#fbbf24; --blue:#60a5fa; --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font:16px/1.55 "Segoe UI",system-ui,sans-serif;padding:32px 20px;max-width:980px;margin:0 auto}
+  header{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+  h1{font-size:22px;font-weight:600;letter-spacing:.3px}
+  h1 .tick{color:var(--blue)}
+  .stamp{color:var(--muted);font-size:13px}
+  .banner{border-radius:var(--radius);padding:18px 22px;margin-bottom:20px;font-size:17px;font-weight:600;border:1px solid var(--line);background:var(--panel)}
+  .banner.calm{border-color:#1f3b2f;color:var(--green)}
+  .banner.hot{border-color:#5c4a14;color:var(--amber);background:#1d1a10}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:20px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .card h3{font-size:12px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .big{font-size:32px;font-weight:700;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:13px;margin-top:6px}
+  .delta.up{color:var(--green)} .delta.down{color:var(--red)}
+  .pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.8px;padding:4px 12px;border-radius:99px;margin-top:4px}
+  .pill.on{background:#3a2f0e;color:var(--amber)}
+  .pill.off{background:#16202f;color:var(--muted)}
+  .chartcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+  canvas{width:100%;height:220px;display:block}
+  footer{color:var(--muted);font-size:13px;text-align:center;margin-top:28px}
+  .ma{display:flex;gap:18px;margin-top:8px;font-size:13px;color:var(--muted)}
+  .ma b{color:var(--text);font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="tick">TSLA</span> Watch — Mission Control</h1>
+  <div class="stamp" id="stamp"></div>
+</header>
+
+<div class="banner" id="banner"></div>
+
+<div class="grid">
+  <div class="card">
+    <h3>Price</h3>
+    <div class="big" id="price"></div>
+    <div class="sub"><span id="delta" class="delta"></span> vs prior day</div>
+    <div class="ma"><span>50d <b id="ma50"></b></span><span>200d <b id="ma200"></b></span></div>
+  </div>
+  <div class="card">
+    <h3>Quiet Zone (Squeeze)</h3>
+    <div class="big" id="width"></div>
+    <div class="sub">band width — quiet under <span id="wthr"></span></div>
+    <span class="pill" id="sqpill"></span>
+  </div>
+  <div class="card">
+    <h3>Volume</h3>
+    <div class="big" id="vol"></div>
+    <div class="sub">of the 20-day average</div>
+    <span class="pill" id="volpill"></span>
+  </div>
+</div>
+
+<div class="chartcard">
+  <h3 style="font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Last 90 trading days</h3>
+  <canvas id="chart" width="900" height="220"></canvas>
+</div>
+
+<footer>Watch-and-report only — this dashboard never trades. Data refreshes each weekday at 6 PM via the TSLA Watch task.</footer>
+
+<script src="data.js"></script>
+<script>
+const d = window.TSLA_DATA;
+if (!d) {
+  document.getElementById('banner').textContent = 'No data yet — run the watcher once to generate data.js.';
+} else {
+  const $ = id => document.getElementById(id);
+  $('stamp').textContent = `data through ${d.date} · generated ${d.generated}`;
+  $('price').textContent = `$${d.price.toLocaleString()}`;
+  const up = d.change_1d >= 0;
+  $('delta').textContent = `${up ? '▲' : '▼'} ${Math.abs(d.change_1d).toFixed(2)}%`;
+  $('delta').className = 'delta ' + (up ? 'up' : 'down');
+  $('ma50').textContent = `$${d.ma50.toLocaleString()}`;
+  $('ma200').textContent = `$${d.ma200.toLocaleString()}`;
+  $('width').textContent = `${d.width_now}%`;
+  $('wthr').textContent = `${d.width_threshold}%`;
+  $('sqpill').textContent = d.squeeze ? 'SQUEEZE ON' : 'normal swings';
+  $('sqpill').className = 'pill ' + (d.squeeze ? 'on' : 'off');
+  $('vol').textContent = `${d.vol_ratio}×`;
+  $('volpill').textContent = d.vol_pickup ? 'PICKUP' : 'normal';
+  $('volpill').className = 'pill ' + (d.vol_pickup ? 'on' : 'off');
+  const b = $('banner');
+  if (d.alert) { b.className = 'banner hot'; b.textContent = '⚡ BOTH conditions met — Tesla is unusually quiet AND volume is picking up. Something may be brewing.'; }
+  else { b.className = 'banner calm'; b.textContent = '✓ Nothing unusual today. No action needed.'; }
+
+  // sparkline
+  const c = $('chart'), ctx = c.getContext('2d');
+  const W = c.width, H = c.height, P = 10;
+  const v = d.history.close, n = v.length;
+  const lo = Math.min(...v), hi = Math.max(...v);
+  const x = i => P + i * (W - 2*P) / (n - 1);
+  const y = p => H - P - (p - lo) * (H - 2*P) / (hi - lo || 1);
+  ctx.lineWidth = 2; ctx.strokeStyle = '#60a5fa'; ctx.beginPath();
+  v.forEach((p,i) => i ? ctx.lineTo(x(i), y(p)) : ctx.moveTo(x(i), y(p)));
+  ctx.stroke();
+  const g = ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'rgba(96,165,250,.25)'); g.addColorStop(1,'rgba(96,165,250,0)');
+  ctx.lineTo(x(n-1), H-P); ctx.lineTo(x(0), H-P); ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+  ctx.fillStyle = '#8b95ab'; ctx.font = '12px Segoe UI';
+  ctx.fillText(`$${lo}`, P, H-2); ctx.fillText(`$${hi}`, P, 14);
+  ctx.fillText(d.history.dates[0], P+40, H-2);
+  ctx.textAlign = 'right'; ctx.fillText(d.history.dates[n-1], W-P, H-2);
+}
+</script>
+</body>
+</html>
