@@ -34,9 +34,12 @@ h1{font-size:26px;font-weight:800;letter-spacing:-.5px}
 .hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:26px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 .card .k{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--faint);font-weight:600;margin-bottom:8px}
-.card .v{font-size:22px;font-weight:700;line-height:1.25}
-.card .v.small{font-size:14.5px;font-weight:600}
-.card.red .v{color:var(--red)} .card.green .v{color:var(--green)} .card.yellow .v{color:var(--yellow)} .card.blue .v{color:var(--blue)}
+.card .v{font-size:19px;font-weight:700;line-height:1.25}
+.card .v.small{font-size:14px;font-weight:600}
+.card.red .v{color:var(--red)} .card.green .v{color:var(--green)}
+.card.yellow .v{color:var(--yellow)} .card.blue .v{color:var(--blue)}
+.bar{height:8px;background:var(--panel2);border-radius:99px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--yellow) 60%,var(--green));transition:width .6s}
 /* layout */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:18px}
 section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;overflow:auto}
@@ -58,11 +61,14 @@ tr.changed td{animation:flash 2.5s}
 .p-grey{color:var(--dim);background:var(--panel2)}
 .num{font-family:'JetBrains Mono',monospace;font-size:12.5px;text-align:right;white-space:nowrap}
 td.num{color:var(--txt)}
-.num.pos{color:var(--green)} .num.neg{color:var(--red)}
 .kv{display:grid;gap:6px}
-.kv .row{display:grid;grid-template-columns:200px 1fr;gap:12px;padding:7px 10px;border-radius:8px;background:var(--panel2)}
+.kv .row{display:grid;grid-template-columns:220px 1fr;gap:12px;padding:7px 10px;border-radius:8px;background:var(--panel2)}
 .kv .row b{color:var(--dim);font-weight:600;font-size:12.5px}
-.note{font-size:12px;color:var(--faint);margin-top:10px;line-height:1.5}
+.note{font-size:12px;color:var(--faint);margin-top:4px;line-height:1.5}
+.banner{border-radius:12px;padding:14px 18px;font-size:13.5px;font-weight:600;line-height:1.5;margin-bottom:26px;border:1px solid}
+.banner.yellow{background:var(--yellow-bg);border-color:rgba(210,153,34,.3);color:var(--yellow)}
+.banner.red{background:var(--red-bg);border-color:rgba(248,81,73,.3);color:var(--red)}
+.banner.green{background:var(--green-bg);border-color:rgba(63,185,80,.3);color:var(--green)}
 .foot{margin-top:26px;color:var(--faint);font-size:12px;display:flex;gap:16px;flex-wrap:wrap}
 #err{display:none;background:var(--red-bg);border:1px solid var(--red);color:var(--red);border-radius:10px;padding:10px 16px;margin-bottom:18px;font-size:13px}
 </style>
@@ -76,9 +82,10 @@ td.num{color:var(--txt)}
     <a class="btn" href="https://docs.google.com/spreadsheets/d/1-u1J6LrIUyj7wBG8mHKZt8jIq-T9V6q0w2ebytm9uFI/edit" target="_blank">✎ Modifier dans Sheets</a>
   </div>
 </header>
-<div class="sub">Miroir en direct de Google Sheets · actualisation toutes les <span id="ivl">10</span>s · les modifications dans Sheets apparaissent ici automatiquement</div>
+<div class="sub">Miroir en direct de Google Sheets · actualisation toutes les <span id="ivl">10</span>s · les modifications apparaissent ici automatiquement</div>
 <div id="err"></div>
 <div class="hero" id="hero"></div>
+<div id="banner"></div>
 <div class="grid" id="grid"></div>
 <div class="foot">
   <span>Source: Google Sheets — onglet « Dashboard Mt. Saint-Anne »</span>
@@ -86,17 +93,17 @@ td.num{color:var(--txt)}
 </div>
 
 <script>
-const SHEET_ID = "1-u1J6LrIUyj7wBG8mHKZt8jIq-T9V6q0w2ebytm9uFI";
+const SHEET_ID  = "1-u1J6LrIUyj7wBG8mHKZt8jIq-T9V6q0w2ebytm9uFI";
 const SHEET_NAME = "Dashboard Mt. Saint-Anne";
-const POLL_MS = 10000;
+const POLL_MS   = 10000;
 
-/* ── JSONP fetch (no CORS, no API key) ── */
+/* ── JSONP fetch ── */
 let reqSeq = 0;
 function fetchSheet() {
   return new Promise((resolve, reject) => {
-    const id = "gviz_cb_" + (++reqSeq);
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_NAME)}&headers=1&tqx=out:json;responseHandler:${id}&_=${Date.now()}`;
-    const s = document.createElement("script");
+    const id  = "gviz_cb_" + (++reqSeq);
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_NAME)}&headers=0&tqx=out:json;responseHandler:${id}&_=${Date.now()}`;
+    const s   = document.createElement("script");
     window[id] = resp => { cleanup(); resp.status === "ok" ? resolve(resp.table) : reject(new Error(resp.errors?.[0]?.detailed_message || "sheet error")); };
     function cleanup() { delete window[id]; s.remove(); clearTimeout(t); }
     const t = setTimeout(() => { cleanup(); reject(new Error("timeout")); }, 15000);
@@ -104,190 +111,233 @@ function fetchSheet() {
     s.src = url; document.head.appendChild(s);
   });
 }
+const cellV  = c => (c && c.v != null) ? String(c.f ?? c.v).trim() : "";
+const toGrid = t => t.rows.map(r => (r.c || []).map(cellV));
 
-const cellV = c => (c && c.v != null) ? String(c.f ?? c.v).trim() : "";
-const toRows = table => table.rows.map(r => (r.c || []).map(cellV));
-const toHeaders = table => (table.cols || []).map(c => c.label || "");
+/* ── grid helpers ── */
+const findRow = (g, txt) => g.findIndex(r => r.some(c => c.toLowerCase() === txt.toLowerCase().trim()));
+const findRowContains = (g, txt) => g.findIndex(r => r.some(c => c.toLowerCase().includes(txt.toLowerCase())));
+function readBlock(g, start, stopFn) {
+  const out = [];
+  for (let i = start; i < g.length; i++) {
+    if (!g[i].some(c => c)) break;
+    if (stopFn && stopFn(g[i])) break;
+    out.push(g[i]);
+  }
+  return out;
+}
 
-/* ── column index map ── */
-const COL = {
-  order: 0, rank: 1, status: 2, dateFound: 3, link: 4,
-  owner: 5, address: 6, avail: 7, rent: 8, rooms: 9,
-  spots: 10, costMonth: 11, costWeek: 12, furnished: 13,
-  flexLease: 14, ownerOpen: 15, contact: 16, nextAction: 17,
-  notes: 18, photos: 19, monthlyProfit: 20, yearlyProfit: 21,
-  winterVerdict: 22, winterProfit: 23
-};
+/* ── parse dashboard tab ── */
+function parseMap(grid) {
+  const d = {};
 
-/* ── helpers ── */
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  // STATUS row: STATUS | Validation | … | Avancement | 🟥… 29% | Décision | Pas prêt…
+  const sr = findRow(grid, "STATUS");
+  if (sr >= 0) {
+    const row = grid[sr];
+    d.statusVal = row[1] || "";
+    // find Avancement
+    const ai = row.findIndex(c => c.toLowerCase() === "avancement");
+    if (ai >= 0) d.avancement = row[ai + 1] || "";
+    const di = row.findIndex(c => c.toLowerCase() === "décision");
+    if (di >= 0) d.decision = row[di + 1] || "";
+  }
 
-const statusPill = s => {
+  // Maison choisie row
+  const mr = findRow(grid, "Maison choisie");
+  if (mr >= 0) {
+    const row = grid[mr];
+    d.maisonChoisie = row[1] || "";
+    const dci = row.findIndex(c => c.toLowerCase() === "date cible");
+    if (dci >= 0) d.dateCible = row[dci + 1] || "";
+    const fi = row.findIndex(c => c.toLowerCase() === "focus actuel");
+    if (fi >= 0) d.focusActuel = row[fi + 1] || "";
+  }
+
+  // Règle simple
+  const rr = findRow(grid, "Règle simple");
+  if (rr >= 0) d.regleSimple = grid[rr][1] || "";
+
+  // FOCUS ACTUEL section
+  const fc = findRow(grid, "FOCUS ACTUEL");
+  if (fc >= 0) {
+    d.focus = readBlock(grid, fc + 1, r => /^GATE$/i.test(r[0]));
+  }
+
+  // GATE section
+  const gc = findRow(grid, "GATE");
+  if (gc >= 0) {
+    d.gates = readBlock(grid, gc + 1, r => /^GO \/ NO-GO/i.test(r[0]));
+  }
+
+  // GO / NO-GO
+  const gn = findRow(grid, "GO / NO-GO SIMPLE");
+  d.go = ""; d.nogo = "";
+  if (gn >= 0) {
+    for (let i = gn + 1; i < gn + 6 && i < grid.length; i++) {
+      const r = grid[i];
+      if (/^GO si/i.test(r[0]))   d.go   = r[1] || "";
+      if (/^NO-GO si/i.test(r[0])) d.nogo = r[1] || "";
+    }
+  }
+
+  // MINI CHIFFRES
+  const mc = findRowContains(grid, "MINI CHIFFRES");
+  if (mc >= 0) {
+    d.mini = readBlock(grid, mc + 1, r => /^PROCHAINES/i.test(r[0]));
+  }
+
+  // PROCHAINES ACTIONS 48H
+  const pa = findRowContains(grid, "PROCHAINES ACTIONS");
+  if (pa >= 0) {
+    d.actionsTitle = grid[pa][1] || ""; // summary in col B
+    d.actions = [];
+    for (let i = pa + 1; i < grid.length; i++) {
+      const r = grid[i];
+      if (!r[0] && !r[1]) break;
+      if (/^Ai-je|^Decision|^RÈGLE/i.test(r[0])) break;
+      if (r[1]) d.actions.push(r[1]);
+    }
+  }
+
+  // Decision checklist (Ai-je…)
+  const dc = findRowContains(grid, "Ai-je une vraie maison");
+  if (dc >= 0) {
+    d.checks = [];
+    for (let i = dc; i < grid.length; i++) {
+      const r = grid[i];
+      if (/^Decision status/i.test(r[0]) || /^RÈGLE/i.test(r[0])) break;
+      if (!r[0] && !r[1]) continue;
+      if (r[0] && r[1]) d.checks.push([r[0], r[1], r[2] || "", r[3] || ""]);
+    }
+  }
+
+  // Decision status rows
+  d.decisionStatus = grid.filter(r => /^Decision status$/i.test(r[0]));
+
+  // RÈGLE FONDATRICE
+  const rf = findRowContains(grid, "RÈGLE FONDATRICE");
+  if (rf >= 0) d.regleFond = grid[rf][1] || "";
+
+  return d;
+}
+
+/* ── pill helper ── */
+const esc = s => String(s || "").replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const pill = s => {
   if (!s) return "";
   const l = s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
   let cls = "p-grey";
-  if (/contact/.test(l)) cls = "p-yellow";
-  else if (/refus/.test(l)) cls = "p-red";
-  else if (/confirm/.test(l)) cls = "p-green";
-  else if (/discussion/.test(l)) cls = "p-blue";
-  else if (/oui|yes/.test(l)) cls = "p-green";
-  else if (/non|no\b/.test(l)) cls = "p-red";
-  else if (/confirmer|tbd|waiting|attendre/.test(l)) cls = "p-yellow";
+  if (/green|oui|yes|done|confirm|go\b/.test(l) && !/no-go/.test(l)) cls = "p-green";
+  else if (/yellow|waiting|en cours|progress|tbd|scouting/.test(l)) cls = "p-yellow";
+  else if (/red|non|no\b|not |block|pas comm|refus|no-go/.test(l)) cls = "p-red";
+  else if (/blue|validation/.test(l)) cls = "p-blue";
   return `<span class="pill ${cls}">${esc(s)}</span>`;
 };
 
-const parseNum = v => {
-  const n = parseFloat(String(v || '').replace(/[^0-9.\-]/g, ''));
-  return isNaN(n) ? 0 : n;
-};
-
-const fmtMoney = n => {
-  if (!n) return '—';
-  return '$' + Math.round(n).toLocaleString('fr-CA');
-};
-
-const numClass = n => n > 0 ? 'num pos' : n < 0 ? 'num neg' : 'num';
-
 /* ── render ── */
 let lastSnapshot = "";
+function render(grid) {
+  const d = parseMap(grid);
 
-function render(rows) {
-  const data = rows.filter(r => r.some(c => c)); // skip blank rows
+  // pct from avancement string e.g. "🟥🟥⬜⬜⬜⬜⬜ 29%"
+  const pct = parseInt((d.avancement || "").match(/(\d+)\s*%/) ?.[1] || "0", 10);
 
-  /* ── Hero KPIs ── */
-  const total = data.length;
-  const active = data.filter(r => !/refus/i.test(r[COL.status] || '')).length;
-  const monthlyProfits = data.map(r => parseNum(r[COL.monthlyProfit])).filter(n => n > 0);
-  const yearlyProfits  = data.map(r => parseNum(r[COL.yearlyProfit])).filter(n => n > 0);
-  const rents = data.map(r => parseNum(r[COL.rent])).filter(n => n > 0);
-  const refused = data.filter(r => /refus/i.test(r[COL.status] || '')).length;
-
-  const bestMonthly = monthlyProfits.length ? Math.max(...monthlyProfits) : 0;
-  const bestYearly  = yearlyProfits.length  ? Math.max(...yearlyProfits)  : 0;
-  const avgRent     = rents.length ? rents.reduce((a,b)=>a+b,0)/rents.length : 0;
-
+  // Hero cards
   document.getElementById("hero").innerHTML = [
-    ["Propriétés suivies",  total,                 "blue",   false],
-    ["Prospects actifs",    active,                "green",  false],
-    ["Meilleur profit/mois",fmtMoney(bestMonthly), "green",  true],
-    ["Meilleur profit/an",  fmtMoney(bestYearly),  "yellow", true],
-    ["Loyer moyen",         fmtMoney(avgRent),     "",       true],
-    ["Refusés",             refused,               refused > 0 ? "red" : "", false],
+    ["STATUS",            esc(d.statusVal || "—"),   "blue",   false],
+    ["Avancement",        `${pct}%<div class="bar"><i style="width:${pct}%"></i></div>`, pct < 40 ? "red" : pct < 70 ? "yellow" : "green", false],
+    ["Décision",          esc(d.decision || "—"),     "yellow", true],
+    ["Maison choisie",    esc(d.maisonChoisie || "—"),"",       true],
+    ["Date cible",        esc(d.dateCible || "—"),    "",       true],
+    ["Focus actuel",      esc(d.focusActuel || "—"),  "green",  true],
   ].map(([k, v, cls, small]) =>
-    `<div class="card ${cls}"><div class="k">${k}</div><div class="v ${small?'small':''}">${v}</div></div>`
+    `<div class="card ${cls}"><div class="k">${k}</div><div class="v ${small ? 'small' : ''}">${v}</div></div>`
   ).join("");
 
-  /* ── Section helpers ── */
-  const tbl = (headers, rows, cellFn) =>
-    `<table><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr>${rows.map(r=>`<tr>${cellFn(r)}</tr>`).join('')}</table>`;
+  // Règle simple banner
+  document.getElementById("banner").innerHTML = d.regleSimple
+    ? `<div class="banner yellow">⚠ Règle simple — ${esc(d.regleSimple)}</div>` : "";
 
-  /* ── 01 Toutes les propriétés ── */
-  const sortedData = [...data].sort((a,b) => {
-    const ra = parseNum(a[COL.rank]) || 999;
-    const rb = parseNum(b[COL.rank]) || 999;
-    return ra - rb;
-  });
+  // Section builder
+  const tbl = (headers, rows, fn) =>
+    `<table><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr>${rows.map(r => `<tr>${fn(r)}</tr>`).join("")}</table>`;
 
-  const propHtml = sortedData.length ? tbl(
-    ["#","Statut","Proprio","Adresse / secteur","Dispo","Loyer/mois","Places","Coût/place","Profit/mois","Profit/an","Meublée","Bail flex."],
-    sortedData,
-    r => {
-      const mp = parseNum(r[COL.monthlyProfit]);
-      const yp = parseNum(r[COL.yearlyProfit]);
-      return `
-        <td>${esc(r[COL.rank] || r[COL.order] || '—')}</td>
-        <td>${statusPill(r[COL.status])}</td>
-        <td>${esc(r[COL.owner] || '—')}</td>
-        <td>${esc(r[COL.address] || '—')}</td>
-        <td>${esc(r[COL.avail] || '—')}</td>
-        <td class="num">${esc(r[COL.rent] || '—')}</td>
-        <td class="num">${esc(r[COL.spots] || '—')}</td>
-        <td class="num">${esc(r[COL.costMonth] || '—')}</td>
-        <td class="${numClass(mp)}">${fmtMoney(mp)}</td>
-        <td class="${numClass(yp)}">${fmtMoney(yp)}</td>
-        <td>${statusPill(r[COL.furnished])}</td>
-        <td>${statusPill(r[COL.flexLease])}</td>`;
-    }
-  ) : '<div class="note">Aucune propriété.</div>';
+  // 01 GATE
+  const gateHtml = (d.gates || []).length ? tbl(
+    ["Gate", "Statut", "Preuve / notes", "Prochaine action"],
+    d.gates,
+    r => `<td>${esc(r[0])}</td><td>${pill(r[1])}</td><td style="max-width:260px;white-space:normal">${esc(r[3])}</td><td style="max-width:200px;white-space:normal">${esc(r[4])}</td>`
+  ) : '<div class="note">Aucune gate définie.</div>';
 
-  /* ── 02 Prochaines actions ── */
-  const actionRows = sortedData.filter(r => r[COL.nextAction]);
-  const actionsHtml = actionRows.length ? `<div class="kv">${actionRows.map(r =>
-    `<div class="row" style="grid-template-columns:180px 1fr">
-      <b>${esc(r[COL.owner] || '—')} <span style="color:var(--faint);font-weight:400">· ${esc(r[COL.address] || '').split('/')[0].trim()}</span></b>
-      <span>${esc(r[COL.nextAction])}</span>
-    </div>`
-  ).join('')}</div>` : '<div class="note">Aucune action définie.</div>';
+  // 02 FOCUS ACTUEL
+  const focusHtml = (d.focus || []).length ? tbl(
+    ["Action", "Pourquoi ça compte", "Prochaine action"],
+    d.focus,
+    r => `<td style="white-space:normal">${esc(r[0])}</td><td style="white-space:normal">${esc(r[1])}</td><td style="white-space:normal">${esc(r[2])}</td>`
+  ) : '<div class="note">Aucun focus défini.</div>';
 
-  /* ── 03 Notes & détails ── */
-  const noteRows = sortedData.filter(r => r[COL.notes]);
-  const notesHtml = noteRows.length ? `<div class="kv">${noteRows.map(r =>
-    `<div class="row" style="grid-template-columns:180px 1fr">
-      <b>${esc(r[COL.owner] || '—')}</b>
-      <span style="white-space:pre-wrap">${esc(r[COL.notes])}</span>
-    </div>`
-  ).join('')}</div>` : '<div class="note">Aucune note.</div>';
+  // 03 GO / NO-GO
+  const gonogoHtml = `<div class="kv">
+    <div class="row"><b>GO si</b><span style="color:var(--green)">${esc(d.go || "—")}</span></div>
+    <div class="row"><b>NO-GO si</b><span style="color:var(--red)">${esc(d.nogo || "—")}</span></div>
+  </div>`;
 
-  /* ── 04 Analyse financière ── */
-  const finHtml = sortedData.length ? tbl(
-    ["Proprio","Adresse","Loyer/mois","Ch.","Places","Coût/place/mois","Profit/mois","Profit/an","Verdict hiver","Profit hiver/an"],
-    sortedData,
-    r => {
-      const mp = parseNum(r[COL.monthlyProfit]);
-      const yp = parseNum(r[COL.yearlyProfit]);
-      const wp = parseNum(r[COL.winterProfit]);
-      return `
-        <td>${esc(r[COL.owner] || '—')}</td>
-        <td>${esc(r[COL.address] || '—')}</td>
-        <td class="num">${esc(r[COL.rent] || '—')}</td>
-        <td class="num">${esc(r[COL.rooms] || '—')}</td>
-        <td class="num">${esc(r[COL.spots] || '—')}</td>
-        <td class="num">${esc(r[COL.costMonth] || '—')}</td>
-        <td class="${numClass(mp)}">${fmtMoney(mp)}</td>
-        <td class="${numClass(yp)}">${fmtMoney(yp)}</td>
-        <td>${statusPill(r[COL.winterVerdict])}</td>
-        <td class="${numClass(wp)}">${fmtMoney(wp)}</td>`;
-    }
-  ) : '<div class="note">Aucune donnée financière.</div>';
+  // 04 MINI CHIFFRES
+  const miniHtml = (d.mini || []).length ? `<div class="kv">${d.mini.map(r =>
+    `<div class="row"><b>${esc(r[0])}</b><span>${esc(r[1])}</span></div>`
+  ).join("")}</div>` : '<div class="note">Aucune donnée.</div>';
 
-  /* ── 05 Détails par propriété ── */
-  const detailHtml = sortedData.map(r => {
-    const fields = [
-      ["Contact", r[COL.contact]],
-      ["Disponible", r[COL.avail]],
-      ["Meublée?", r[COL.furnished]],
-      ["Bail flexible?", r[COL.flexLease]],
-      ["Proprio ouvert?", r[COL.ownerOpen]],
-      ["Statut", r[COL.status]],
-      ["Date trouvé", r[COL.dateFound]],
-    ].filter(([,v]) => v);
+  // 05 PROCHAINES ACTIONS 48H
+  const actionsHtml = (d.actions || []).length
+    ? `${d.actionsTitle ? `<div style="color:var(--accent);font-weight:600;margin-bottom:10px">${esc(d.actionsTitle)}</div>` : ""}
+       <div class="kv">${d.actions.map((a, i) =>
+         `<div class="row" style="grid-template-columns:28px 1fr"><b style="color:var(--accent)">${i + 1}</b><span>${esc(a)}</span></div>`
+       ).join("")}</div>`
+    : '<div class="note">Aucune action définie.</div>';
 
-    const linkHtml = (r[COL.link] && r[COL.link] !== 'À ajouter')
-      ? `<div class="row" style="grid-template-columns:160px 1fr"><b>Annonce</b><span><a href="${esc(r[COL.link])}" target="_blank" rel="noopener">${esc(r[COL.link])}</a></span></div>` : '';
+  // 06 Decision checklist
+  const checksHtml = (d.checks || []).length ? tbl(
+    ["Question", "Réponse", "Pourquoi", "Action"],
+    d.checks,
+    r => `<td style="white-space:normal">${esc(r[0])}</td><td>${pill(r[1])}</td><td style="white-space:normal;color:var(--faint)">${esc(r[2])}</td><td style="white-space:normal">${esc(r[3])}</td>`
+  ) : "";
 
-    return `<h3 style="font-size:13px;font-weight:700;color:var(--accent);margin:14px 0 8px">${esc(r[COL.owner] || '—')} · ${esc(r[COL.address] || '—')} ${statusPill(r[COL.status])}</h3>
-    <div class="kv">
-      ${fields.map(([k,v]) => `<div class="row" style="grid-template-columns:160px 1fr"><b>${k}</b><span>${/oui|non|yes|no|refus|contact|confirm|discu/i.test(v)?statusPill(v):esc(v)}</span></div>`).join('')}
-      ${linkHtml}
-    </div>`;
-  }).join('') || '<div class="note">Aucune propriété.</div>';
+  // Decision status pills
+  const dsHtml = (d.decisionStatus || []).length
+    ? `<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">${d.decisionStatus.map(r =>
+        `<div style="background:var(--panel2);border-radius:10px;padding:8px 14px;font-size:13px">
+          <span style="color:var(--faint);font-size:11px;display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Decision</span>
+          ${pill(r[0])} <span style="color:var(--dim);margin:0 6px">—</span> <span>${esc(r[1])}</span>
+          ${r[2] ? `<span style="color:var(--faint);font-size:12px"> · ${esc(r[2])}</span>` : ""}
+        </div>`
+      ).join("")}</div>` : "";
+
+  // RÈGLE FONDATRICE
+  const regleHtml = d.regleFond
+    ? `<section class="wide"><h2><span class="n">★</span>Règle fondatrice</h2>
+        <div class="banner red" style="margin-bottom:0;font-size:14px">${esc(d.regleFond)}</div>
+       </section>` : "";
 
   document.getElementById("grid").innerHTML = `
-    <section class="wide"><h2><span class="n">01</span>Toutes les propriétés <span class="pill p-blue">${sortedData.length} propriété${sortedData.length!==1?'s':''}</span></h2>${propHtml}</section>
-    <section><h2><span class="n">02</span>Prochaines actions</h2>${actionsHtml}</section>
-    <section><h2><span class="n">03</span>Notes & contexte</h2>${notesHtml}</section>
-    <section class="wide"><h2><span class="n">04</span>Analyse financière</h2>${finHtml}</section>
-    <section class="wide"><h2><span class="n">05</span>Détails par propriété</h2>${detailHtml}</section>`;
+    <section class="wide"><h2><span class="n">01</span>Gates — Conditions d'avancement</h2>${gateHtml}</section>
+    <section><h2><span class="n">02</span>Focus actuel</h2>${focusHtml}</section>
+    <section><h2><span class="n">03</span>Go / No-Go</h2>${gonogoHtml}</section>
+    <section><h2><span class="n">04</span>Mini chiffres</h2>${miniHtml}</section>
+    <section><h2><span class="n">05</span>Prochaines actions 48h</h2>${actionsHtml}</section>
+    <section class="wide"><h2><span class="n">06</span>Checklist décision</h2>${dsHtml}${checksHtml}</section>
+    ${regleHtml}`;
 }
 
 /* ── polling loop ── */
 async function poll(manual) {
   try {
     const table = await fetchSheet();
-    const rows = toRows(table);
-    const snap = JSON.stringify(rows);
+    const grid  = toGrid(table);
+    const snap  = JSON.stringify(grid);
     const changed = snap !== lastSnapshot;
-    if (changed) { render(rows); lastSnapshot = snap; }
+    if (changed) { render(grid); lastSnapshot = snap; }
     document.getElementById("dot").classList.remove("err");
     document.getElementById("livetxt").textContent = "en direct · sync " + new Date().toLocaleTimeString('fr-CA');
     document.getElementById("stamp").textContent = changed && !manual && lastSnapshot ? "Mis à jour depuis Sheets à l'instant" : "";
