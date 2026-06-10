@@ -119,7 +119,7 @@ if (!d) {
 // ---- Live quote refresh (every 60s) ----
 // Paste your free Finnhub API key below (finnhub.io -> free signup -> API key).
 // Leave empty to keep daily-only mode; the page works fine without it.
-const FINNHUB_KEY = '';
+const FINNHUB_KEY = 'd8krf31r01qut1f78osgd8krf31r01qut1f78ot0';
 async function refreshQuote() {
   try {
     const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=TSLA&token=${FINNHUB_KEY}`);
