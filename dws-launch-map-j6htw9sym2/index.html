@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DWS Retreat — Launch Cockpit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#252c3a;
+  --txt:#e6edf3; --dim:#8b97a8; --faint:#5b6677;
+  --green:#3fb950; --green-bg:rgba(63,185,80,.12);
+  --yellow:#d29922; --yellow-bg:rgba(210,153,34,.12);
+  --red:#f85149; --red-bg:rgba(248,81,73,.12);
+  --blue:#58a6ff; --blue-bg:rgba(88,166,255,.12);
+  --accent:#7ee2b8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font:14px/1.5 Inter,system-ui,sans-serif;padding:28px 32px 60px}
+a{color:var(--blue);text-decoration:none}
+header{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+h1{font-size:26px;font-weight:800;letter-spacing:-.5px}
+.sub{color:var(--dim);font-size:13px;margin-bottom:22px}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--dim);background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:4px 12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+.dot.err{background:var(--red);box-shadow:0 0 8px var(--red);animation:none}
+@keyframes pulse{50%{opacity:.4}}
+.toolbar{margin-left:auto;display:flex;gap:10px;align-items:center}
+.btn{background:var(--panel);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:6px 14px;font-size:12.5px;cursor:pointer;font-family:inherit}
+.btn:hover{border-color:var(--blue)}
+/* hero */
+.hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:26px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.card .k{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--faint);font-weight:600;margin-bottom:8px}
+.card .v{font-size:19px;font-weight:700;line-height:1.25}
+.card .v.small{font-size:14.5px;font-weight:600}
+.card.red .v{color:var(--red)} .card.green .v{color:var(--green)} .card.yellow .v{color:var(--yellow)}
+.bar{height:8px;background:var(--panel2);border-radius:99px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--yellow) 60%,var(--green));transition:width .6s}
+/* layout */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:18px}
+section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;overflow:auto}
+section.wide{grid-column:1/-1}
+h2{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+h2 .n{color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.6px;padding:6px 10px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--dim)}
+td:first-child{color:var(--txt);font-weight:500}
+tr:last-child td{border-bottom:none}
+tr.changed td{animation:flash 2.5s}
+@keyframes flash{0%{background:var(--blue-bg)}100%{background:transparent}}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.p-green{color:var(--green);background:var(--green-bg)}
+.p-yellow{color:var(--yellow);background:var(--yellow-bg)}
+.p-red{color:var(--red);background:var(--red-bg)}
+.p-blue{color:var(--blue);background:var(--blue-bg)}
+.p-grey{color:var(--dim);background:var(--panel2)}
+.num{font-family:'JetBrains Mono',monospace;font-size:12.5px;text-align:right;white-space:nowrap}
+td.num{color:var(--txt)}
+.profit td{font-weight:700;color:var(--accent)!important;border-top:2px solid var(--line)}
+.note{font-size:12px;color:var(--faint);margin-top:10px;line-height:1.5}
+.kv{display:grid;gap:6px}
+.kv .row{display:grid;grid-template-columns:160px 1fr;gap:12px;padding:7px 10px;border-radius:8px;background:var(--panel2)}
+.kv .row b{color:var(--dim);font-weight:600;font-size:12.5px}
+.foot{margin-top:26px;color:var(--faint);font-size:12px;display:flex;gap:16px;flex-wrap:wrap}
+#err{display:none;background:var(--red-bg);border:1px solid var(--red);color:var(--red);border-radius:10px;padding:10px 16px;margin-bottom:18px;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <h1>DWS Retreat — Launch Cockpit</h1>
+  <span class="live"><span class="dot" id="dot"></span><span id="livetxt">connecting…</span></span>
+  <div class="toolbar">
+    <button class="btn" onclick="poll(true)">↻ Refresh now</button>
+    <a class="btn" id="sheetlink" target="_blank">✎ Edit in Google Sheets</a>
+  </div>
+</header>
+<div class="sub">Live mirror of the Google Sheet · auto-refreshes every <span id="ivl">10</span>s · edits in the sheet appear here automatically</div>
+<div id="err"></div>
+<div class="hero" id="hero"></div>
+<div class="grid" id="grid"></div>
+<div class="foot">
+  <span>Source of truth: Google Sheets (tabs: Dashboard, Lead Tracker)</span>
+  <span id="stamp"></span>
+</div>
+
+<script>
+const SHEET_ID = "1_Z_r8lqVP7BpC2zaN68HRKqs7-_a2ltQoyl_OPMygoc";
+const TABS = { dash: "15342374", leads: "984321077" };
+const POLL_MS = 10000;
+document.getElementById('sheetlink').href = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
+
+/* ---------- gviz JSONP fetch (no CORS, no API key) ---------- */
+let reqSeq = 0;
+function fetchTab(gid){
+  return new Promise((resolve,reject)=>{
+    const id = "gviz_cb_" + (++reqSeq);
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${gid}&headers=0&tqx=out:json;responseHandler:${id}&_=${Date.now()}`;
+    const s = document.createElement("script");
+    window[id] = resp => { cleanup(); resp.status==="ok" ? resolve(resp.table) : reject(new Error(resp.errors?.[0]?.detailed_message||"sheet error")); };
+    function cleanup(){ delete window[id]; s.remove(); clearTimeout(t); }
+    const t = setTimeout(()=>{ cleanup(); reject(new Error("timeout")); }, 15000);
+    s.onerror = ()=>{ cleanup(); reject(new Error("network / sharing error")); };
+    s.src = url; document.head.appendChild(s);
+  });
+}
+const cellV = c => (c && c.v != null) ? String(c.f ?? c.v).trim() : "";
+const toGrid = table => table.rows.map(r => (r.c||[]).map(cellV));
+
+/* ---------- parse the "Retreat Launch Map" tab ---------- */
+/* Sections are located by their title text, not by fixed row numbers,
+   so the dashboard keeps working when rows are added/moved in the sheet. */
+function findRow(grid, text){
+  return grid.findIndex(r => r.some(c => c.toLowerCase() === text.toLowerCase()));
+}
+function findCol(row, text){
+  return row.findIndex(c => c.toLowerCase() === text.toLowerCase());
+}
+/* read rows below `start`, taking columns [c0..c1), until `keyCol` is blank */
+function readBlock(grid, start, c0, c1, stopTitles){
+  const out=[];
+  for(let i=start;i<grid.length;i++){
+    const slice = grid[i].slice(c0,c1);
+    if(!slice[0]) break;
+    if(stopTitles && stopTitles.includes(slice[0])) break;
+    out.push(slice);
+  }
+  return out;
+}
+function parseMap(grid){
+  const d = {};
+  // hero strip: label row + value row right under it
+  const hr = findRow(grid, "Where are we now?");
+  if(hr>=0){
+    const labels = grid[hr], values = grid[hr+1]||[];
+    d.hero = {};
+    labels.forEach((l,i)=>{ if(l) d.hero[l] = values[i]||""; });
+  }
+  // this week's moves: rows where a cell is "○"/"◯"/checkbox-ish and next cell has text
+  const mw = findRow(grid, "This week’s moves") >= 0 ? findRow(grid, "This week’s moves") : findRow(grid, "This week's moves");
+  d.moves = [];
+  if(mw>=0){
+    for(let i=mw+1;i<grid.length && i<mw+15;i++){
+      const r=grid[i];
+      const ci=r.findIndex(c=>/^[○◯o•✓☐☑]$/i.test(c));
+      if(ci>=0 && r[ci+1]) d.moves.push({done:/[✓☑]/.test(r[ci]), text:r[ci+1]});
+    }
+  }
+  // must be clear first
+  const mc = findRow(grid, "Thing to clear");
+  if(mc>=0){
+    const c0 = findCol(grid[mc], "Thing to clear");
+    d.clear = readBlock(grid, mc+1, c0, c0+4, ["Money Model","Budget Snapshot","Operator Options","Decision Rules"]);
+  }
+  // can we move? — label/status pairs to the right of the must-be-clear block
+  const cm = grid.findIndex(r=>r.some(c=>/^can we move\?$/i.test(c)));
+  d.checks = []; d.nextMove = "";
+  if(cm>=0){
+    const c0 = grid[cm].findIndex(c=>/^can we move\?$/i.test(c));
+    for(let i=cm+1;i<grid.length;i++){
+      const label=grid[i][c0], val=grid[i][c0+1];
+      if(label==="Next move"){ d.nextMove = (grid[i+1]&&grid[i+1][c0])||""; break; }
+      if(label && val) d.checks.push([label,val]);
+      if(!label && !val && d.checks.length) { /* gap before Next move */ }
+    }
+    if(!d.nextMove){
+      const nm = grid.findIndex((r,i)=>i>cm && r[c0]==="Next move");
+      if(nm>=0) d.nextMove = (grid[nm+1]&&grid[nm+1][c0])||"";
+    }
+  }
+  // budget snapshot (assumptions)
+  const ba = findRow(grid, "Assumption");
+  if(ba>=0){
+    const c0=findCol(grid[ba],"Assumption");
+    d.assumptions = readBlock(grid, ba+1, c0, c0+3);
+  }
+  // money model
+  const mm = grid.findIndex(r=>r.some((c,i)=>c==="Item" && r[i+1]==="5 guests"));
+  if(mm>=0){
+    const c0=grid[mm].findIndex((c,i)=>c==="Item"&&grid[mm][i+1]==="5 guests");
+    d.money = readBlock(grid, mm+1, c0, c0+4, ["Operator Options","Waiting On","Decision Rules"]);
+  }
+  // waiting on
+  const wo = findRow(grid, "Waiting for");
+  if(wo>=0){
+    const c0=findCol(grid[wo],"Waiting for");
+    d.waiting = readBlock(grid, wo+1, c0, c0+4);
+  }
+  // operator options
+  const oo = findRow(grid, "Company");
+  if(oo>=0){
+    const c0=findCol(grid[oo],"Company");
+    d.operators = readBlock(grid, oo+1, c0, c0+6);
+  }
+  // page readiness: rows under "Page Readiness" title (Item|Status|Notes), skipping blank header line
+  const pr = findRow(grid, "Page Readiness");
+  d.page = [];
+  if(pr>=0){
+    const c0 = findCol(grid[pr], "Page Readiness");
+    for(let i=pr+1;i<grid.length;i++){
+      const r=grid[i].slice(c0,c0+3);
+      if(r[0] && r[1]) d.page.push(r);
+      else if(d.page.length) break;
+    }
+    // de-dupe identical consecutive rows (sheet artifact)
+    d.page = d.page.filter((r,i,a)=> i===0 || r.join("|")!==a[i-1].join("|"));
+  }
+  // decision rules
+  const dr = findRow(grid, "Decision Rules");
+  d.rules = [];
+  if(dr>=0){
+    const c0 = findCol(grid[dr], "Decision Rules");
+    for(let i=dr+1;i<grid.length;i++){
+      const k=grid[i][c0], v=grid[i][c0+1];
+      if(k && v) d.rules.push([k,v]);
+      else if(d.rules.length) break;
+    }
+  }
+  return d;
+}
+
+const statusPill = s => {
+  if(!s) return "";
+  const l = s.toLowerCase();
+  let cls = "p-grey";
+  if(/green|done|yes|booked|confirmed|paid/.test(l)) cls="p-green";
+  else if(/yellow|waiting|pending|tbd|hold|progress/.test(l)) cls="p-yellow";
+  else if(/red|no\b|not |blocked/.test(l)) cls="p-red";
+  if(/required|input/.test(l)) cls="p-blue";
+  return `<span class="pill ${cls}">${esc(s)}</span>`;
+};
+const esc = s => s.replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- render ---------- */
+let lastSnapshot = "";
+function render(dashGrid, leadGrid){
+  const d = parseMap(dashGrid);
+  const hero = d.hero || {};
+
+  // readiness % comes from the sheet's own "How ready?" cell, e.g. "18% [████...]"
+  const readyCell = hero["How ready?"] || "";
+  const pct = parseInt((readyCell.match(/(\d+)\s*%/)||[])[1] || "0", 10);
+
+  const clearRows = d.clear || [];
+  const greens = clearRows.filter(r=>/green/i.test(r[1])).length;
+  const blocker = hero["Biggest thing missing"] || (clearRows.find(r=>/red/i.test(r[1]))||[])[0] || "—";
+
+  const heroDefs = [
+    ["Where are we now?", esc(hero["Where are we now?"]||"—"), "", false],
+    ["How ready?", `${pct}% <span style="font-size:12px;color:var(--faint)">(${greens}/${clearRows.length} green)</span><div class="bar"><i style="width:${pct}%"></i></div>`, pct<40?"":"green", false],
+    ["Can I post?", esc(hero["Can I post?"]||"—"), /waitlist|yes/i.test(hero["Can I post?"]||"")?"yellow":"", false],
+    ["Guests needed", esc(hero["Guests needed"]||"—"), "", false],
+    ["Biggest thing missing", esc(blocker), "red", true],
+    ["Next move", esc(d.nextMove||"—"), "green", true],
+  ];
+  document.getElementById("hero").innerHTML = heroDefs.map(([k,v,cls,small])=>
+    `<div class="card ${cls}"><div class="k">${k}</div><div class="v ${small?'small':''}">${v}</div></div>`).join("");
+
+  const tbl = (headers, rows, cellFn) => `<table><tr>${headers.map(h=>`<th>${h}</th>`).join("")}</tr>${
+    rows.map(r=>`<tr>${cellFn(r)}</tr>`).join("")}</table>`;
+
+  // this week's moves
+  const movesHtml = `<div class="kv">${(d.moves||[]).map(m=>
+    `<div class="row" style="grid-template-columns:22px 1fr"><b>${m.done?"✅":"⬜"}</b><span>${esc(m.text)}</span></div>`).join("")}</div>`;
+
+  // must be clear first
+  const clearHtml = tbl(["Thing to clear","Status","Notes","Next move"], clearRows,
+    r=>`<td>${esc(r[0])}</td><td>${statusPill(r[1])}</td><td>${esc(r[2]||"")}</td><td>${esc(r[3]||"")}</td>`);
+
+  // can we move? checks
+  const checksHtml = `<div class="kv">${(d.checks||[]).map(([k,v])=>
+    `<div class="row" style="grid-template-columns:1fr auto"><b>${esc(k)}</b>${statusPill(v)}</div>`).join("")}</div>`;
+
+  // budget assumptions
+  const assumpHtml = `<div class="kv">${(d.assumptions||[]).map(r=>
+    `<div class="row"><b>${esc(r[0])}</b><span>${esc(r[1]||"")} <span style="color:var(--faint);font-size:11.5px">${esc(r[2]||"")}</span></span></div>`).join("")}</div>`;
+
+  // money model
+  const moneyHtml = tbl(["Item","5 guests","6 guests","8 guests"], d.money||[],
+    r=>{const hot=/profit|subtotal/i.test(r[0]);return `<td${hot?' style="font-weight:700"':''}>${esc(r[0])}</td>`+[1,2,3].map(i=>`<td class="num">${esc(r[i]||"–")}</td>`).join("");});
+
+  // waiting on
+  const waitHtml = tbl(["Waiting for","Need answer about","Owner","Status"], d.waiting||[],
+    r=>`<td>${esc(r[0])}</td><td>${esc(r[1]||"")}</td><td>${esc(r[2]||"")}</td><td>${statusPill(r[3])}</td>`);
+
+  // operator options
+  const opHtml = tbl(["Company","Place","Possible role","Fit","Risk","Next move"], d.operators||[],
+    r=>r.slice(0,6).map((c,i)=>`<td>${i===5?statusPill(c):esc(c||"")}</td>`).join(""));
+
+  // page readiness
+  const pageHtml = tbl(["Item","Status","Notes"], d.page||[],
+    r=>`<td>${esc(r[0])}</td><td>${statusPill(r[1])}</td><td>${esc(r[2]||"")}</td>`);
+
+  // decision rules
+  const rulesHtml = `<div class="kv">${(d.rules||[]).map(([k,v])=>
+    `<div class="row"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join("")}</div>`;
+
+  // leads
+  const lh = leadGrid.length ? leadGrid[0] : [];
+  const leadRows = leadGrid.slice(1).filter(r=>r.some(c=>c));
+  const leadHtml = leadRows.length ? tbl(
+    ["Date","Client","Request","Dates","Group","Partner","Partner status","Quote","Commission","Client status","Next action","Payment"],
+    leadRows, r=>[r[0],r[1],r[4],r[5],r[6],r[8],r[9],r[10],r[11],r[12],r[13],r[15]].map((c,i)=>
+      (i===6||i===9||i===11)?`<td>${statusPill(c)}</td>`:`<td>${esc(c||"")}</td>`).join(""))
+    : `<div class="note">No leads yet.</div>`;
+
+  document.getElementById("grid").innerHTML = `
+    <section class="wide"><h2><span class="n">01</span>Must be clear first</h2>${clearHtml}</section>
+    <section><h2><span class="n">02</span>This week's moves</h2>${movesHtml}
+      <h2 style="margin-top:18px"><span class="n">03</span>Can we move?</h2>${checksHtml}</section>
+    <section><h2><span class="n">04</span>Money model <span class="pill p-blue">VND</span></h2>${moneyHtml}</section>
+    <section><h2><span class="n">05</span>Budget assumptions</h2>${assumpHtml}
+      <h2 style="margin-top:18px"><span class="n">06</span>Page readiness</h2>${pageHtml}</section>
+    <section><h2><span class="n">07</span>Waiting on</h2>${waitHtml}</section>
+    <section class="wide"><h2><span class="n">08</span>Operator options</h2>${opHtml}</section>
+    <section class="wide"><h2><span class="n">09</span>Decision rules</h2>${rulesHtml}</section>
+    <section class="wide"><h2><span class="n">★</span>Lead tracker <span class="pill p-green">${leadRows.length} lead${leadRows.length===1?"":"s"}</span></h2>${leadHtml}</section>`;
+}
+
+/* ---------- polling loop ---------- */
+async function poll(manual){
+  try{
+    const [dash, leads] = await Promise.all([fetchTab(TABS.dash), fetchTab(TABS.leads)]);
+    const dg = toGrid(dash), lg = toGrid(leads);
+    const snap = JSON.stringify([dg,lg]);
+    const changed = snap !== lastSnapshot;
+    if(changed){ render(dg,lg); lastSnapshot = snap; }
+    document.getElementById("dot").classList.remove("err");
+    document.getElementById("livetxt").textContent = "live · synced " + new Date().toLocaleTimeString();
+    document.getElementById("stamp").textContent = changed && !manual && lastSnapshot ? "Updated from sheet just now" : "";
+    document.getElementById("err").style.display="none";
+  }catch(e){
+    document.getElementById("dot").classList.add("err");
+    document.getElementById("livetxt").textContent = "connection lost — retrying";
+    const eb=document.getElementById("err");
+    eb.style.display="block";
+    eb.textContent="Could not reach the Google Sheet ("+e.message+"). Check that link-sharing is still 'Anyone with the link'.";
+  }
+}
+document.getElementById("ivl").textContent = POLL_MS/1000;
+poll(); setInterval(poll, POLL_MS);
+</script>
+</body>
+</html>
