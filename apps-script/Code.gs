@@ -12,6 +12,48 @@
 
 var BUFFER_ENDPOINT = "https://api.buffer.com";
 
+// ---------- Remote control (web app) ----------
+// Deploy as web app (Execute as: Me, Access: Anyone) to allow trusted remote
+// calls. Every call must include the secret key stored in Script Properties
+// under API_KEY - requests without it are rejected.
+function doGet(e) {
+  var out;
+  try {
+    var key = PropertiesService.getScriptProperties().getProperty("API_KEY");
+    if (!key || !e.parameter.key || e.parameter.key !== key) throw new Error("Unauthorized");
+
+    var action = e.parameter.action || "rows";
+    if (action === "rows") {
+      out = getRows().rows;
+    } else if (action === "channels") {
+      out = getChannels();
+    } else if (action === "setStatus") {
+      // setStatus&row=2&status=Ready - only touches Status/Notes columns
+      var rowNum = Number(e.parameter.row);
+      if (!rowNum || rowNum < 2) throw new Error("Invalid row");
+      updateRow(getRows().sheet, rowNum, e.parameter.status, undefined, e.parameter.notes || "");
+      out = { ok: true, row: rowNum, status: e.parameter.status };
+    } else if (action === "preview") {
+      out = getRows().rows.filter(isReady);
+    } else if (action === "schedule") {
+      out = scheduleReadyCore(); // live scheduling, same code path as the menu
+    } else {
+      throw new Error("Unknown action");
+    }
+  } catch (err) {
+    out = { error: err.message };
+  }
+  return ContentService.createTextOutput(JSON.stringify(out)).setMimeType(ContentService.MimeType.JSON);
+}
+
+function setApiKey() {
+  var ui = SpreadsheetApp.getUi();
+  var res = ui.prompt("Remote API key", "Choose a long random secret:", ui.ButtonSet.OK_CANCEL);
+  if (res.getSelectedButton() !== ui.Button.OK) return;
+  PropertiesService.getScriptProperties().setProperty("API_KEY", res.getResponseText().trim());
+  ui.alert("API key saved.");
+}
+
 // ---------- Menu ----------
 function onOpen() {
   SpreadsheetApp.getUi()
@@ -20,6 +62,7 @@ function onOpen() {
     .addItem("2. Test Buffer connection", "testBuffer")
     .addItem("3. Preview Ready posts (dry run)", "previewReady")
     .addItem("4. Schedule Ready posts (LIVE)", "scheduleReady")
+    .addItem("5. Set remote API key", "setApiKey")
     .addToUi();
 }
 
@@ -123,15 +166,21 @@ function previewReady() {
 }
 
 // ---------- Phases 5-6: schedule + write back ----------
+// Menu version: asks for confirmation, then runs the core.
 function scheduleReady() {
   var ui = SpreadsheetApp.getUi();
-  var data = getRows();
-  var ready = data.rows.filter(isReady);
+  var ready = getRows().rows.filter(isReady);
   if (!ready.length) { ui.alert("No rows marked Ready."); return; }
-
   var confirm = ui.alert("Schedule " + ready.length + " post(s) to Buffer?", ui.ButtonSet.YES_NO);
   if (confirm !== ui.Button.YES) return;
+  var r = scheduleReadyCore();
+  ui.alert("Done. Scheduled: " + r.scheduled + ", Errors: " + r.errors + " (see Notes column).");
+}
 
+// Core scheduling loop - no UI, callable from the menu or the web app.
+function scheduleReadyCore() {
+  var data = getRows();
+  var ready = data.rows.filter(isReady);
   var channels = getChannels().channels;
   var ok = 0, failed = 0;
 
@@ -174,5 +223,5 @@ function scheduleReady() {
     }
   });
 
-  ui.alert("Done. Scheduled: " + ok + ", Errors: " + failed + " (see Notes column).");
+  return { scheduled: ok, errors: failed };
 }
