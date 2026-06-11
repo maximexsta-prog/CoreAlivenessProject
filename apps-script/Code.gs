@@ -35,6 +35,16 @@ function doGet(e) {
       out = { ok: true, row: rowNum, status: e.parameter.status };
     } else if (action === "preview") {
       out = getRows().rows.filter(isReady);
+    } else if (action === "library") {
+      out = getMediaLibrary();
+    } else if (action === "setDate") {
+      // setDate&row=6&date=2026-07-01&time=10:00 - only Date/Time columns
+      var rn = Number(e.parameter.row);
+      if (!rn || rn < 2) throw new Error("Invalid row");
+      var sh = getRows().sheet;
+      if (e.parameter.date) sh.getRange(rn, colOf(sh, "Date")).setValue(e.parameter.date);
+      if (e.parameter.time) sh.getRange(rn, colOf(sh, "Time")).setValue(e.parameter.time);
+      out = { ok: true, row: rn };
     } else if (action === "format") {
       formatSheet();
       out = { ok: true };
