@@ -57,12 +57,47 @@
   .dot.on { background: var(--green); }
   .dot.s-Ready { background: #e3b341; } .dot.s-Scheduled { background: #57b87a; } .dot.s-Error { background: #d9534f; }
   .dot.on { outline: 2px solid var(--green); outline-offset: 2px; }
+  /* View toggle */
+  .tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+  .tab { border: 1px solid #ddd; background: var(--card); border-radius: 99px; padding: 6px 16px;
+         font-size: 12.5px; cursor: pointer; }
+  .tab.on { background: var(--green); border-color: var(--green); color: #fff; }
+  /* Profile grid view */
+  #gridView { display: none; width: 100%; max-width: 520px; background: var(--card);
+              border-radius: 14px; box-shadow: 0 4px 24px rgba(0,0,0,.08); overflow: hidden; }
+  .pf-head { display: flex; align-items: center; gap: 18px; padding: 18px; }
+  .pf-avatar { width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0;
+               background: linear-gradient(135deg, var(--green), #6fae84); color: #fff;
+               display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 22px; }
+  .pf-stats { display: flex; gap: 22px; font-size: 12.5px; text-align: center; }
+  .pf-stats b { display: block; font-size: 15px; }
+  .pf-bio { padding: 0 18px 14px; font-size: 12.5px; line-height: 1.5; }
+  .pf-bio b { font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .tile { aspect-ratio: 1; position: relative; cursor: pointer; overflow: hidden; background: #e9e6df; }
+  .tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tile .txt { width: 100%; height: 100%; padding: 10px; background: var(--green); color: #f0ead8;
+               font-size: 10.5px; line-height: 1.45; display: flex; align-items: center; overflow: hidden;
+               font-family: Georgia, serif; }
+  .tile .txt span { display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
+  .tile:nth-child(even) .txt { background: #f4efe4; color: #3a3a32; }
+  .tile .st { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; border-radius: 50%;
+              border: 1.5px solid #fff; box-shadow: 0 0 4px rgba(0,0,0,.35); }
+  .st.Draft { background: #aaa; } .st.Ready { background: #e3b341; }
+  .st.Scheduled { background: #57b87a; } .st.Error { background: #d9534f; }
+  .tile .dt { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.45); color: #fff;
+              font-size: 9.5px; padding: 3px 6px; text-align: center; }
 </style>
 </head>
 <body>
 <h1>Core Aliveness</h1>
 <div class="counter" id="counter">chargement…</div>
-<div class="stage">
+<div class="tabs">
+  <button class="tab on" id="tabFeed" onclick="setView('feed')">Posts</button>
+  <button class="tab" id="tabGrid" onclick="setView('grid')">Grille</button>
+</div>
+<div id="gridView"></div>
+<div class="stage" id="feedView">
   <button class="arrow" id="prev" aria-label="précédent">‹</button>
   <div class="card" id="card"><div class="loading">Chargement du calendrier…</div></div>
   <button class="arrow" id="next" aria-label="suivant">›</button>
@@ -206,6 +241,45 @@ async function resolveAssets() {
     render();
   } catch (e) { /* library endpoint optional */ }
 }
+
+// ---- Profile grid view (Instagram-profile-style global look) ----
+let view = "feed";
+function setView(v) {
+  view = v;
+  $("feedView").style.display = v === "feed" ? "flex" : "none";
+  $("dots").style.display = v === "feed" ? "flex" : "none";
+  $("gridView").style.display = v === "grid" ? "block" : "none";
+  $("tabFeed").classList.toggle("on", v === "feed");
+  $("tabGrid").classList.toggle("on", v === "grid");
+  if (v === "grid") renderGrid();
+}
+function renderGrid() {
+  // Newest first, like a real Instagram profile
+  const order = posts.map((p, i) => i)
+    .sort((a, b) => new Date(posts[b].Date) - new Date(posts[a].Date));
+  $("counter").textContent = `${posts.length} publications — vue globale`;
+  $("gridView").innerHTML = `
+    <div class="pf-head"><div class="pf-avatar">CA</div>
+      <div class="pf-stats">
+        <div><b>${posts.length}</b>publications</div>
+        <div><b>${posts.filter(p => p.Status === "Scheduled").length}</b>planifiés</div>
+        <div><b>${posts.filter(p => p.Status === "Ready").length}</b>prêts</div>
+      </div></div>
+    <div class="pf-bio"><b>The Core Aliveness Project</b><br>
+      Se sentir vivant. Explorer son edge.<br>Nature · Escalade · Connexion</div>
+    <div class="grid">${order.map(i => {
+      const p = posts[i];
+      const img = imgUrl((p["Asset ID"] && p._assetUrl) || p["Media URL"]);
+      return `<div class="tile" onclick="openPost(${i})">
+        ${img ? `<img src="${esc(img)}" loading="lazy"
+                  onerror="this.outerHTML='<div class=txt><span>${esc(p.Caption.slice(0,160))}</span></div>'">`
+              : `<div class="txt"><span>${esc(p.Caption.slice(0, 160))}</span></div>`}
+        <div class="st ${esc(p.Status || "Draft")}"></div>
+        <div class="dt">${fmtDate(p.Date)}</div>
+      </div>`;
+    }).join("")}</div>`;
+}
+function openPost(i) { setView("feed"); go(i); }
 
 load().then(resolveAssets);
 </script>
