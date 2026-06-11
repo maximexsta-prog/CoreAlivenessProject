@@ -34,7 +34,7 @@ export async function run({ dryRun = true } = {}) {
       }
 
       const postId = await createPost({
-        profileId: profile.id,
+        channelId: profile.id,
         caption: row.Caption,
         scheduledAt,
         mediaUrl: row["Media URL"] || undefined,

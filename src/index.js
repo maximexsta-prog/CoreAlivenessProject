@@ -15,7 +15,7 @@ if (cmd === "test-buffer") {
   console.log("Account:", account.id, account.email || "");
   const profiles = await getProfiles();
   for (const p of profiles) {
-    console.log(`- ${p.service} | ${p.formatted_username} | profile ID: ${p.id}`);
+    console.log(`- ${p.service} | ${p.name} | channel ID: ${p.id}`);
   }
 } else if (cmd === "test-sheet") {
   const rows = await readRows();

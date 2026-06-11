@@ -1,39 +1,69 @@
-// Buffer API client - read account/profiles, create scheduled posts.
-// Docs: https://buffer.com/developers/api
-const BASE = "https://api.bufferapp.com/1";
+// Buffer API client (new GraphQL API) - https://developers.buffer.com
+// Auth: personal key from Buffer Settings > API, sent as a Bearer token.
+const ENDPOINT = "https://api.buffer.com";
 
-const token = () => {
-  const t = process.env.BUFFER_ACCESS_TOKEN;
-  if (!t) throw new Error("BUFFER_ACCESS_TOKEN missing in .env");
-  return t;
-};
-
-async function get(path) {
-  const res = await fetch(`${BASE}${path}?access_token=${token()}`);
-  if (!res.ok) throw new Error(`Buffer GET ${path}: ${res.status} ${await res.text()}`);
-  return res.json();
+async function gql(query, variables = {}) {
+  const token = process.env.BUFFER_ACCESS_TOKEN;
+  if (!token) throw new Error("BUFFER_ACCESS_TOKEN missing in .env");
+  const res = await fetch(ENDPOINT, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || data.errors) {
+    throw new Error(`Buffer API error: ${data.errors?.[0]?.message || res.status}`);
+  }
+  return data.data;
 }
 
 // Phase 3: read-only checks, never posts anything
-export const getAccount = () => get("/user.json");
-export const getProfiles = () => get("/profiles.json");
+export async function getAccount() {
+  const d = await gql(`{ account { id email organizations { id name } } }`);
+  return d.account;
+}
 
-// Phase 5: create ONE scheduled (not instant) post.
-// scheduledAt = JS Date; mediaUrl optional.
-export async function createPost({ profileId, caption, scheduledAt, mediaUrl }) {
-  const body = new URLSearchParams();
-  body.append("profile_ids[]", profileId);
-  body.append("text", caption);
-  body.append("scheduled_at", Math.floor(scheduledAt.getTime() / 1000));
-  if (mediaUrl) body.append("media[photo]", mediaUrl);
-
-  const res = await fetch(`${BASE}/updates/create.json?access_token=${token()}`, {
-    method: "POST",
-    body,
-  });
-  const data = await res.json();
-  if (!res.ok || !data.success) {
-    throw new Error(`Buffer create failed: ${data.message || res.status}`);
+// "Profiles" are called channels in the new API; they live under an organization.
+export async function getProfiles() {
+  const account = await getAccount();
+  const channels = [];
+  for (const org of account.organizations) {
+    const d = await gql(
+      `query ($orgId: OrganizationId!) {
+         channels(input: { organizationId: $orgId }) { id name service }
+       }`,
+      { orgId: org.id }
+    );
+    channels.push(...d.channels);
   }
-  return data.updates[0].id; // Buffer Post ID, saved back to the sheet
+  return channels;
+}
+
+// Phase 5: create ONE post at an exact time (customScheduled, never instant).
+// scheduledAt = JS Date; mediaUrl optional, must be publicly accessible.
+export async function createPost({ channelId, caption, scheduledAt, mediaUrl }) {
+  const input = {
+    channelId,
+    text: caption,
+    schedulingType: "automatic",
+    mode: "customScheduled",
+    dueAt: scheduledAt.toISOString(),
+  };
+  if (mediaUrl) input.assets = [{ image: { url: mediaUrl } }];
+
+  const d = await gql(
+    `mutation ($input: CreatePostInput!) {
+       createPost(input: $input) {
+         ... on PostActionSuccess { post { id dueAt } }
+         ... on MutationError { message }
+       }
+     }`,
+    { input }
+  );
+  const result = d.createPost;
+  if (!result.post) throw new Error(`Buffer create failed: ${result.message || "unknown error"}`);
+  return result.post.id; // Buffer Post ID, saved back to the sheet
 }
