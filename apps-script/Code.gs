@@ -149,17 +149,91 @@ function toDateTime(dateVal, timeVal) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate(), h, m);
 }
 
-// Only ever writes Status (F), Buffer Post ID (G), Notes (H).
+// Find a column number by its header name (1-based). Header-driven so
+// rearranging or inserting columns can never corrupt the wrong cells.
+function colOf(sheet, headerName) {
+  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  var idx = headers.indexOf(headerName);
+  if (idx === -1) throw new Error('Missing column "' + headerName + '" in row 1');
+  return idx + 1;
+}
+
+// Only ever writes Status, Buffer Post ID, Notes - located by header name.
 function updateRow(sheet, rowNumber, status, postId, notes) {
-  if (status !== undefined) sheet.getRange(rowNumber, 6).setValue(status);
-  if (postId !== undefined) sheet.getRange(rowNumber, 7).setValue(postId);
-  if (notes !== undefined) sheet.getRange(rowNumber, 8).setValue(notes);
+  if (status !== undefined) sheet.getRange(rowNumber, colOf(sheet, "Status")).setValue(status);
+  if (postId !== undefined) sheet.getRange(rowNumber, colOf(sheet, "Buffer Post ID")).setValue(postId);
+  if (notes !== undefined) sheet.getRange(rowNumber, colOf(sheet, "Notes")).setValue(notes);
+}
+
+// ---------- Media Library ----------
+// Tab "Media Library": Asset ID | Drive URL (+ optional Name column).
+// Returns a map of assetId -> driveUrl.
+function getMediaLibrary() {
+  var tab = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Media Library");
+  if (!tab) return {};
+  var values = tab.getDataRange().getValues();
+  var headers = values[0];
+  var idCol = headers.indexOf("Asset ID");
+  var urlCol = headers.indexOf("Drive URL");
+  if (idCol === -1 || urlCol === -1) return {};
+  var map = {};
+  for (var i = 1; i < values.length; i++) {
+    var id = String(values[i][idCol] || "").trim();
+    if (id) map[id] = String(values[i][urlCol] || "").trim();
+  }
+  return map;
+}
+
+// Convert a Google Drive share link into a direct-download URL that Buffer
+// can fetch. Passes non-Drive URLs through unchanged.
+function toDirectMediaUrl(url) {
+  var m = url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?[^ ]*id=)([\w-]+)/);
+  if (m) return "https://drive.google.com/uc?export=download&id=" + m[1];
+  return url;
+}
+
+// Resolve the media for a row. Asset ID takes priority over Media URL.
+// Returns "" when the row has no media; throws if an Asset ID can't be found.
+function resolveMedia(row, library) {
+  var assetId = String(row["Asset ID"] || "").trim();
+  if (assetId) {
+    var driveUrl = library[assetId];
+    if (!driveUrl) throw new Error('Asset ID "' + assetId + '" not found in Media Library');
+    return toDirectMediaUrl(driveUrl);
+  }
+  var mediaUrl = String(row["Media URL"] || "").trim();
+  return mediaUrl ? toDirectMediaUrl(mediaUrl) : "";
 }
 
 // ---------- Visual formatting (safe: never touches cell values) ----------
 function formatSheet() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheets()[0];
   var maxRows = Math.max(sheet.getMaxRows(), 100);
+
+  // Ensure the Asset ID column exists (header-driven code finds it anywhere)
+  var headers = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), 8)).getValues()[0];
+  if (headers.indexOf("Asset ID") === -1) {
+    var nextCol = sheet.getLastColumn() + 1;
+    sheet.getRange(1, nextCol).setValue("Asset ID");
+    sheet.getRange(1, nextCol, 1, 1)
+      .setBackground("#2d5a3d").setFontColor("#ffffff").setFontWeight("bold")
+      .setFontSize(11).setVerticalAlignment("middle").setHorizontalAlignment("center");
+    sheet.setColumnWidth(nextCol, 110);
+    sheet.getRange(2, nextCol, maxRows - 1, 1).setHorizontalAlignment("center");
+  }
+
+  // Ensure the Media Library tab exists
+  var lib = ss.getSheetByName("Media Library");
+  if (!lib) {
+    lib = ss.insertSheet("Media Library");
+    lib.getRange("A1:C1").setValues([["Asset ID", "Name", "Drive URL"]]);
+  }
+  lib.getRange("A1:C1")
+    .setBackground("#2d5a3d").setFontColor("#ffffff").setFontWeight("bold")
+    .setFontSize(11).setVerticalAlignment("middle").setHorizontalAlignment("center");
+  lib.setFrozenRows(1);
+  lib.setColumnWidth(1, 110); lib.setColumnWidth(2, 220); lib.setColumnWidth(3, 420);
 
   // Header: forest green, white bold text, frozen
   sheet.getRange("A1:H1")
@@ -248,6 +322,7 @@ function scheduleReadyCore() {
   var data = getRows();
   var ready = data.rows.filter(isReady);
   var channels = getChannels().channels;
+  var library = getMediaLibrary();
   var ok = 0, failed = 0;
 
   ready.forEach(function (r) {
@@ -261,6 +336,12 @@ function scheduleReadyCore() {
       if (when < new Date()) throw new Error("Scheduled time is in the past");
       if (!String(r.Caption || "").trim()) throw new Error("Caption is empty");
 
+      // Asset ID > Media URL; Instagram requires media.
+      var mediaUrl = resolveMedia(r, library);
+      if (platform === "instagram" && !mediaUrl) {
+        throw new Error("Instagram posts require media (Asset ID or Media URL)");
+      }
+
       var input = {
         channelId: channel.id,
         text: String(r.Caption),
@@ -271,7 +352,6 @@ function scheduleReadyCore() {
       // Channel-specific type: a normal feed post (not story/reel)
       if (platform === "facebook") input.metadata = { facebook: { type: "post" } };
       if (platform === "instagram") input.metadata = { instagram: { type: "post" } };
-      var mediaUrl = String(r["Media URL"] || "").trim();
       if (mediaUrl) input.assets = [{ image: { url: mediaUrl } }];
 
       var d = bufferGql(
