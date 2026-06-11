@@ -35,6 +35,9 @@ function doGet(e) {
       out = { ok: true, row: rowNum, status: e.parameter.status };
     } else if (action === "preview") {
       out = getRows().rows.filter(isReady);
+    } else if (action === "format") {
+      formatSheet();
+      out = { ok: true };
     } else if (action === "schedule") {
       out = scheduleReadyCore(); // live scheduling, same code path as the menu
     } else {
@@ -63,6 +66,7 @@ function onOpen() {
     .addItem("3. Preview Ready posts (dry run)", "previewReady")
     .addItem("4. Schedule Ready posts (LIVE)", "scheduleReady")
     .addItem("5. Set remote API key", "setApiKey")
+    .addItem("6. Format sheet", "formatSheet")
     .addToUi();
 }
 
@@ -150,6 +154,68 @@ function updateRow(sheet, rowNumber, status, postId, notes) {
   if (status !== undefined) sheet.getRange(rowNumber, 6).setValue(status);
   if (postId !== undefined) sheet.getRange(rowNumber, 7).setValue(postId);
   if (notes !== undefined) sheet.getRange(rowNumber, 8).setValue(notes);
+}
+
+// ---------- Visual formatting (safe: never touches cell values) ----------
+function formatSheet() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  var maxRows = Math.max(sheet.getMaxRows(), 100);
+
+  // Header: forest green, white bold text, frozen
+  sheet.getRange("A1:H1")
+    .setBackground("#2d5a3d").setFontColor("#ffffff")
+    .setFontWeight("bold").setFontSize(11)
+    .setVerticalAlignment("middle").setHorizontalAlignment("center");
+  sheet.setRowHeight(1, 36);
+  sheet.setFrozenRows(1);
+
+  // Column widths tuned for content
+  var widths = { 1: 100, 2: 70, 3: 100, 4: 420, 5: 220, 6: 110, 7: 180, 8: 260 };
+  for (var col in widths) sheet.setColumnWidth(Number(col), widths[col]);
+
+  var body = sheet.getRange(2, 1, maxRows - 1, 8);
+  body.setVerticalAlignment("middle").setFontSize(10);
+  sheet.getRange(2, 4, maxRows - 1, 1).setWrap(true); // Caption wraps
+  sheet.getRange(2, 8, maxRows - 1, 1).setWrap(true); // Notes wrap
+
+  // Number formats
+  sheet.getRange(2, 1, maxRows - 1, 1).setNumberFormat("yyyy-mm-dd");
+  sheet.getRange(2, 2, maxRows - 1, 1).setNumberFormat("HH:mm");
+
+  // Status dropdown: Draft / Ready / Scheduled / Error
+  var statusRange = sheet.getRange(2, 6, maxRows - 1, 1);
+  statusRange.setDataValidation(
+    SpreadsheetApp.newDataValidation()
+      .requireValueInList(["Draft", "Ready", "Scheduled", "Error"], true)
+      .setAllowInvalid(true).build()
+  );
+  statusRange.setHorizontalAlignment("center");
+
+  // Color-code Status + tint the whole row when scheduled or errored
+  var rules = [];
+  function statusRule(value, bg, fg) {
+    return SpreadsheetApp.newConditionalFormatRule()
+      .whenTextEqualTo(value).setBackground(bg).setFontColor(fg)
+      .setRanges([statusRange]).build();
+  }
+  rules.push(statusRule("Ready", "#fff3cd", "#7a5d00"));      // amber
+  rules.push(statusRule("Scheduled", "#d3f2dc", "#1e6b3a"));  // green
+  rules.push(statusRule("Error", "#fadbd8", "#922b21"));      // red
+  rules.push(statusRule("Draft", "#e8e8e8", "#555555"));      // grey
+  sheet.setConditionalFormatRules(rules);
+
+  // Platform dropdown
+  sheet.getRange(2, 3, maxRows - 1, 1).setDataValidation(
+    SpreadsheetApp.newDataValidation()
+      .requireValueInList(["facebook", "instagram"], true)
+      .setAllowInvalid(true).build()
+  ).setHorizontalAlignment("center");
+
+  // Subtle banding on the data area (skip if already banded)
+  var dataRange = sheet.getRange(2, 1, maxRows - 1, 8);
+  if (!sheet.getBandings().length) {
+    dataRange.applyRowBanding(SpreadsheetApp.BandingTheme.LIGHT_GREY, false, false);
+  }
 }
 
 // ---------- Phase 4: preview (dry run, writes nothing) ----------
