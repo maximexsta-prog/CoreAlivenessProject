@@ -49,6 +49,31 @@ function doGet(e) {
   return ContentService.createTextOutput(JSON.stringify(out)).setMimeType(ContentService.MimeType.JSON);
 }
 
+// POST endpoint: add new rows (append only - never overwrites existing data).
+// Body: { key, action: "addRows", rows: [{Date, Time, Platform, Caption, ...}] }
+function doPost(e) {
+  var out;
+  try {
+    var body = JSON.parse(e.postData.contents || "{}");
+    var key = PropertiesService.getScriptProperties().getProperty("API_KEY");
+    if (!key || body.key !== key) throw new Error("Unauthorized");
+    if (body.action !== "addRows") throw new Error("Unknown action");
+
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    var added = 0;
+    body.rows.forEach(function (row) {
+      var values = headers.map(function (h) { return row[h] !== undefined ? row[h] : ""; });
+      sheet.appendRow(values);
+      added++;
+    });
+    out = { ok: true, added: added };
+  } catch (err) {
+    out = { error: err.message };
+  }
+  return ContentService.createTextOutput(JSON.stringify(out)).setMimeType(ContentService.MimeType.JSON);
+}
+
 function setApiKey() {
   var ui = SpreadsheetApp.getUi();
   var res = ui.prompt("Remote API key", "Choose a long random secret:", ui.ButtonSet.OK_CANCEL);
