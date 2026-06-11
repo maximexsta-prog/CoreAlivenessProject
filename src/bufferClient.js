@@ -44,7 +44,7 @@ export async function getProfiles() {
 
 // Phase 5: create ONE post at an exact time (customScheduled, never instant).
 // scheduledAt = JS Date; mediaUrl optional, must be publicly accessible.
-export async function createPost({ channelId, caption, scheduledAt, mediaUrl }) {
+export async function createPost({ channelId, service, caption, scheduledAt, mediaUrl }) {
   const input = {
     channelId,
     text: caption,
@@ -52,6 +52,9 @@ export async function createPost({ channelId, caption, scheduledAt, mediaUrl }) 
     mode: "customScheduled",
     dueAt: scheduledAt.toISOString(),
   };
+  // Channel-specific type: a normal feed post (not story/reel)
+  if (service === "facebook") input.metadata = { facebook: { type: "post" } };
+  if (service === "instagram") input.metadata = { instagram: { type: "post" } };
   if (mediaUrl) input.assets = [{ image: { url: mediaUrl } }];
 
   const d = await gql(

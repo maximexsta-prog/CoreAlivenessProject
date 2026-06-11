@@ -153,6 +153,9 @@ function scheduleReady() {
         mode: "customScheduled",
         dueAt: when.toISOString(),
       };
+      // Channel-specific type: a normal feed post (not story/reel)
+      if (platform === "facebook") input.metadata = { facebook: { type: "post" } };
+      if (platform === "instagram") input.metadata = { instagram: { type: "post" } };
       var mediaUrl = String(r["Media URL"] || "").trim();
       if (mediaUrl) input.assets = [{ image: { url: mediaUrl } }];
 
