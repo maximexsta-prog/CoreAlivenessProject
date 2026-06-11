@@ -1,0 +1,15 @@
+{
+  "name": "core-aliveness-scheduler",
+  "version": "1.0.0",
+  "description": "Schedules Core Aliveness posts from Google Sheets to Buffer",
+  "type": "module",
+  "scripts": {
+    "test:buffer": "node src/index.js test-buffer",
+    "test:sheet": "node src/index.js test-sheet",
+    "schedule": "node src/index.js schedule"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "googleapis": "^140.0.0"
+  }
+}
