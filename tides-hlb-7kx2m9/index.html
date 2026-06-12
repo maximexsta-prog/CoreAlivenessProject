@@ -497,17 +497,17 @@ const H = {
 };
 
 const MONTHS = [
-  {label:'Janvier 2026',   key:'2026-01', days:31, start:4},
-  {label:'Mars 2026',      key:'2026-03', days:31, start:0},
-  {label:'Avril 2026',     key:'2026-04', days:30, start:3},
-  {label:'Mai 2026',       key:'2026-05', days:31, start:5},
-  {label:'Juin 2026',      key:'2026-06', days:30, start:1},
-  {label:'Juillet 2026',   key:'2026-07', days:31, start:3},
-  {label:'Août 2026',      key:'2026-08', days:31, start:6},
-  {label:'Septembre 2026', key:'2026-09', days:30, start:2},
-  {label:'Octobre 2026',   key:'2026-10', days:31, start:4},
-  {label:'Novembre 2026',  key:'2026-11', days:30, start:0},
-  {label:'Décembre 2026',  key:'2026-12', days:31, start:2},
+  {label:'Janvier 2026',   short:'Jan', key:'2026-01', days:31, start:4},
+  {label:'Mars 2026',      short:'Mar', key:'2026-03', days:31, start:0},
+  {label:'Avril 2026',     short:'Apr', key:'2026-04', days:30, start:3},
+  {label:'Mai 2026',       short:'May', key:'2026-05', days:31, start:5},
+  {label:'Juin 2026',      short:'Jun', key:'2026-06', days:30, start:1},
+  {label:'Juillet 2026',   short:'Jul', key:'2026-07', days:31, start:3},
+  {label:'Août 2026',      short:'Aug', key:'2026-08', days:31, start:6},
+  {label:'Septembre 2026', short:'Sep', key:'2026-09', days:30, start:2},
+  {label:'Octobre 2026',   short:'Oct', key:'2026-10', days:31, start:4},
+  {label:'Novembre 2026',  short:'Nov', key:'2026-11', days:30, start:0},
+  {label:'Décembre 2026',  short:'Dec', key:'2026-12', days:31, start:2},
 ];
 
 const MAX_H = 4.5;
@@ -516,26 +516,20 @@ let mIdx = 0, curDay = 27;
 
 function getArr(mi, day){ return H[MONTHS[mi].key][day] || Array(24).fill(2); }
 
-// DWS status: FD = full day safe, AM = morning only, AM★ = early morning only
-// PM = afternoon safe, PM★ = late afternoon only, 🚫 = no safe window
+// DWS status: FD = full day safe, AM = morning only, PM = afternoon only,
+// AM★ = early morning only, PM★ = late afternoon only, 🚫 = no safe window
 function dwsStatus(arr) {
   const T = DWS_THRESH;
-  // FD: all hours 8–16 stay at or above threshold
   if (arr.slice(8, 17).every(v => v >= T))
     return {code:'FD', label:'Journée entière', window:'8h – 17h', color:'#27ae60', bg:'rgba(39,174,96,.12)'};
-  // AM: all hours 8–11 at or above threshold (morning safe, afternoon drops)
   if (arr.slice(8, 12).every(v => v >= T))
     return {code:'AM', label:'Matin seulement', window:'8h – 12h', color:'#2980b9', bg:'rgba(41,128,185,.12)'};
-  // AM★: early morning window 6–10h reaches threshold (before standard window)
-  if (arr.slice(6, 11).some(v => v >= T))
-    return {code:'AM★', label:'Tôt le matin', window:'6h – 10h', color:'#3498db', bg:'rgba(52,152,219,.10)'};
-  // PM: afternoon hours 12–16 reach threshold
-  if (arr.slice(12, 17).some(v => v >= T))
+  if (arr.slice(12, 17).every(v => v >= T))
     return {code:'PM', label:'Après-midi', window:'12h – 17h', color:'#e67e22', bg:'rgba(230,126,34,.12)'};
-  // PM★: late afternoon 13–17h reaches threshold (shifted window)
+  if (arr.slice(6, 11).some(v => v >= T))
+    return {code:'AM★', label:'Tôt le matin', window:'6h30 – 10h30', color:'#3498db', bg:'rgba(52,152,219,.10)'};
   if (arr.slice(13, 18).some(v => v >= T))
     return {code:'PM★', label:'Fin d\'après-midi', window:'13h – 18h', color:'#f39c12', bg:'rgba(243,156,18,.10)'};
-  // No viable window
   return {code:'🚫', label:'Fermé', window:'Niveau insuffisant', color:'#e74c3c', bg:'rgba(231,76,60,.12)'};
 }
 
@@ -636,7 +630,7 @@ function renderCal(){
 
 function renderTabs(){
   document.getElementById('tabs').innerHTML = MONTHS.map((m,i) =>
-    `<button class="tab${i === mIdx ? ' active' : ''}" onclick="selMonth(${i})">${m.label}</button>`
+    `<button class="tab${i === mIdx ? ' active' : ''}" onclick="selMonth(${i})">${m.short}</button>`
   ).join('');
 }
 
