@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marées – Ha Long Bay</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#1a2535;color:#fff;min-height:100vh}
+header{background:#0d1520;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2a3a50}
+header h1{font-size:17px;font-weight:700;letter-spacing:.3px}
+header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
+.badge{font-size:10px;color:#3a6080;text-align:right;line-height:1.5}
+
+/* Month tabs */
+.tabs{display:flex;gap:8px;padding:14px 18px 0}
+.tab{background:#1e2f42;border:1px solid #2a3f55;color:#7aa;padding:7px 14px;border-radius:20px;cursor:pointer;font-size:13px;transition:.15s}
+.tab:hover{background:#253a52}
+.tab.active{background:#1565C0;border-color:#1565C0;color:#fff}
+
+/* Day nav */
+.nav{display:flex;align-items:center;gap:10px;padding:14px 18px}
+.navbtn{background:#1e2f42;border:1px solid #2a3f55;color:#fff;width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
+.navbtn:hover{background:#253a52}
+.datelabel{flex:1;text-align:center;font-size:15px;font-weight:700;letter-spacing:.2px}
+
+/* Event cards */
+.events{display:flex;gap:10px;padding:0 18px 14px;flex-wrap:wrap}
+.ecard{background:#0d1520;border-radius:8px;padding:10px 14px;flex:1;min-width:110px;border-left:3px solid #1565C0}
+.ecard.low{border-left-color:#2ecc71}
+.etype{font-size:10px;text-transform:uppercase;color:#4a7090;margin-bottom:4px;letter-spacing:.5px}
+.etime{font-size:17px;font-weight:800;letter-spacing:-.3px}
+.eheight{font-size:12px;color:#5a9ab0;margin-top:2px}
+
+/* Chart */
+.chart{margin:0 18px;background:#0d1520;border-radius:10px;overflow:hidden}
+.chart-head{background:#1560a0;padding:7px 12px;font-size:12px;font-weight:700;letter-spacing:.3px;text-align:center}
+.chart-sub{background:#1a7070;padding:5px 12px;display:flex;font-size:11px;color:#adf;font-weight:600}
+.chart-sub .c1{width:44px;flex-shrink:0}
+.chart-sub .c2{flex:1;padding-left:6px}
+.chart-sub .c3{width:42px;text-align:right}
+.row{display:flex;align-items:center;padding:1px 12px;min-height:20px}
+.row:nth-child(odd){background:#0d1520}
+.row:nth-child(even){background:#111d2c}
+.rhour{width:32px;font-size:11px;color:#4a6a85;flex-shrink:0;font-weight:600}
+.rbar-wrap{flex:1;height:16px;background:#0a1018;border-radius:3px;overflow:hidden;margin:0 6px}
+.rbar{height:100%;border-radius:3px;transition:width .3s}
+.rval{width:38px;text-align:right;font-size:11px;color:#7ab0cc;flex-shrink:0}
+
+/* Calendar */
+.cal-wrap{padding:18px}
+.cal-title{font-size:12px;color:#4a7090;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-hdr{font-size:10px;color:#3a5070;text-align:center;padding:4px 2px;font-weight:700}
+.cal-day{background:#0d1520;border-radius:6px;padding:5px 3px;text-align:center;cursor:pointer;border:1px solid transparent;transition:.1s}
+.cal-day:hover{border-color:#1565C0}
+.cal-day.active{border-color:#1565C0;background:#1a3050}
+.cal-day.empty{background:transparent;cursor:default}
+.cdn{font-size:12px;font-weight:700}
+.cdh{font-size:9px;color:#1E88E5;line-height:1.3}
+.cdl{font-size:9px;color:#2ecc71;line-height:1.3}
+
+.station-note{padding:4px 18px 12px;font-size:11px;color:#3a6080}
+
+/* Scrollable chart on small screens */
+@media(max-width:400px){
+  .events{gap:6px}
+  .ecard{padding:8px 10px}
+  .etime{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="sub">🌊 Marées astronomiques · ICT (UTC+7)</div>
+    <h1>Ha Long Bay — Hòn Gai</h1>
+  </div>
+  <div class="badge">Source: TideTime.org<br>Usage interne DWS</div>
+</header>
+
+<div class="tabs" id="tabs"></div>
+
+<div class="nav">
+  <button class="navbtn" onclick="prevDay()">&#8592;</button>
+  <div class="datelabel" id="datelabel">—</div>
+  <button class="navbtn" onclick="nextDay()">&#8594;</button>
+</div>
+
+<div class="events" id="events"></div>
+
+<div class="chart" id="chart">
+  <div class="chart-head" id="chart-head">Hòn Gai, Vịnh Hạ Long</div>
+  <div class="chart-sub">
+    <span class="c1">Heure</span>
+    <span class="c2">Niveau d'eau</span>
+    <span class="c3">Mètres</span>
+  </div>
+  <div id="chart-rows"></div>
+</div>
+
+<div class="station-note">Interpolation cosinusoïdale entre points H/B · Max enregistré: 5.1 m · Hauteurs ref. MLLW</div>
+
+<div class="cal-wrap">
+  <div class="cal-title">Vue mensuelle — cliquer un jour</div>
+  <div class="cal-grid" id="calgrid"></div>
+</div>
+
+<script>
+// ── DATA: [type H/L, minutes_from_midnight, height_m]
+const D = {
+  '2026-10-01':[['L',757,0.21]],
+  '2026-10-02':[['H',55,3.71],['L',820,-0.03]],
+  '2026-10-03':[['H',131,3.85],['L',882,-0.13]],
+  '2026-10-04':[['H',207,3.88],['L',945,-0.08]],
+  '2026-10-05':[['H',280,3.81],['L',1009,0.10]],
+  '2026-10-06':[['H',347,3.63],['L',1072,0.40]],
+  '2026-10-07':[['H',407,3.33],['L',1138,0.80]],
+  '2026-10-08':[['H',459,2.92],['L',1242,1.26]],
+  '2026-10-09':[['H',505,2.45],['L',1059,1.77],['H',1133,1.77]],
+  '2026-10-10':[['L',93,1.58],['H',545,1.97],['L',822,1.85],['H',1233,2.22]],
+  '2026-10-11':[['L',418,1.52],['H',523,1.52],['L',600,1.52],['H',1280,2.62]],
+  '2026-10-12':[['L',617,1.13],['H',1319,2.93]],
+  '2026-10-13':[['L',650,0.83],['H',1358,3.15]],
+  '2026-10-14':[['L',684,0.61],['H',1399,3.29]],
+  '2026-10-15':[['L',723,0.47]],
+  '2026-10-16':[['H',6,3.35],['L',769,0.40]],
+  '2026-10-17':[['H',64,3.36],['L',820,0.37]],
+  '2026-10-18':[['H',130,3.35],['L',876,0.39]],
+  '2026-10-19':[['H',202,3.32],['L',934,0.46]],
+  '2026-10-20':[['H',271,3.26],['L',992,0.60]],
+  '2026-10-21':[['H',333,3.14],['L',1053,0.82]],
+  '2026-10-22':[['H',390,2.92],['L',1131,1.14]],
+  '2026-10-23':[['H',447,2.59],['L',1405,1.46]],
+  '2026-10-24':[['H',518,2.16],['L',847,1.98],['H',1128,2.10]],
+  '2026-10-25':[['L',218,1.44],['H',1196,2.64]],
+  '2026-10-26':[['L',458,1.05],['H',1250,3.16]],
+  '2026-10-27':[['L',560,0.55],['H',1305,3.61]],
+  '2026-10-28':[['L',627,0.12],['H',1363,3.93]],
+  '2026-10-29':[['L',688,-0.19],['H',1424,4.12]],
+  '2026-10-30':[['L',748,-0.35]],
+  '2026-10-31':[['H',50,4.16],['L',807,-0.36]],
+  '2026-11-01':[['H',118,4.07],['L',864,-0.21]],
+  '2026-11-02':[['H',185,3.85],['L',917,0.09]],
+  '2026-11-03':[['H',246,3.52],['L',959,0.50]],
+  '2026-11-04':[['H',299,3.08],['L',977,1.00]],
+  '2026-11-05':[['H',339,2.58],['L',919,1.47]],
+  '2026-11-06':[['H',346,2.06],['L',779,1.66],['H',1231,2.18]],
+  '2026-11-07':[['L',635,1.46],['H',1231,2.63]],
+  '2026-11-08':[['L',569,1.08],['H',1252,3.01]],
+  '2026-11-09':[['L',573,0.75],['H',1279,3.28]],
+  '2026-11-10':[['L',595,0.51],['H',1309,3.47]],
+  '2026-11-11':[['L',625,0.35],['H',1344,3.57]],
+  '2026-11-12':[['L',662,0.25],['H',1385,3.61]],
+  '2026-11-13':[['L',705,0.20],['H',1433,3.61]],
+  '2026-11-14':[['L',753,0.19]],
+  '2026-11-15':[['H',47,3.57],['L',802,0.22]],
+  '2026-11-16':[['H',104,3.50],['L',851,0.31]],
+  '2026-11-17':[['H',160,3.37],['L',895,0.50]],
+  '2026-11-18':[['H',213,3.15],['L',931,0.79]],
+  '2026-11-19':[['H',263,2.83],['L',946,1.19]],
+  '2026-11-20':[['H',308,2.40],['L',862,1.63],['H',1245,1.79],['L',1422,1.78]],
+  '2026-11-21':[['H',342,1.88],['L',663,1.75],['H',1148,2.33]],
+  '2026-11-22':[['L',434,1.31],['H',1172,2.92]],
+  '2026-11-23':[['L',468,0.74],['H',1212,3.48]],
+  '2026-11-24':[['L',518,0.22],['H',1260,3.94]],
+  '2026-11-25':[['L',573,-0.19],['H',1312,4.27]],
+  '2026-11-26':[['L',631,-0.46],['H',1369,4.43]],
+  '2026-11-27':[['L',690,-0.58],['H',1428,4.43]],
+  '2026-11-28':[['L',747,-0.53]],
+  '2026-11-29':[['H',47,4.27],['L',801,-0.32]],
+  '2026-11-30':[['H',103,3.96],['L',846,0.04]],
+};
+
+// Months config: key prefix, total days, weekday offset of 1st (0=Sun)
+const MONTHS = [
+  {label:'Octobre 2026', key:'2026-10', days:31, start:4},
+  {label:'Novembre 2026', key:'2026-11', days:30, start:0},
+];
+
+const MAX_H = 5.1;
+let mIdx = 0, curDay = 27; // default: Oct 27 (retreat week, strong spring tide)
+
+function dk(mi, d){ return MONTHS[mi].key+'-'+String(d).padStart(2,'0'); }
+
+function allEventsAround(mi, day){
+  const evs = [];
+  const add = (mi2, d2, off) => {
+    const k = dk(mi2, d2);
+    (D[k]||[]).forEach(([t,m,h]) => evs.push({t, m:m+off*1440, h}));
+  };
+  // prev day
+  if(day>1) add(mi, day-1, -1);
+  else if(mi>0) add(mi-1, MONTHS[mi-1].days, -1);
+  // current
+  add(mi, day, 0);
+  // next day
+  if(day<MONTHS[mi].days) add(mi, day+1, 1);
+  else if(mi<MONTHS.length-1) add(mi+1, 1, 1);
+  return evs.sort((a,b)=>a.m-b.m);
+}
+
+function cosInterp(evs, minOfDay){
+  if(!evs.length) return 2;
+  if(evs.length===1) return evs[0].h;
+  let before=null, after=null;
+  for(const e of evs){
+    if(e.m<=minOfDay) before=e; else if(!after) after=e;
+  }
+  if(!before) return evs[0].h;
+  if(!after)  return evs[evs.length-1].h;
+  const t=(minOfDay-before.m)/(after.m-before.m);
+  return (before.h+after.h)/2 + (before.h-after.h)/2*Math.cos(Math.PI*t);
+}
+
+function barColor(h){
+  if(h>=3.5) return '#0d47a1,#1565C0';
+  if(h>=2.5) return '#1565C0,#1976D2';
+  if(h>=1.5) return '#1976D2,#1E88E5';
+  if(h>=0.5) return '#1E88E5,#42A5F5';
+  return '#42A5F5,#90CAF9';
+}
+
+function render(){
+  const m=MONTHS[mIdx];
+  const key=dk(mIdx,curDay);
+  const evs=D[key]||[];
+  const allEvs=allEventsAround(mIdx,curDay);
+
+  // Date label
+  const dt=new Date(`${key}T12:00:00+07:00`);
+  const dn=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  document.getElementById('datelabel').textContent=`${dn[dt.getDay()]} ${curDay} ${m.label}`;
+
+  // Tide event cards
+  const hi=evs.filter(e=>e[0]==='H'), lo=evs.filter(e=>e[0]==='L');
+  const fmt=m=>{ const h=Math.floor(m/60),mn=m%60; return `${String(h).padStart(2,'0')}h${String(mn).padStart(2,'0')}`; };
+  document.getElementById('events').innerHTML=[
+    ...hi.map(([,m,h])=>`<div class="ecard high"><div class="etype">▲ Marée haute</div><div class="etime">${fmt(m)}</div><div class="eheight">${h>=0?'+':''}${h.toFixed(2)} m</div></div>`),
+    ...lo.map(([,m,h])=>`<div class="ecard low"><div class="etype">▼ Marée basse</div><div class="etime">${fmt(m)}</div><div class="eheight">${h>=0?'+':''}${h.toFixed(2)} m</div></div>`),
+  ].join('');
+
+  // Hourly chart
+  let rows='';
+  for(let hr=0;hr<24;hr++){
+    const lev=cosInterp(allEvs, hr*60+30);
+    const pct=Math.max(0, Math.min(100, lev/MAX_H*100));
+    const [c1,c2]=barColor(lev).split(',');
+    const stripe=`repeating-linear-gradient(45deg,${c1},${c1} 3px,${c2} 3px,${c2} 6px)`;
+    rows+=`<div class="row">
+      <div class="rhour">${hr}h</div>
+      <div class="rbar-wrap"><div class="rbar" style="width:${pct.toFixed(1)}%;background:${stripe}"></div></div>
+      <div class="rval">${lev.toFixed(2)}</div>
+    </div>`;
+  }
+  document.getElementById('chart-rows').innerHTML=rows;
+
+  // Calendar highlight
+  document.querySelectorAll('.cal-day[data-d]').forEach(el=>{
+    el.classList.toggle('active', +el.dataset.d===curDay);
+  });
+}
+
+function renderCal(){
+  const m=MONTHS[mIdx];
+  const hdr=['D','L','M','M','J','V','S'];
+  let h=hdr.map(x=>`<div class="cal-hdr">${x}</div>`).join('');
+  for(let i=0;i<m.start;i++) h+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=m.days;d++){
+    const key=dk(mIdx,d);
+    const evs=D[key]||[];
+    const hi=evs.filter(e=>e[0]==='H'), lo=evs.filter(e=>e[0]==='L');
+    const maxH=hi.length?Math.max(...hi.map(e=>e[2])):null;
+    const minL=lo.length?Math.min(...lo.map(e=>e[2])):null;
+    h+=`<div class="cal-day${d===curDay?' active':''}" data-d="${d}" onclick="pick(${d})">
+      <div class="cdn">${d}</div>
+      ${maxH!==null?`<div class="cdh">${maxH.toFixed(1)}</div>`:''}
+      ${minL!==null?`<div class="cdl">${minL.toFixed(1)}</div>`:''}
+    </div>`;
+  }
+  document.getElementById('calgrid').innerHTML=h;
+}
+
+function renderTabs(){
+  document.getElementById('tabs').innerHTML=MONTHS.map((m,i)=>
+    `<button class="tab${i===mIdx?' active':''}" onclick="selMonth(${i})">${m.label}</button>`
+  ).join('');
+}
+
+function selMonth(i){ mIdx=i; curDay=1; renderTabs(); renderCal(); render(); }
+function pick(d){ curDay=d; render(); renderCal(); }
+function prevDay(){
+  if(curDay>1){ curDay--; render(); renderCal(); }
+  else if(mIdx>0){ mIdx--; curDay=MONTHS[mIdx].days; renderTabs(); renderCal(); render(); }
+}
+function nextDay(){
+  if(curDay<MONTHS[mIdx].days){ curDay++; render(); renderCal(); }
+  else if(mIdx<MONTHS.length-1){ mIdx++; curDay=1; renderTabs(); renderCal(); render(); }
+}
+
+// Init
+renderTabs(); renderCal(); render();
+</script>
+</body>
+</html>
