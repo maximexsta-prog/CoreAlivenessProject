@@ -24,6 +24,14 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 .navbtn:hover{background:#253a52}
 .datelabel{flex:1;text-align:center;font-size:15px;font-weight:700;letter-spacing:.2px}
 
+/* DWS status banner */
+.dws-wrap{padding:0 18px 12px}
+.dws-badge{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:8px;border:1px solid transparent}
+.dws-code{font-size:18px;font-weight:900;letter-spacing:-.5px;min-width:36px}
+.dws-info{flex:1}
+.dws-label{font-size:12px;font-weight:700;line-height:1.4}
+.dws-window{font-size:10px;opacity:.75;margin-top:1px}
+
 /* Event cards */
 .events{display:flex;gap:10px;padding:0 18px 14px;flex-wrap:wrap}
 .ecard{background:#0d1520;border-radius:8px;padding:10px 14px;flex:1;min-width:110px;border-left:3px solid #1565C0}
@@ -35,17 +43,27 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 /* Chart */
 .chart{margin:0 18px;background:#0d1520;border-radius:10px;overflow:hidden}
 .chart-head{background:#1560a0;padding:7px 12px;font-size:12px;font-weight:700;letter-spacing:.3px;text-align:center}
+.chart-legend{background:#0a1825;padding:5px 12px;display:flex;align-items:center;gap:14px;font-size:10px;color:#5a8aaa;border-bottom:1px solid #1a2a3a}
+.legend-item{display:flex;align-items:center;gap:4px}
+.legend-dot{width:8px;height:8px;border-radius:50%}
 .chart-sub{background:#1a7070;padding:5px 12px;display:flex;font-size:11px;color:#adf;font-weight:600}
 .chart-sub .c1{width:44px;flex-shrink:0}
 .chart-sub .c2{flex:1;padding-left:6px}
 .chart-sub .c3{width:42px;text-align:right}
-.row{display:flex;align-items:center;padding:1px 12px;min-height:20px}
+.row{display:flex;align-items:center;padding:1px 12px;min-height:20px;transition:background .15s}
 .row:nth-child(odd){background:#0d1520}
 .row:nth-child(even){background:#111d2c}
+.row.win-ok{background:#071a0e !important}
+.row.win-bad{background:#1a0909 !important}
+.row.win-sep{border-top:1px solid #1a3a2a}
 .rhour{width:32px;font-size:11px;color:#4a6a85;flex-shrink:0;font-weight:600}
-.rbar-wrap{flex:1;height:16px;background:#0a1018;border-radius:3px;overflow:hidden;margin:0 6px}
+.rhour.in-win{color:#6ab090}
+.rbar-wrap{flex:1;height:16px;background:#0a1018;border-radius:3px;overflow:visible;margin:0 6px;position:relative}
 .rbar{height:100%;border-radius:3px;transition:width .3s}
+.thresh-line{position:absolute;top:-2px;bottom:-2px;width:1px;background:#f5a623;opacity:.55;z-index:2;pointer-events:none}
 .rval{width:38px;text-align:right;font-size:11px;color:#7ab0cc;flex-shrink:0}
+.rval.safe{color:#5cbf80}
+.rval.unsafe-win{color:#c06060}
 
 /* Calendar */
 .cal-wrap{padding:18px}
@@ -57,12 +75,11 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 .cal-day.active{border-color:#1565C0;background:#1a3050}
 .cal-day.empty{background:transparent;cursor:default}
 .cdn{font-size:12px;font-weight:700}
-.cdh{font-size:9px;color:#1E88E5;line-height:1.3}
-.cdl{font-size:9px;color:#2ecc71;line-height:1.3}
+.cdws{font-size:9px;font-weight:800;line-height:1.4;margin-top:1px}
+.cdmax{font-size:9px;color:#5a8ab0;line-height:1.3}
 
 .station-note{padding:4px 18px 12px;font-size:11px;color:#3a6080}
 
-/* Scrollable chart on small screens */
 @media(max-width:400px){
   .events{gap:6px}
   .ecard{padding:8px 10px}
@@ -88,10 +105,17 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
   <button class="navbtn" onclick="nextDay()">&#8594;</button>
 </div>
 
+<div class="dws-wrap" id="dws-wrap"></div>
+
 <div class="events" id="events"></div>
 
 <div class="chart" id="chart">
   <div class="chart-head" id="chart-head">Hòn Dấu — Trạm tham chiếu (20°40'N 106°49'E)</div>
+  <div class="chart-legend">
+    <span class="legend-item"><span class="legend-dot" style="background:#5cbf80"></span>Fenêtre DWS (≥1.4m)</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#c06060"></span>Niveau insuffisant</span>
+    <span class="legend-item" style="color:#f5a623">│ seuil 1.4m</span>
+  </div>
   <div class="chart-sub">
     <span class="c1">Heure</span>
     <span class="c2">Niveau d'eau</span>
@@ -184,9 +208,33 @@ const MONTHS = [
 ];
 
 const MAX_H = 4.5;
+const DWS_THRESH = 1.4;
 let mIdx = 0, curDay = 27;
 
 function getArr(mi, day){ return H[MONTHS[mi].key][day] || Array(24).fill(2); }
+
+// DWS status: FD = full day safe, AM = morning only, AM★ = early morning only
+// PM = afternoon safe, PM★ = late afternoon only, 🚫 = no safe window
+function dwsStatus(arr) {
+  const T = DWS_THRESH;
+  // FD: all hours 8–16 stay at or above threshold
+  if (arr.slice(8, 17).every(v => v >= T))
+    return {code:'FD', label:'Journée entière', window:'8h – 17h', color:'#27ae60', bg:'rgba(39,174,96,.12)'};
+  // AM: all hours 8–11 at or above threshold (morning safe, afternoon drops)
+  if (arr.slice(8, 12).every(v => v >= T))
+    return {code:'AM', label:'Matin seulement', window:'8h – 12h', color:'#2980b9', bg:'rgba(41,128,185,.12)'};
+  // AM★: early morning window 6–10h reaches threshold (before standard window)
+  if (arr.slice(6, 11).some(v => v >= T))
+    return {code:'AM★', label:'Tôt le matin', window:'6h – 10h', color:'#3498db', bg:'rgba(52,152,219,.10)'};
+  // PM: afternoon hours 12–16 reach threshold
+  if (arr.slice(12, 17).some(v => v >= T))
+    return {code:'PM', label:'Après-midi', window:'12h – 17h', color:'#e67e22', bg:'rgba(230,126,34,.12)'};
+  // PM★: late afternoon 13–17h reaches threshold (shifted window)
+  if (arr.slice(13, 18).some(v => v >= T))
+    return {code:'PM★', label:'Fin d\'après-midi', window:'13h – 18h', color:'#f39c12', bg:'rgba(243,156,18,.10)'};
+  // No viable window
+  return {code:'🚫', label:'Fermé', window:'Niveau insuffisant', color:'#e74c3c', bg:'rgba(231,76,60,.12)'};
+}
 
 function barColor(h){
   if(h>=3.5) return '#0d47a1,#1565C0';
@@ -200,11 +248,22 @@ function render(){
   const m = MONTHS[mIdx];
   const key = m.key + '-' + String(curDay).padStart(2,'0');
   const arr = getArr(mIdx, curDay);
+  const dws = dwsStatus(arr);
 
   // Date label
   const dt = new Date(`${key}T12:00:00+07:00`);
   const dn = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
   document.getElementById('datelabel').textContent = `${dn[dt.getDay()]} ${curDay} ${m.label}`;
+
+  // DWS status banner
+  document.getElementById('dws-wrap').innerHTML =
+    `<div class="dws-badge" style="background:${dws.bg};border-color:${dws.color}55;color:${dws.color}">
+      <div class="dws-code">${dws.code}</div>
+      <div class="dws-info">
+        <div class="dws-label">${dws.label}</div>
+        <div class="dws-window">${dws.window}</div>
+      </div>
+    </div>`;
 
   // Find daily high / low from hourly data
   const maxH = Math.max(...arr);
@@ -216,17 +275,33 @@ function render(){
     `<div class="ecard high"><div class="etype">▲ Marée haute</div><div class="etime">${fmtH(maxHr)}</div><div class="eheight">${maxH.toFixed(2)} m</div></div>` +
     `<div class="ecard low"><div class="etype">▼ Marée basse</div><div class="etime">${fmtH(minHr)}</div><div class="eheight">${minL.toFixed(2)} m</div></div>`;
 
-  // Hourly chart — direct lookup, no interpolation
+  // Hourly chart
+  const threshPct = (DWS_THRESH / MAX_H * 100).toFixed(1);
   let rows = '';
   for(let hr = 0; hr < 24; hr++){
     const lev = arr[hr];
     const pct = Math.max(0, Math.min(100, lev / MAX_H * 100));
+    const inWin = hr >= 8 && hr <= 16;
+    const safe = lev >= DWS_THRESH;
+
+    let rowClass = 'row';
+    if(hr === 8) rowClass += ' win-sep';
+    if(inWin) rowClass += safe ? ' win-ok' : ' win-bad';
+
     const [c1,c2] = barColor(lev).split(',');
-    const stripe = `repeating-linear-gradient(45deg,${c1},${c1} 3px,${c2} 3px,${c2} 6px)`;
-    rows += `<div class="row">
-      <div class="rhour">${hr}h</div>
-      <div class="rbar-wrap"><div class="rbar" style="width:${pct.toFixed(1)}%;background:${stripe}"></div></div>
-      <div class="rval">${lev.toFixed(2)}</div>
+    const barBg = (inWin && safe)
+      ? `linear-gradient(90deg,${c1},${c2})`
+      : `repeating-linear-gradient(45deg,${c1},${c1} 3px,${c2} 3px,${c2} 6px)`;
+
+    const valClass = 'rval' + (inWin && safe ? ' safe' : inWin && !safe ? ' unsafe-win' : '');
+
+    rows += `<div class="${rowClass}">
+      <div class="rhour${inWin ? ' in-win' : ''}">${String(hr).padStart(2,'0')}h</div>
+      <div class="rbar-wrap">
+        <div class="thresh-line" style="left:${threshPct}%"></div>
+        <div class="rbar" style="width:${pct.toFixed(1)}%;background:${barBg}"></div>
+      </div>
+      <div class="${valClass}">${lev.toFixed(2)}</div>
     </div>`;
   }
   document.getElementById('chart-rows').innerHTML = rows;
@@ -245,11 +320,12 @@ function renderCal(){
   for(let d = 1; d <= m.days; d++){
     const arr = H[m.key][d] || [];
     const maxH = arr.length ? Math.max(...arr) : null;
-    const minL = arr.length ? Math.min(...arr) : null;
-    h += `<div class="cal-day${d === curDay ? ' active' : ''}" data-d="${d}" onclick="pick(${d})">
+    const dws = arr.length ? dwsStatus(arr) : null;
+    h += `<div class="cal-day${d === curDay ? ' active' : ''}" data-d="${d}" onclick="pick(${d})"
+      style="${dws ? `border-top:2px solid ${dws.color}60` : ''}">
       <div class="cdn">${d}</div>
-      ${maxH !== null ? `<div class="cdh">${maxH.toFixed(1)}</div>` : ''}
-      ${minL !== null ? `<div class="cdl">${minL.toFixed(1)}</div>` : ''}
+      ${dws ? `<div class="cdws" style="color:${dws.color}">${dws.code}</div>` : ''}
+      ${maxH !== null ? `<div class="cdmax">${maxH.toFixed(1)}</div>` : ''}
     </div>`;
   }
   document.getElementById('calgrid').innerHTML = h;
