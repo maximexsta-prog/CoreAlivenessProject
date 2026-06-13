@@ -551,6 +551,12 @@ function dwsStatus(arr) {
     return {code:'AM★', label:'Tôt le matin', window:'6h30 – 11h', color:'#3498db', bg:'rgba(52,152,219,.10)'};
   if (arr.slice(13, 18).every(v => v >= T))
     return {code:'PM★', label:'Fin d\'après-midi', window:'13h – 18h', color:'#f39c12', bg:'rgba(243,156,18,.10)'};
+  // Late-rising tide (boat leeway ~1h): good from 15h onward
+  // PM vs PM★ distinguished by midday depth at 13h (spring dip < 1.1m → PM★)
+  if (arr.slice(15, 18).every(v => v >= T) && arr[13] >= 1.1)
+    return {code:'PM', label:'Après-midi tardif', window:'15h – 17h', color:'#e67e22', bg:'rgba(230,126,34,.12)'};
+  if (arr.slice(15, 19).every(v => v >= T))
+    return {code:'PM★', label:'Fin d\'après-midi', window:'15h – 18h', color:'#f39c12', bg:'rgba(243,156,18,.10)'};
   return {code:'🚫', label:'Fermé', window:'Niveau insuffisant', color:'#e74c3c', bg:'rgba(231,76,60,.12)'};
 }
 
