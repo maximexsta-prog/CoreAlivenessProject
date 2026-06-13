@@ -537,26 +537,33 @@ let mIdx = 0, curDay = 27;
 
 function getArr(mi, day){ return H[MONTHS[mi].key][day] || Array(24).fill(2); }
 
-// DWS status: FD = full day safe, AM = morning only, PM = afternoon only,
-// AM★ = early morning only, PM★ = late afternoon only, 🚫 = no safe window
+// Linear interpolation to 30-min resolution; a[h*2]=h:00, a[h*2+1]=h:30
+function interp30(arr) {
+  const r = [];
+  for (let i = 0; i < arr.length - 1; i++) { r.push(arr[i]); r.push((arr[i]+arr[i+1])/2); }
+  r.push(arr[arr.length-1]);
+  return r; // 47 values, indices 0–46
+}
+
+// DWS status using 30-min interpolation for sign-accurate windows + boat leeway
 function dwsStatus(arr) {
   const T = DWS_THRESH;
-  if (arr.slice(8, 17).every(v => v >= T))
-    return {code:'FD', label:'Journée entière', window:'8h – 17h', color:'#27ae60', bg:'rgba(39,174,96,.12)'};
-  if (arr.slice(8, 13).every(v => v >= T))
-    return {code:'AM', label:'Matin seulement', window:'8h – 12h', color:'#2980b9', bg:'rgba(41,128,185,.12)'};
-  if (arr.slice(12, 17).every(v => v >= T))
-    return {code:'PM', label:'Après-midi', window:'12h – 17h', color:'#e67e22', bg:'rgba(230,126,34,.12)'};
-  if (arr.slice(6, 12).every(v => v >= T))
-    return {code:'AM★', label:'Tôt le matin', window:'6h30 – 11h', color:'#3498db', bg:'rgba(52,152,219,.10)'};
-  if (arr.slice(13, 18).every(v => v >= T))
-    return {code:'PM★', label:'Fin d\'après-midi', window:'13h – 18h', color:'#f39c12', bg:'rgba(243,156,18,.10)'};
-  // Late-rising tide (boat leeway ~1h): good from 15h onward
-  // PM vs PM★ distinguished by midday depth at 13h (spring dip < 1.1m → PM★)
-  if (arr.slice(15, 18).every(v => v >= T) && arr[13] >= 1.1)
-    return {code:'PM', label:'Après-midi tardif', window:'15h – 17h', color:'#e67e22', bg:'rgba(230,126,34,.12)'};
-  if (arr.slice(15, 19).every(v => v >= T))
-    return {code:'PM★', label:'Fin d\'après-midi', window:'15h – 18h', color:'#f39c12', bg:'rgba(243,156,18,.10)'};
+  const a = interp30(arr); // a[h*2]=h:00, a[h*2+1]=h:30
+  if (a.slice(16,35).every(v=>v>=T))
+    return {code:'FD',  label:'Journée entière',  window:'8h – 17h',          color:'#27ae60', bg:'rgba(39,174,96,.12)'};
+  if (a.slice(16,25).every(v=>v>=T))
+    return {code:'AM',  label:'Matin seulement',  window:'8h – 12h',          color:'#2980b9', bg:'rgba(41,128,185,.12)'};
+  if (a.slice(24,35).every(v=>v>=T))
+    return {code:'PM',  label:'Après-midi',        window:'12h – 17h',         color:'#e67e22', bg:'rgba(230,126,34,.12)'};
+  if (a.slice(13,22).every(v=>v>=T))
+    return {code:'AM★', label:'Tôt le matin',      window:'6h30 – 10h30',      color:'#3498db', bg:'rgba(52,152,219,.10)'};
+  if (a.slice(27,36).every(v=>v>=T))
+    return {code:'PM★', label:'Fin d\'après-midi', window:'13h30 – 17h30',     color:'#f39c12', bg:'rgba(243,156,18,.10)'};
+  // Late-rising tide (boat leeway): good from 15h; a[27]=13:30 discriminates PM vs PM★
+  if (a.slice(30,36).every(v=>v>=T) && a[27]>1.1)
+    return {code:'PM',  label:'Après-midi tardif', window:'15h – 17h30',       color:'#e67e22', bg:'rgba(230,126,34,.12)'};
+  if (a.slice(30,37).every(v=>v>=T))
+    return {code:'PM★', label:'Fin d\'après-midi', window:'15h – 18h',         color:'#f39c12', bg:'rgba(243,156,18,.10)'};
   return {code:'🚫', label:'Fermé', window:'Niveau insuffisant', color:'#e74c3c', bg:'rgba(231,76,60,.12)'};
 }
 
