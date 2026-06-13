@@ -43,7 +43,7 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 .legend-item{display:flex;align-items:center;gap:4px}
 .legend-dot{width:8px;height:8px;border-radius:50%}
 /* Vertical bar chart */
-.vchart{position:relative;display:flex;align-items:flex-end;height:558px;padding:6px 8px 22px 28px;gap:0}
+.vchart{position:relative;display:flex;align-items:flex-end;height:558px;padding:6px 8px 22px 28px;gap:1px}
 .chart-datebg{position:absolute;top:12px;left:0;right:0;text-align:center;pointer-events:none;z-index:0;user-select:none;line-height:1}
 .cdb-day{display:block;font-size:96px;font-weight:900;letter-spacing:-4px;color:rgba(52,152,219,0.09)}
 .cdb-mon{display:block;font-size:28px;font-weight:700;letter-spacing:4px;color:rgba(52,152,219,0.09);margin-top:-8px}
@@ -54,7 +54,7 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 .vcol.vwin{background:rgba(0,50,20,0.18);border-radius:2px}
 .vcol::after{content:attr(data-h)'m';position:absolute;top:0;left:50%;transform:translateX(-50%);background:rgba(8,20,40,0.92);color:#e0f0ff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;white-space:nowrap;z-index:10;pointer-events:none;opacity:0;transition:opacity .1s}
 .vcol:hover::after{opacity:1}
-.vbar{width:100%;border-radius:0;min-height:1px;transition:height .3s}
+.vbar{width:100%;border-radius:2px 2px 0 0;min-height:1px;transition:height .3s}
 .vhr{font-size:7px;color:#4a6a85;text-align:center;padding-top:3px;line-height:1}
 .vcol.vwin .vhr{color:#6ab090}
 .vthresh{position:absolute;left:8px;right:8px;height:1px;background:#f5a623;opacity:.8;z-index:2;pointer-events:none}
