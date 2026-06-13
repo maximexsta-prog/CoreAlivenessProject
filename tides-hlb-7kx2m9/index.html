@@ -599,11 +599,6 @@ function dwsStatus(arr) {
     return {code:'AM★', label:t.AM_star,   window:'6h30 – 10h30',    color:'#3498db', bg:'rgba(52,152,219,.10)'};
   if (a.slice(27,36).every(v=>v>=T))
     return {code:'PM★', label:t.PM_star,   window:'13h30 – 17h30',   color:'#f39c12', bg:'rgba(243,156,18,.10)'};
-  // Late-rising tide (boat leeway): good from 15h; a[27]=13:30 discriminates PM vs PM★
-  if (a.slice(30,36).every(v=>v>=T) && a[27]>1.1)
-    return {code:'PM',  label:t.PM_late,   window:'15h – 17h30',     color:'#e67e22', bg:'rgba(230,126,34,.12)'};
-  if (a.slice(30,37).every(v=>v>=T))
-    return {code:'PM★', label:t.PM_star,   window:'15h – 18h',       color:'#f39c12', bg:'rgba(243,156,18,.10)'};
   return {code:'🚫', label:t.closed_lab, window:t.closed_win,       color:'#e74c3c', bg:'rgba(231,76,60,.12)'};
 }
 
@@ -688,8 +683,9 @@ function renderCal(){
     const arr = H[m.key][d] || [];
     const maxH = arr.length ? Math.max(...arr) : null;
     const dws = arr.length ? dwsStatus(arr) : null;
-    h += `<div class="cal-day${d === curDay ? ' active' : ''}" data-d="${d}" onclick="pick(${d})"
-      style="${dws ? `border-top:2px solid ${dws.color}60` : ''}">
+    const isNA = dws && dws.code === '🚫';
+    h += `<div class="cal-day${d === curDay ? ' active' : ''}${isNA ? ' na' : ''}" data-d="${d}" onclick="pick(${d})"
+      style="${dws ? `border-top:2px solid ${dws.color}${isNA ? '' : '60'}` : ''}${isNA ? ';background:rgba(231,76,60,.22)' : ''}">
       <div class="cdn">${d}</div>
       ${dws ? `<div class="cdws" style="color:${dws.color}">${dws.code}</div>` : ''}
       ${maxH !== null ? `<div class="cdmax">${maxH.toFixed(1)}</div>` : ''}
