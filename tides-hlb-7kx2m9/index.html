@@ -599,6 +599,8 @@ function dwsStatus(arr) {
     return {code:'AM',  label:t.AM_label,  window:'8h – 10h30',      color:'#2980b9', bg:'rgba(41,128,185,.12)'};
   if (a.slice(27,36).every(v=>v>=T))
     return {code:'PM★', label:t.PM_star,   window:'13h30 – 17h30',   color:'#f39c12', bg:'rgba(243,156,18,.10)'};
+  if (a.slice(30,36).every(v=>v>=T))
+    return {code:'PM★', label:t.PM_star,   window:'15h – 17h30',     color:'#f39c12', bg:'rgba(243,156,18,.10)'};
   return {code:'🚫', label:t.closed_lab, window:t.closed_win,       color:'#e74c3c', bg:'rgba(231,76,60,.12)'};
 }
 
