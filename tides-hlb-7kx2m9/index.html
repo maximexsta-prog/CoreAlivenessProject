@@ -51,8 +51,10 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 .vchart{position:relative;display:flex;align-items:flex-end;height:558px;padding:6px 8px 22px 28px;gap:2px}
 .vgrid{position:absolute;left:0;right:0;height:1px;background:rgba(255,255,255,0.06);z-index:1;pointer-events:none}
 .vglabel{position:absolute;left:2px;top:-7px;font-size:7px;color:rgba(90,138,170,0.5);line-height:1}
-.vcol{flex:1;display:flex;flex-direction:column;justify-content:flex-end;min-width:0}
+.vcol{flex:1;display:flex;flex-direction:column;justify-content:flex-end;min-width:0;position:relative;cursor:default}
 .vcol.vwin{background:rgba(0,50,20,0.18);border-radius:2px}
+.vcol::after{content:attr(data-h)'m';position:absolute;top:0;left:50%;transform:translateX(-50%);background:rgba(8,20,40,0.92);color:#e0f0ff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;white-space:nowrap;z-index:10;pointer-events:none;opacity:0;transition:opacity .1s}
+.vcol:hover::after{opacity:1}
 .vbar{width:100%;border-radius:2px 2px 0 0;min-height:1px;transition:height .3s}
 .vhr{font-size:7px;color:#4a6a85;text-align:center;padding-top:3px;line-height:1}
 .vcol.vwin .vhr{color:#6ab090}
@@ -599,7 +601,7 @@ function render(){
     const lev = arr[hr];
     const bh = Math.max(1, Math.round(lev / MAX_H * BAREA));
     const inWin = hr >= 8 && hr <= 16;
-    cols += `<div class="vcol${inWin?' vwin':''}">` +
+    cols += `<div class="vcol${inWin?' vwin':''}" data-h="${lev.toFixed(2)}">` +
       `<div class="vbar" style="height:${bh}px;background:${barColor(lev)}"></div>` +
       `<div class="vhr">${String(hr).padStart(2,'0')}</div></div>`;
   }
