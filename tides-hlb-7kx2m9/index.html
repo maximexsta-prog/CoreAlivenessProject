@@ -654,7 +654,7 @@ function render(){
   let cols = '';
   for(let idx = idxFrom; idx <= idxTo; idx++){
     const lev = a30[idx];
-    const bh = Math.max(1, Math.round(lev / MAX_H * BAREA));
+    const bh = Math.max(1, lev / MAX_H * BAREA);
     const isHalf = idx % 2 === 1;
     const h = Math.floor(idx / 2);
     const inWin = idx >= 16 && idx <= 34; // 8:00–17:00
