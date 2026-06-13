@@ -50,12 +50,12 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 .vcol.vhalf .vhr{font-size:5px;color:rgba(74,106,133,0.35)}
 .vgrid{position:absolute;left:0;right:0;height:1px;background:rgba(255,255,255,0.06);z-index:1;pointer-events:none}
 .vglabel{position:absolute;left:2px;top:-7px;font-size:7px;color:rgba(90,138,170,0.5);line-height:1}
-.vcol{flex:1;display:flex;flex-direction:column;justify-content:flex-end;min-width:0;position:relative;cursor:default}
+.vcol{flex:1;min-width:0;position:relative;cursor:default}
 .vcol.vwin{background:rgba(0,50,20,0.18);border-radius:2px}
 .vcol::after{content:attr(data-h)'m';position:absolute;top:0;left:50%;transform:translateX(-50%);background:rgba(8,20,40,0.92);color:#e0f0ff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;white-space:nowrap;z-index:10;pointer-events:none;opacity:0;transition:opacity .1s}
 .vcol:hover::after{opacity:1}
-.vbar{width:100%;min-height:1px;transition:height .3s}
-.vhr{font-size:7px;color:#4a6a85;text-align:center;padding-top:3px;line-height:1}
+.vbar{width:100%;height:100%;min-height:1px;transition:height .3s}
+.vhr{position:absolute;top:100%;left:0;right:0;font-size:7px;color:#4a6a85;text-align:center;padding-top:3px;line-height:1}
 .vcol.vwin .vhr{color:#6ab090}
 .vthresh{position:absolute;left:8px;right:8px;height:1px;background:#f5a623;opacity:.8;z-index:2;pointer-events:none}
 
@@ -660,8 +660,8 @@ function render(){
     const inWin = idx >= 16 && idx <= 34; // 8:00–17:00
     const showLabel = !isHalf && (h % (labelEvery/2) === 0);
     const label = isHalf ? (showFull24 ? '' : '·') : (showLabel ? String(h).padStart(2,'0') : '');
-    cols += `<div class="vcol${inWin?' vwin':''}${isHalf?' vhalf':''}" data-h="${lev.toFixed(2)}">` +
-      `<div class="vbar" style="height:${bh}px;background:${barColor(lev)}"></div>` +
+    cols += `<div class="vcol${inWin?' vwin':''}${isHalf?' vhalf':''}" style="height:${bh}px" data-h="${lev.toFixed(2)}">` +
+      `<div class="vbar" style="background:${barColor(lev)}"></div>` +
       `<div class="vhr">${label}</div></div>`;
   }
   document.getElementById('tog24').textContent = showFull24 ? '6h–19h' : '24h';
