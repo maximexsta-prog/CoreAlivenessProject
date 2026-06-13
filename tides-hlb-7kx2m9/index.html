@@ -49,6 +49,9 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 .legend-dot{width:8px;height:8px;border-radius:50%}
 /* Vertical bar chart */
 .vchart{position:relative;display:flex;align-items:flex-end;height:558px;padding:6px 8px 22px 28px;gap:1px}
+.chart-datebg{position:absolute;top:12px;left:0;right:0;text-align:center;pointer-events:none;z-index:0;user-select:none;line-height:1}
+.cdb-day{display:block;font-size:96px;font-weight:900;letter-spacing:-4px;color:rgba(52,152,219,0.09)}
+.cdb-mon{display:block;font-size:28px;font-weight:700;letter-spacing:4px;color:rgba(52,152,219,0.09);margin-top:-8px}
 .vcol.vhalf .vhr{font-size:5px;color:rgba(74,106,133,0.35)}
 .vgrid{position:absolute;left:0;right:0;height:1px;background:rgba(255,255,255,0.06);z-index:1;pointer-events:none}
 .vglabel{position:absolute;left:2px;top:-7px;font-size:7px;color:rgba(90,138,170,0.5);line-height:1}
@@ -636,8 +639,9 @@ function render(){
   const grids = [0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0].map(g =>
     `<div class="vgrid" style="bottom:${Math.round(g/MAX_H*BAREA)+22}px"><span class="vglabel">${g.toFixed(1)}</span></div>`
   ).join('');
+  const dateBg = `<div class="chart-datebg"><span class="cdb-day">${curDay}</span><span class="cdb-mon">${MONTHS[mIdx].short.toUpperCase()}</span></div>`;
   document.getElementById('chart-rows').innerHTML =
-    `<div class="vchart">${grids}<div class="vthresh" style="bottom:${threshPx + 22}px"></div>${cols}</div>`;
+    `<div class="vchart">${dateBg}${grids}<div class="vthresh" style="bottom:${threshPx + 22}px"></div>${cols}</div>`;
 
   // Calendar highlight
   document.querySelectorAll('.cal-day[data-d]').forEach(el => {
