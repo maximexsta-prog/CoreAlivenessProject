@@ -592,7 +592,7 @@ function render(){
   const BAREA = 474; // px — bar drawing area height
   const threshPx = Math.round(DWS_THRESH / MAX_H * BAREA);
   let cols = '';
-  for(let hr = 7; hr <= 18; hr++){
+  for(let hr = 6; hr <= 19; hr++){
     const lev = arr[hr];
     const bh = Math.max(1, Math.round(lev / MAX_H * BAREA));
     const inWin = hr >= 8 && hr <= 16;
