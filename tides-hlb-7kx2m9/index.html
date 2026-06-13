@@ -578,10 +578,7 @@ function render(){
   const arr = getArr(mIdx, curDay);
   const dws = dwsStatus(arr);
 
-  // Date label
-  const dt = new Date(`${key}T12:00:00+07:00`);
-  const dn = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-  document.getElementById('datelabel').textContent = `${dn[dt.getDay()]} ${curDay} ${m.label}`;
+
 
   // DWS status banner
   document.getElementById('dws-wrap').innerHTML =
