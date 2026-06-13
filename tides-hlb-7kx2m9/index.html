@@ -684,6 +684,22 @@ function nextDay(){
 
 // Init
 renderTabs(); renderCal(); render();
+
+// Swipe on chart to change day (and auto-advance month)
+(function(){
+  const el = document.getElementById('chart');
+  let tx = 0, ty = 0;
+  el.addEventListener('touchstart', e => {
+    tx = e.touches[0].clientX;
+    ty = e.touches[0].clientY;
+  }, {passive: true});
+  el.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    const dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return; // too short or vertical
+    dx < 0 ? nextDay() : prevDay();
+  }, {passive: true});
+})();
 </script>
 </body>
 </html>
