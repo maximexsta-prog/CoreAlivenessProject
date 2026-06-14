@@ -602,7 +602,7 @@ function dwsStatus(arr) {
   if (a.slice(13,21).every(v=>v>=T))
     return {code:'AM★', label:t.AM_star,   window:'6h30 – 10h',      color:'#3498db', bg:'rgba(52,152,219,.10)'};
   if (a.slice(30,36).every(v=>v>=T))
-    return {code:'PM',  label:t.PM_label,  window:'15h – 17h30',     color:'#e67e22', bg:'rgba(230,126,34,.12)'};
+    return {code:'PM★', label:t.PM_star,   window:'15h – 17h30',     color:'#f39c12', bg:'rgba(243,156,18,.10)'};
   return {code:'🚫', label:t.closed_lab, window:t.closed_win,       color:'#e74c3c', bg:'rgba(231,76,60,.12)'};
 }
 
