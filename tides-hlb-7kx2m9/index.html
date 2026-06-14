@@ -595,10 +595,10 @@ function dwsStatus(arr) {
     return {code:'AM',  label:t.AM_label,  window:'8h – 11h',        color:'#2980b9', bg:'rgba(41,128,185,.12)'};
   if (a.slice(24,33).every(v=>v>=T))
     return {code:'PM',  label:t.PM_label,  window:'12h – 16h',       color:'#e67e22', bg:'rgba(230,126,34,.12)'};
-  if (a.slice(27,35).every(v=>v>=T) && a[27] > T)
-    return {code:'PM★', label:t.PM_star,   window:'13h30 – 17h',     color:'#f39c12', bg:'rgba(243,156,18,.10)'};
   if (a.slice(26,35).every(v=>v>=T))
     return {code:'PM',  label:t.PM_label,  window:'13h – 17h',       color:'#e67e22', bg:'rgba(230,126,34,.12)'};
+  if (a.slice(27,35).every(v=>v>=T))
+    return {code:'PM★', label:t.PM_star,   window:'13h30 – 17h',     color:'#f39c12', bg:'rgba(243,156,18,.10)'};
   if (a.slice(13,21).every(v=>v>=T))
     return {code:'AM★', label:t.AM_star,   window:'6h30 – 10h',      color:'#3498db', bg:'rgba(52,152,219,.10)'};
   if (a.slice(30,36).every(v=>v>=T))
