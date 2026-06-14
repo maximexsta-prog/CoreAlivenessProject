@@ -587,18 +587,18 @@ function dwsStatus(arr) {
   const T = DWS_THRESH;
   const t = TR[lang];
   const a = interp30(arr); // a[h*2]=h:00, a[h*2+1]=h:30
-  if (a.slice(16,35).every(v=>v>=T))
-    return {code:'FD',  label:t.FD_label,  window:'8h – 17h',        color:'#27ae60', bg:'rgba(39,174,96,.12)'};
-  if (a.slice(16,25).every(v=>v>=T))
-    return {code:'AM',  label:t.AM_label,  window:'8h – 12h',        color:'#2980b9', bg:'rgba(41,128,185,.12)'};
-  if (a.slice(24,35).every(v=>v>=T))
-    return {code:'PM',  label:t.PM_label,  window:'12h – 17h',       color:'#e67e22', bg:'rgba(230,126,34,.12)'};
-  if (a.slice(13,21).every(v=>v>=T))
-    return {code:'AM★', label:t.AM_star,   window:'6h30 – 10h',      color:'#3498db', bg:'rgba(52,152,219,.10)'};
-  if (a.slice(16,22).every(v=>v>=T))
-    return {code:'AM',  label:t.AM_label,  window:'8h – 10h30',      color:'#2980b9', bg:'rgba(41,128,185,.12)'};
-  if (a.slice(27,36).every(v=>v>=T))
-    return {code:'PM★', label:t.PM_star,   window:'13h30 – 17h30',   color:'#f39c12', bg:'rgba(243,156,18,.10)'};
+  if (a.slice(18,33).every(v=>v>=T))
+    return {code:'FD',  label:t.FD_label,  window:'9h – 16h',        color:'#27ae60', bg:'rgba(39,174,96,.12)'};
+  if (a.slice(18,25).every(v=>v>=T))
+    return {code:'AM',  label:t.AM_label,  window:'9h – 12h',        color:'#2980b9', bg:'rgba(41,128,185,.12)'};
+  if (a.slice(16,23).every(v=>v>=T))
+    return {code:'AM',  label:t.AM_label,  window:'8h – 11h',        color:'#2980b9', bg:'rgba(41,128,185,.12)'};
+  if (a.slice(24,33).every(v=>v>=T))
+    return {code:'PM',  label:t.PM_label,  window:'12h – 16h',       color:'#e67e22', bg:'rgba(230,126,34,.12)'};
+  if (a.slice(26,35).every(v=>v>=T))
+    return {code:'PM',  label:t.PM_label,  window:'13h – 17h',       color:'#e67e22', bg:'rgba(230,126,34,.12)'};
+  if (a.slice(13,22).every(v=>v>=T))
+    return {code:'AM★', label:t.AM_star,   window:'6h30 – 10h30',    color:'#3498db', bg:'rgba(52,152,219,.10)'};
   if (a.slice(30,36).every(v=>v>=T))
     return {code:'PM★', label:t.PM_star,   window:'15h – 17h30',     color:'#f39c12', bg:'rgba(243,156,18,.10)'};
   return {code:'🚫', label:t.closed_lab, window:t.closed_win,       color:'#e74c3c', bg:'rgba(231,76,60,.12)'};
@@ -654,7 +654,7 @@ function render(){
     const bh = Math.max(1, lev / MAX_H * BAREA);
     const isHalf = idx % 2 === 1;
     const h = Math.floor(idx / 2);
-    const inWin = idx >= 16 && idx <= 34; // 8:00–17:00
+    const inWin = idx >= 18 && idx <= 32; // 9:00–16:00
     const showLabel = !isHalf && (h % (labelEvery/2) === 0);
     const label = isHalf ? (showFull24 ? '' : '·') : (showLabel ? String(h).padStart(2,'0') : '');
     cols += `<div class="vcol${inWin?' vwin':''}${isHalf?' vhalf':''}" style="height:${bh}px" data-h="${lev.toFixed(2)}">` +
