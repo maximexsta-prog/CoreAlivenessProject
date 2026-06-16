@@ -58,6 +58,7 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 .vhr{position:absolute;top:100%;left:0;right:0;font-size:7px;color:#4a6a85;text-align:center;padding-top:3px;line-height:1}
 .vcol.vwin .vhr{color:#6ab090}
 .vthresh{position:absolute;left:8px;right:8px;height:1px;background:#f5a623;opacity:.8;z-index:2;pointer-events:none}
+.vthresh2{position:absolute;left:8px;right:8px;height:1px;background:#f5e88a;opacity:.8;z-index:2;pointer-events:none}
 
 /* Calendar */
 .cal-wrap{padding:18px}
@@ -107,6 +108,7 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
     <span class="legend-item"><span class="legend-dot" style="background:#1976D2"></span>≥ 1.4m (DWS ok)</span>
     <span class="legend-item"><span class="legend-dot" style="background:#c04040"></span>&lt; 1.4m</span>
     <span class="legend-item" id="legend-thresh" style="color:#f5a623">— seuil 1.4m</span>
+    <span class="legend-item" style="color:#f5e88a">— 1.5m</span>
     <button id="tog24" onclick="showFull24=!showFull24;render()" style="margin-left:auto;background:#1a2a3a;border:1px solid #2a4060;color:#5a8aaa;font-size:10px;padding:2px 8px;border-radius:4px;cursor:pointer">24h</button>
   </div>
   <div id="chart-rows"></div>
@@ -643,6 +645,7 @@ function render(){
   // Vertical bar chart — 30-min interpolated
   const BAREA = 474; // px — bar drawing area height
   const threshPx = Math.round(DWS_THRESH / MAX_H * BAREA);
+  const thresh2Px = Math.round(1.5 / MAX_H * BAREA);
   const a30 = interp30(arr);
   const idxFrom = showFull24 ? 0  : 12; // 0:00 or 6:00
   const idxTo   = showFull24 ? 46 : 38; // 23:00 or 19:00
@@ -668,7 +671,7 @@ function render(){
   ).join('');
   const dateBg = `<div class="chart-datebg"><span class="cdb-day">${curDay}</span><span class="cdb-mon">${MONTHS[mIdx].short.toUpperCase()}</span></div>`;
   document.getElementById('chart-rows').innerHTML =
-    `<div class="vchart">${dateBg}${grids}<div class="vthresh" style="bottom:${threshPx + 22}px"></div>${cols}</div>`;
+    `<div class="vchart">${dateBg}${grids}<div class="vthresh" style="bottom:${threshPx + 22}px"></div><div class="vthresh2" style="bottom:${thresh2Px + 22}px"></div>${cols}</div>`;
 
   // Calendar highlight
   document.querySelectorAll('.cal-day[data-d]').forEach(el => {
