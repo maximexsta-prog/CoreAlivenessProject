@@ -875,6 +875,12 @@ renderTabs(); renderCal(); render();
     dx < 0 ? nextDay() : prevDay(); // swiped left = next day, swiped right = previous day
   }, {passive: true});
 })();
+
+// Desktop: left/right arrow keys change day, same as swiping on mobile.
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') { prevDay(); }
+  else if (e.key === 'ArrowRight') { nextDay(); }
+});
 </script>
 </body>
 </html>
