@@ -1,3 +1,13 @@
+<!--
+  This is ONE file with 3 parts, like every website:
+  1. <style> below = the LOOK (colors, sizes, spacing). Doesn't do anything, just decoration.
+  2. <body> further down = the CONTENT (boxes, titles, buttons - the actual page structure).
+  3. <script> near the bottom = the BEHAVIOR (the "brain" - reads tide numbers, decides
+     colors/labels, and rewrites pieces of the page when you click something).
+  Nothing on screen is "permanent" - almost all of <body>'s inner content is generated
+  by JavaScript functions (see render()/renderCal()/renderTabs() near the bottom) and
+  rewritten every time you change day/month/language.
+-->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -5,6 +15,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Marées – Ha Long Bay</title>
 <style>
+/* * = "every element". This resets the browser's built-in spacing/sizing quirks
+   so we start from a clean, predictable slate instead of fighting default margins. */
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#1a2535;color:#fff;min-height:100vh}
 header{background:#0d1520;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2a3a50}
@@ -57,6 +69,9 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 .vbar{width:100%;height:100%;min-height:1px;border-radius:2px 2px 0 0;transition:height .3s}
 .vhr{position:absolute;top:100%;left:0;right:0;font-size:7px;color:#4a6a85;text-align:center;padding-top:3px;line-height:1}
 .vcol.vwin .vhr{color:#6ab090}
+/* The two horizontal "safety threshold" lines drawn across the bar chart.
+   .vthresh = orange line at the 1.4m DWS minimum. .vthresh2 = pale-yellow line at 1.5m.
+   Their vertical position (the "bottom" CSS value) is calculated in JS in render(). */
 .vthresh{position:absolute;left:8px;right:8px;height:1px;background:#f5a623;opacity:.8;z-index:2;pointer-events:none}
 .vthresh2{position:absolute;left:8px;right:8px;height:1px;background:#f5e88a;opacity:.8;z-index:2;pointer-events:none}
 
@@ -86,6 +101,7 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 </head>
 <body>
 
+<!-- Top bar: title + the Fr/En language switch button (calls toggleLang() in the script). -->
 <header>
   <div>
     <div class="sub" id="hdr-sub">🌊 Marées astronomiques · ICT (UTC+7)</div>
@@ -95,13 +111,18 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
   <div class="badge" id="hdr-badge">Usage interne DWS</div>
 </header>
 
+<!-- Empty on purpose: renderTabs() fills this with one button per month (Jan, Feb, ...). -->
 <div class="tabs" id="tabs"></div>
 
 
+<!-- Empty on purpose: render() fills this with the colored DWS status badge (FD/AM/PM/NA...) for the selected day. -->
 <div class="dws-wrap" id="dws-wrap"></div>
 
+<!-- Empty on purpose: render() fills this with the "High tide" / "Low tide" time cards for the selected day. -->
 <div class="events" id="events"></div>
 
+<!-- The tide bar chart for the selected day. Only the legend text/buttons are fixed;
+     the actual bars (#chart-rows) are rebuilt by render() every time the day changes. -->
 <div class="chart" id="chart">
   <div class="chart-head" id="chart-head">Hòn Dấu — Trạm tham chiếu (20°40'N 106°49'E)</div>
   <div class="chart-legend">
@@ -109,6 +130,8 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
     <span class="legend-item"><span class="legend-dot" style="background:#c04040"></span>&lt; 1.4m</span>
     <span class="legend-item" id="legend-thresh" style="color:#f5a623">— seuil 1.4m</span>
     <span class="legend-item" style="color:#f5e88a">— 1.5m</span>
+    <!-- Toggle button: flips the showFull24 flag and redraws the chart either
+         zoomed in (6h-19h) or showing the full 24h day. -->
     <button id="tog24" onclick="showFull24=!showFull24;render()" style="margin-left:auto;background:#1a2a3a;border:1px solid #2a4060;color:#5a8aaa;font-size:10px;padding:2px 8px;border-radius:4px;cursor:pointer">24h</button>
   </div>
   <div id="chart-rows"></div>
@@ -116,6 +139,7 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 
 <div class="station-note" id="station-note-el">Données officielles horaires · Hòn Dấu = station de référence nord Vietnam · Max oct/nov: 4.1 m</div>
 
+<!-- Empty on purpose: renderCal() fills this with one clickable box per day of the selected month. -->
 <div class="cal-wrap">
   <div class="cal-title" id="cal-title-el">Vue mensuelle — cliquer un jour</div>
   <div class="cal-grid" id="calgrid"></div>
@@ -124,6 +148,14 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 <script>
 // ── OFFICIAL DATA: Hòn Dấu 2026, hourly water levels (m), UTC+7
 // Source: Bảng Thủy Triều 2026 — pharung.com.vn (official Vietnamese tide tables)
+//
+// Shape of this object: H['2026-01'][5] = [3.1, 3.2, ... 23 more numbers]
+//   - '2026-01'      = the month (key), one entry per month of the year
+//   - [5]             = the day of that month (1 to 28/30/31)
+//   - the array of 24 numbers = the water height in meters at 0h, 1h, 2h, ... 23h
+// Everything else in this file (the chart, the calendar, the FD/AM/PM labels)
+// is just math/formatting built on top of these raw numbers - this is the only
+// part of the file you'd ever need to edit if the tide tables change.
 const H = {
 '2026-01':{
 1:[3.1,3.2,3.3,3.2,3.1,2.9,2.6,2.3,1.9,1.6,1.3,1.1,0.9,0.8,0.7,0.6,0.7,0.9,1.1,1.4,1.9,2.3,2.6,3.0],
@@ -516,6 +548,13 @@ const H = {
 }
 };
 
+// One entry per month, used to build the month tabs and the calendar grid.
+//   label/short = text shown on screen (full / abbreviated)
+//   key         = matches the keys used in H above, so we can look up that month's data
+//   days        = how many days that month has (28 for Feb 2026, 30 or 31 otherwise)
+//   start       = which weekday the 1st of the month falls on (0=Sunday...6=Saturday),
+//                 used by renderCal() to add empty blank boxes before day 1 so the
+//                 calendar lines up under the correct weekday column
 const MONTHS = [
   {label:'Janvier 2026',   short:'Jan', key:'2026-01', days:31, start:4},
   {label:'Février 2026',  short:'Feb', key:'2026-02', days:28, start:0},
@@ -531,10 +570,25 @@ const MONTHS = [
   {label:'Décembre 2026',  short:'Dec', key:'2026-12', days:31, start:2},
 ];
 
+// MAX_H = the tallest tide value the chart's vertical scale goes up to (used to convert
+//          a height in meters into a height in pixels for the bars).
+// DWS_THRESH = the safety minimum (1.4m). Below this, diving is considered unsafe.
 const MAX_H = 4.5;
 const DWS_THRESH = 1.4;
+
+// These 4 variables are the app's "current state" - what's on screen right now.
+// They get changed by the click/tap functions below (selMonth, pick, prevDay, nextDay,
+// toggleLang), and every time one of them changes, render()/renderCal() are called
+// again to redraw the page to match the new state.
+//   mIdx       = index into MONTHS[] of the month currently shown (9 = October, since arrays start at 0)
+//   curDay     = the day number currently selected (1-31)
+//   showFull24 = false = chart shows only 6h-19h (the interesting window); true = shows all 24h
+//   lang       = 'fr' or 'en' - which language's text to display
 let mIdx = 9, curDay = 15, showFull24 = false, lang = 'fr';
 
+// All the on-screen text that changes with language, in one place. TR[lang].XXX
+// is used everywhere instead of hardcoding French or English directly, so toggleLang()
+// can swap every label on the page just by switching which half of this object it reads from.
 const TR = {
   fr: {
     sub:         '🌊 Marées astronomiques · ICT (UTC+7)',
@@ -574,9 +628,18 @@ const TR = {
   }
 };
 
+// Looks up the 24 hourly numbers for one specific day.
+// If that day doesn't exist in H (shouldn't normally happen), falls back to a flat
+// "2m all day" array instead of crashing - a safety net, not real data.
 function getArr(mi, day){ return H[MONTHS[mi].key][day] || Array(24).fill(2); }
 
-// Linear interpolation to 30-min resolution; a[h*2]=h:00, a[h*2+1]=h:30
+// Takes the 24 hourly readings and "fills in the gaps" to get a reading every 30 minutes
+// instead of every 60. It does this with simple averaging: the guessed value at h:30 is
+// just the midpoint between the h:00 and (h+1):00 readings (a straight line between two
+// known points - this is called "linear interpolation").
+// Result: 47 values. Even index (0,2,4...) = the original hour readings (h:00).
+//         Odd index (1,3,5...) = the guessed half-hour readings (h:30).
+//   So a[h*2] = reading at h:00, a[h*2+1] = reading at h:30.
 function interp30(arr) {
   const r = [];
   for (let i = 0; i < arr.length - 1; i++) { r.push(arr[i]); r.push((arr[i]+arr[i+1])/2); }
@@ -584,28 +647,55 @@ function interp30(arr) {
   return r; // 47 values, indices 0–46
 }
 
-// DWS status using 30-min interpolation for sign-accurate windows + boat leeway
+// THE MAIN RULE ENGINE. For one day's tide readings, decides what kind of diving
+// session is possible: Full Day, morning-only, afternoon-only, a "bonus" early/late
+// window, or none at all (forbidden / NA).
+//
+// How it works: it checks several fixed time windows, one after another, and uses the
+// FIRST one that's true. "True" means: every single 30-minute reading inside that
+// window is at or above the 1.4m safety threshold (T). The order of these checks is
+// the priority order - e.g. a Full Day window is checked before anything else, because
+// if the whole day is safe we don't need to bother checking smaller windows.
+// If NONE of the windows pass, the day falls through to the last line: forbidden (🚫).
+//
+// a.slice(18,33) etc. = "the chunk of the 30-min array covering that specific window".
+// Since index 0 = midnight and each index = 30 minutes, index 18 = 9h00, index 33 = 16h30
+// (slice's end is exclusive, so .slice(18,33) actually covers up to but not including 33,
+// i.e. up to 16h00's reading at index 32 - meaning the window is 9h00 through 16h00).
 function dwsStatus(arr) {
   const T = DWS_THRESH;
   const t = TR[lang];
   const a = interp30(arr); // a[h*2]=h:00, a[h*2+1]=h:30
+
+  // 1) Best case: safe non-stop from 9h to 16h -> Full Day
   if (a.slice(18,33).every(v=>v>=T))
     return {code:'FD',  label:t.FD_label,  window:'9h – 16h',        color:'#27ae60', bg:'rgba(39,174,96,.12)'};
+  // 2) Morning window A: safe 9h to 12h -> Morning
   if (a.slice(18,25).every(v=>v>=T))
     return {code:'AM',  label:t.AM_label,  window:'9h – 12h',        color:'#2980b9', bg:'rgba(41,128,185,.12)'};
+  // 3) Morning window B (slightly earlier/wider): safe 8h to 11h -> Morning
   if (a.slice(16,23).every(v=>v>=T))
     return {code:'AM',  label:t.AM_label,  window:'8h – 11h',        color:'#2980b9', bg:'rgba(41,128,185,.12)'};
+  // 4) Afternoon window A: safe 12h to 16h -> Afternoon
   if (a.slice(24,33).every(v=>v>=T))
     return {code:'PM',  label:t.PM_label,  window:'12h – 16h',       color:'#e67e22', bg:'rgba(230,126,34,.12)'};
+  // 5) Afternoon window B (shifted later): safe 13h30 to 17h -> Afternoon
   if (a.slice(27,35).every(v=>v>=T))
     return {code:'PM',  label:t.PM_label,  window:'13h30 – 17h',     color:'#e67e22', bg:'rgba(230,126,34,.12)'};
+  // 6) None of the AM/PM/FD windows worked - last chance, an earlier "bonus" morning
+  //    window: safe 6h30 to 10h -> Early morning (marked with a star)
   if (a.slice(13,21).every(v=>v>=T))
     return {code:'AM★', label:t.AM_star,   window:'6h30 – 10h',      color:'#3498db', bg:'rgba(52,152,219,.10)'};
+  // 7) Same idea but for the end of the day: safe 15h to 17h30 -> Late afternoon (star)
   if (a.slice(30,36).every(v=>v>=T))
     return {code:'PM★', label:t.PM_star,   window:'15h – 17h30',     color:'#f39c12', bg:'rgba(243,156,18,.10)'};
+  // 8) Nothing matched at all -> the day is unsafe for diving, no window works
   return {code:'🚫', label:t.closed_lab, window:t.closed_win,       color:'#e74c3c', bg:'rgba(231,76,60,.12)'};
 }
 
+// Picks the fill color for one bar in the chart, based on how high the water is at
+// that half-hour. Red = below the safety threshold (1.4m). Above that, the bar gets
+// progressively darker blue the higher the water is - purely visual, no logic impact.
 function barColor(h){
   if(h < DWS_THRESH) return '#c04040';
   if(h>=3.5) return '#0d47a1';
@@ -614,15 +704,19 @@ function barColor(h){
   return '#1E88E5';
 }
 
+// Redraws everything that depends on "which day is selected": the colored status
+// banner, the high/low tide cards, and the bar chart. Called every time the user
+// picks a new day, changes month, toggles 24h view, or switches language.
 function render(){
   const m = MONTHS[mIdx];
   const key = m.key + '-' + String(curDay).padStart(2,'0');
-  const arr = getArr(mIdx, curDay);
-  const dws = dwsStatus(arr);
+  const arr = getArr(mIdx, curDay);          // the 24 hourly readings for the selected day
+  const dws = dwsStatus(arr);                 // run the rule engine to get FD/AM/PM/NA + color
 
 
 
-  // DWS status banner
+  // DWS status banner: build a colored box showing the code (FD/AM/PM/...), the
+  // plain-language label, and the time window - using whatever dwsStatus() returned.
   document.getElementById('dws-wrap').innerHTML =
     `<div class="dws-badge" style="background:${dws.bg};border-color:${dws.color}55;color:${dws.color}">
       <div class="dws-code">${dws.code}</div>
@@ -632,7 +726,8 @@ function render(){
       </div>
     </div>`;
 
-  // Find daily high / low from hourly data
+  // Find daily high / low from hourly data: scan the 24 numbers for the biggest
+  // and smallest, then find which hour (index) that value happened at.
   const maxH = Math.max(...arr);
   const minL = Math.min(...arr);
   const maxHr = arr.indexOf(maxH);
@@ -642,53 +737,67 @@ function render(){
     `<div class="ecard high"><div class="etype">${TR[lang].highTide}</div><div class="etime">${fmtH(maxHr)}</div><div class="eheight">${maxH.toFixed(2)} m</div></div>` +
     `<div class="ecard low"><div class="etype">${TR[lang].lowTide}</div><div class="etime">${fmtH(minHr)}</div><div class="eheight">${minL.toFixed(2)} m</div></div>`;
 
-  // Vertical bar chart — 30-min interpolated
+  // Vertical bar chart — 30-min interpolated.
+  // The chart is drawn entirely with math: every height/position below is converted
+  // from "meters" into "pixels" using the same ratio (value / MAX_H * BAREA), so a
+  // taller tide always means a taller bar, scaled to fit the fixed-height chart box.
   const BAREA = 474; // px — bar drawing area height
-  const threshPx = Math.round(DWS_THRESH / MAX_H * BAREA);
-  const thresh2Px = Math.round(1.5 / MAX_H * BAREA);
-  const a30 = interp30(arr);
-  const idxFrom = showFull24 ? 0  : 12; // 0:00 or 6:00
-  const idxTo   = showFull24 ? 46 : 38; // 23:00 or 19:00
+  const threshPx = Math.round(DWS_THRESH / MAX_H * BAREA);  // pixel position of the 1.4m line
+  const thresh2Px = Math.round(1.5 / MAX_H * BAREA);        // pixel position of the 1.5m line
+  const a30 = interp30(arr); // 47 half-hour values for the whole day
+  const idxFrom = showFull24 ? 0  : 12; // start at midnight, or 6:00 if zoomed in
+  const idxTo   = showFull24 ? 46 : 38; // end at 23:00, or 19:00 if zoomed in
   // in 24h mode show hour label only every 2h to avoid crowding
   const labelEvery = showFull24 ? 4 : 2;
-  let cols = '';
+  let cols = ''; // will hold the HTML for every single bar, glued together
   for(let idx = idxFrom; idx <= idxTo; idx++){
-    const lev = a30[idx];
-    const bh = Math.max(1, lev / MAX_H * BAREA);
-    const isHalf = idx % 2 === 1;
-    const h = Math.floor(idx / 2);
-    const inWin = idx >= 18 && idx <= 32; // 9:00–16:00
+    const lev = a30[idx];                          // water height at this half-hour
+    const bh = Math.max(1, lev / MAX_H * BAREA);    // bar height in pixels (min 1px so it's always visible)
+    const isHalf = idx % 2 === 1;                   // true if this column is a "h:30" reading
+    const h = Math.floor(idx / 2);                  // the hour number this column belongs to
+    const inWin = idx >= 18 && idx <= 32;            // highlight band: 9:00–16:00 (the FD window)
     const showLabel = !isHalf && (h % (labelEvery/2) === 0);
     const label = isHalf ? (showFull24 ? '' : '·') : (showLabel ? String(h).padStart(2,'0') : '');
+    // One <div> per bar: its pixel height is set inline, its color comes from barColor(),
+    // and hovering it shows the exact value via the data-h attribute (see CSS .vcol::after).
     cols += `<div class="vcol${inWin?' vwin':''}${isHalf?' vhalf':''}" style="height:${bh}px" data-h="${lev.toFixed(2)}">` +
       `<div class="vbar" style="background:${barColor(lev)}"></div>` +
       `<div class="vhr">${label}</div></div>`;
   }
+  // Update the 24h/6h-19h toggle button's text/color to reflect the current mode
   document.getElementById('tog24').textContent = showFull24 ? '6h–19h' : '24h';
   document.getElementById('tog24').style.color = showFull24 ? '#3498db' : '#5a8aaa';
+  // Faint horizontal gridlines every 0.5m, with a small number label on each
   const grids = [0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0].map(g =>
     `<div class="vgrid" style="bottom:${Math.round(g/MAX_H*BAREA)+22}px"><span class="vglabel">${g.toFixed(1)}</span></div>`
   ).join('');
+  // Big faint "15 OCT"-style watermark behind the bars, just for visual flair
   const dateBg = `<div class="chart-datebg"><span class="cdb-day">${curDay}</span><span class="cdb-mon">${MONTHS[mIdx].short.toUpperCase()}</span></div>`;
+  // Assemble everything (watermark + gridlines + the 2 threshold lines + all the bars)
+  // into one HTML string and drop it into the page in a single shot.
   document.getElementById('chart-rows').innerHTML =
     `<div class="vchart">${dateBg}${grids}<div class="vthresh" style="bottom:${threshPx + 22}px"></div><div class="vthresh2" style="bottom:${thresh2Px + 22}px"></div>${cols}</div>`;
 
-  // Calendar highlight
+  // Calendar highlight: just toggle which day box has the "active" outline,
+  // without rebuilding the whole calendar (cheaper than calling renderCal() again).
   document.querySelectorAll('.cal-day[data-d]').forEach(el => {
     el.classList.toggle('active', +el.dataset.d === curDay);
   });
 }
 
+// Rebuilds the whole calendar grid for the current month: one box per day, each
+// showing the day number, its DWS code (FD/AM/PM/...), and the day's max tide height.
 function renderCal(){
   const m = MONTHS[mIdx];
-  const hdr = TR[lang].calHdr;
+  const hdr = TR[lang].calHdr;                       // weekday letters (D L M M J V S, or S M T W T F S)
   let h = hdr.map(x => `<div class="cal-hdr">${x}</div>`).join('');
+  // Add blank boxes before day 1 so day 1 lines up under the correct weekday column
   for(let i = 0; i < m.start; i++) h += `<div class="cal-day empty"></div>`;
   for(let d = 1; d <= m.days; d++){
     const arr = H[m.key][d] || [];
     const maxH = arr.length ? Math.max(...arr) : null;
-    const dws = arr.length ? dwsStatus(arr) : null;
-    const isNA = dws && dws.code === '🚫';
+    const dws = arr.length ? dwsStatus(arr) : null;   // run the same rule engine used by render()
+    const isNA = dws && dws.code === '🚫';             // forbidden days get a special full-red box
     h += `<div class="cal-day${d === curDay ? ' active' : ''}${isNA ? ' na' : ''}" data-d="${d}" onclick="pick(${d})"
       style="${dws ? `border-top:2px solid ${dws.color}${isNA ? '' : '60'}` : ''}${isNA ? ';background:rgba(231,76,60,.22)' : ''}">
       <div class="cdn">${d}</div>
@@ -699,6 +808,8 @@ function renderCal(){
   document.getElementById('calgrid').innerHTML = h;
 }
 
+// Rebuilds the row of month buttons (Jan, Feb, Mar...) at the top, highlighting
+// whichever month is currently selected. Clicking a button calls selMonth(i).
 function renderTabs(){
   document.getElementById('tabs').innerHTML = MONTHS.map((m,i) =>
     (i === 6 ? '<div class="tab-break"></div>' : '') +
@@ -706,6 +817,9 @@ function renderTabs(){
   ).join('');
 }
 
+// Flips between French and English: swaps the `lang` variable, updates every
+// fixed piece of text on the page directly, then re-runs render()/renderCal()
+// so the day-specific text (labels, calendar headers) also switches language.
 function toggleLang(){
   lang = lang === 'fr' ? 'en' : 'fr';
   document.getElementById('lang-tog').textContent = lang === 'fr' ? 'Fr' : 'En';
@@ -717,25 +831,35 @@ function toggleLang(){
   render();
   renderCal();
 }
+// Called when a month tab button is clicked: switch month, reset to day 1, redraw everything.
 function selMonth(i){ mIdx=i; curDay=1; renderTabs(); renderCal(); render(); }
+// Called when a calendar day box is clicked: select that day, redraw the chart/banner + calendar.
 function pick(d){ curDay=d; render(); renderCal(); }
+// Go back one day. If we're on day 1, roll back into the last day of the previous month instead.
 function prevDay(){
   if(curDay>1){ curDay--; render(); renderCal(); }
   else if(mIdx>0){ mIdx--; curDay=MONTHS[mIdx].days; renderTabs(); renderCal(); render(); }
 }
+// Go forward one day. If we're on the last day of the month, roll into day 1 of the next month.
 function nextDay(){
   if(curDay<MONTHS[mIdx].days){ curDay++; render(); renderCal(); }
   else if(mIdx<MONTHS.length-1){ mIdx++; curDay=1; renderTabs(); renderCal(); render(); }
 }
 
-// Init
+// Init: draw the page for the very first time when it loads (using the default
+// mIdx/curDay/lang values set above), before any click/tap has happened.
 renderTabs(); renderCal(); render();
 
-// Swipe on chart to change day (and auto-advance month)
+// Swipe on chart to change day (and auto-advance month).
+// This is an IIFE ("Immediately Invoked Function Expression") - a function that
+// runs itself right away. It's used here just to keep tx/ty/pinch as private
+// variables that nothing else in the file can accidentally read or overwrite.
 (function(){
   const el = document.getElementById('chart');
-  let tx = 0, ty = 0, pinch = false;
+  let tx = 0, ty = 0, pinch = false; // tx/ty = where the touch started; pinch = "ignore this gesture"
   el.addEventListener('touchstart', e => {
+    // If more than one finger touches the screen, it's a pinch-to-zoom gesture, not a
+    // swipe - remember that and ignore it later in touchend, so zooming never flips the day.
     if (e.touches.length > 1) { pinch = true; return; }
     pinch = false;
     tx = e.touches[0].clientX;
@@ -743,10 +867,12 @@ renderTabs(); renderCal(); render();
   }, {passive: true});
   el.addEventListener('touchend', e => {
     if (pinch) return;
-    const dx = e.changedTouches[0].clientX - tx;
-    const dy = e.changedTouches[0].clientY - ty;
+    const dx = e.changedTouches[0].clientX - tx; // how far the finger moved horizontally
+    const dy = e.changedTouches[0].clientY - ty; // how far it moved vertically
+    // Ignore tiny movements (under 40px) and movements that were more vertical than
+    // horizontal (probably scrolling, not swiping left/right).
     if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
-    dx < 0 ? nextDay() : prevDay();
+    dx < 0 ? nextDay() : prevDay(); // swiped left = next day, swiped right = previous day
   }, {passive: true});
 })();
 </script>
