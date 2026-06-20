@@ -312,6 +312,18 @@ html, body {
 .elementor-46 .jkit-submit-input-holder {
     flex-shrink: 0 !important;
 }
+/* Desktop/tablet: merge input + button into one connected bar (flush, no gap, no load jump) */
+@media (min-width: 768px) {
+    .elementor-46 .jkit-mailchimp-email .jkit-email {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+    .elementor-46 .jkit-mailchimp-submit.position-after {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+        margin-left: 0 !important;
+    }
+}
 .elementor-46 .elementor-element.elementor-element-35df0e46 img,
 .elementor-46 .elementor-element.elementor-element-1fc270f2 img {
     height: 140px !important;
