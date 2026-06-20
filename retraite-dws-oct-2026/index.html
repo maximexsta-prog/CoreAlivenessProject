@@ -302,6 +302,16 @@ html, body {
     padding-top: 20px !important;
     padding-bottom: 20px !important;
 }
+/* Never wrap to two rows: button stays flush-right on the input from first paint, no load-time jump */
+.elementor-46 .jkit-form-wrapper.email-form {
+    flex-wrap: nowrap !important;
+}
+.elementor-46 .jkit-mailchimp-email.jkit-input-wrapper {
+    min-width: 0 !important;
+}
+.elementor-46 .jkit-submit-input-holder {
+    flex-shrink: 0 !important;
+}
 .elementor-46 .elementor-element.elementor-element-35df0e46 img,
 .elementor-46 .elementor-element.elementor-element-1fc270f2 img {
     height: 140px !important;
