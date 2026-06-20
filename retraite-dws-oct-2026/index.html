@@ -294,34 +294,52 @@ html, body {
     justify-content: center !important;
 }
 
-/* Mailchimp signup button: flush against input on the right, taller */
-.elementor-46 .jkit-input-wrapper:not(.jkit-submit-input-holder) {
-    margin-right: 0 !important;
-}
-.elementor-46 .jkit-mailchimp-submit {
-    padding-top: 20px !important;
-    padding-bottom: 20px !important;
-}
-/* Never wrap to two rows: button stays flush-right on the input from first paint, no load-time jump */
+/* Mailchimp signup button: pinned flush-right INSIDE the rounded input pill via
+   position:absolute. Unlike the old negative-margin trick, this doesn't depend on
+   text/font width, so it can't shift position once the web font finishes loading. */
 .elementor-46 .jkit-form-wrapper.email-form {
+    position: relative !important;
     flex-wrap: nowrap !important;
 }
 .elementor-46 .jkit-mailchimp-email.jkit-input-wrapper {
+    flex: 1 1 100% !important;
+    margin-right: 0 !important;
     min-width: 0 !important;
 }
-.elementor-46 .jkit-submit-input-holder {
-    flex-shrink: 0 !important;
+.elementor-46 .jkit-mailchimp-email .jkit-email {
+    width: 100% !important;
+    border-radius: 50px !important;
+    padding-right: 230px !important;
 }
-/* Desktop/tablet: merge input + button into one connected bar (flush, no gap, no load jump) */
-@media (min-width: 768px) {
+.elementor-46 .jkit-submit-input-holder {
+    position: absolute !important;
+    top: 50% !important;
+    right: 6px !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    flex: none !important;
+}
+.elementor-46 .jkit-mailchimp-submit {
+    border-radius: 50px !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    white-space: nowrap !important;
+}
+@media (max-width: 1024px) {
     .elementor-46 .jkit-mailchimp-email .jkit-email {
-        border-top-right-radius: 0 !important;
-        border-bottom-right-radius: 0 !important;
+        padding-right: 190px !important;
     }
-    .elementor-46 .jkit-mailchimp-submit.position-after {
-        border-top-left-radius: 0 !important;
-        border-bottom-left-radius: 0 !important;
-        margin-left: 0 !important;
+}
+@media (max-width: 480px) {
+    .elementor-46 .jkit-mailchimp-email .jkit-email {
+        padding-right: 165px !important;
+    }
+    .elementor-46 .jkit-submit-input-holder {
+        right: 4px !important;
+    }
+    .elementor-46 .jkit-mailchimp-submit {
+        padding-left: 14px !important;
+        padding-right: 14px !important;
     }
 }
 .elementor-46 .elementor-element.elementor-element-35df0e46 img,
