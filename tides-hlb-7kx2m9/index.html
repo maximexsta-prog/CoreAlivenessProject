@@ -14,88 +14,113 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Marées – Ha Long Bay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>(function(){try{var t=localStorage.getItem('tide_theme');if(t==='dark')document.documentElement.classList.add('dark');else if(t==='light')document.documentElement.classList.add('light');}catch(e){}})();</script>
 <style>
 /* * = "every element". This resets the browser's built-in spacing/sizing quirks
    so we start from a clean, predictable slate instead of fighting default margins. */
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#1a2535;color:#fff;min-height:100vh}
-header{background:#0d1520;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2a3a50}
-header h1{font-size:17px;font-weight:700;letter-spacing:.3px}
-header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
-.badge{font-size:10px;color:#3a6080;text-align:right;line-height:1.5}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+/* Dashboard palette. Light by default; dark auto-follows the device, or is forced
+   by the .dark/.light class on <html> from the theme toggle in the header. */
+:root{
+  --bg:#f6f7f9; --card:#ffffff; --line:#e6e8ee; --line2:#eef0f4; --txt:#0f141c; --muted:#5e6675; --faint:#9aa2b1;
+  --blue:#2f6bf6; --blue-soft:#eef3ff; --tile:#f1f3f7; --green:#13a04a;
+  --chart:#ffffff; --grid:rgba(15,20,28,.07); --win:rgba(47,107,246,.06); --watermark:rgba(47,107,246,.07);
+}
+@media(prefers-color-scheme:dark){:root:not(.light){
+  --bg:#050505; --card:#0d0d0d; --line:#1f1f1f; --line2:#161616; --txt:#fafafa; --muted:#9a9a9a; --faint:#5e5e5e;
+  --blue:#5b8cff; --blue-soft:#101a2c; --tile:#161616; --green:#3ecf8e;
+  --chart:#0c0c0c; --grid:rgba(255,255,255,.06); --win:rgba(91,140,255,.08); --watermark:rgba(91,140,255,.06);
+}}
+:root.dark{
+  --bg:#050505; --card:#0d0d0d; --line:#1f1f1f; --line2:#161616; --txt:#fafafa; --muted:#9a9a9a; --faint:#5e5e5e;
+  --blue:#5b8cff; --blue-soft:#101a2c; --tile:#161616; --green:#3ecf8e;
+  --chart:#0c0c0c; --grid:rgba(255,255,255,.06); --win:rgba(91,140,255,.08); --watermark:rgba(91,140,255,.06);
+}
+body{background:var(--bg);color:var(--txt);min-height:100vh;font-size:14px;-webkit-font-smoothing:antialiased}
+
+header{background:var(--card);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand .logo{width:34px;height:34px;flex:0 0 34px;border-radius:8px;background:var(--blue);display:grid;place-items:center}
+header h1{font-size:16px;font-weight:700;letter-spacing:-.2px;color:var(--txt)}
+header .sub{font-size:11px;color:var(--muted);margin-top:2px}
+.hdr-actions{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.badge{font-size:10px;color:var(--faint);text-align:right;line-height:1.4;max-width:90px}
+#lang-tog{font-size:12px;color:var(--muted);cursor:pointer;padding:7px 10px;border:1px solid var(--line);border-radius:8px;font-weight:600;user-select:none;transition:.15s}
+#lang-tog:hover{background:var(--tile);color:var(--txt)}
+#theme-tog{display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;cursor:pointer;transition:.15s}
+#theme-tog:hover{background:var(--tile);color:var(--txt)}
+#theme-tog svg{width:17px;height:17px}
 
 /* Month tabs */
-.tabs{display:flex;flex-wrap:wrap;gap:8px;padding:14px 18px 0}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;padding:16px 18px 0}
 .tab-break{width:100%;height:0}
-.tab{background:#1e2f42;border:1px solid #2a3f55;color:#7aa;padding:7px 14px;border-radius:20px;cursor:pointer;font-size:13px;transition:.15s}
-.tab:hover{background:#253a52}
-.tab.active{background:#1565C0;border-color:#1565C0;color:#fff}
+.tab{background:var(--tile);border:1px solid transparent;color:var(--muted);padding:7px 14px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600;transition:.15s}
+.tab:hover{background:var(--blue-soft);color:var(--blue)}
+.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
 
-
-/* DWS status banner */
-.dws-wrap{padding:5px 18px 12px}
-.dws-badge{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:8px;border:1px solid transparent}
-.dws-code{font-size:18px;font-weight:900;letter-spacing:-.5px;min-width:36px}
+/* DWS status banner (status colours are set inline by JS — they read well on both themes) */
+.dws-wrap{padding:10px 18px 12px}
+.dws-badge{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:11px;border:1px solid transparent}
+.dws-code{font-size:18px;font-weight:800;letter-spacing:-.5px;min-width:36px}
 .dws-info{flex:1}
 .dws-label{font-size:12px;font-weight:700;line-height:1.4}
-.dws-window{font-size:10px;opacity:.75;margin-top:1px}
+.dws-window{font-size:10px;opacity:.8;margin-top:1px}
 
 /* Event cards */
 .events{display:flex;gap:10px;padding:0 18px 14px;flex-wrap:wrap}
-.ecard{background:#0d1520;border-radius:8px;padding:10px 14px;flex:1;min-width:110px;border-left:3px solid #1565C0}
-.ecard.low{border-left-color:#2ecc71}
-.etype{font-size:10px;text-transform:uppercase;color:#4a7090;margin-bottom:4px;letter-spacing:.5px}
-.etime{font-size:17px;font-weight:800;letter-spacing:-.3px}
-.eheight{font-size:12px;color:#5a9ab0;margin-top:2px}
+.ecard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 14px;flex:1;min-width:110px;border-left:3px solid var(--blue)}
+.ecard.low{border-left-color:var(--green)}
+.etype{font-size:10px;text-transform:uppercase;color:var(--faint);margin-bottom:4px;letter-spacing:.5px;font-weight:600}
+.etime{font-size:17px;font-weight:800;letter-spacing:-.3px;color:var(--txt)}
+.eheight{font-size:12px;color:var(--muted);margin-top:2px}
 
 /* Chart */
-.chart{margin:0 18px;background:#0d1520;border-radius:10px;overflow:hidden}
-.chart-head{background:#1560a0;padding:7px 12px;font-size:12px;font-weight:700;letter-spacing:.3px;text-align:center}
-.chart-legend{background:#0a1825;padding:5px 12px;display:flex;align-items:center;gap:14px;font-size:10px;color:#5a8aaa;border-bottom:1px solid #1a2a3a}
+.chart{margin:0 18px;background:var(--chart);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.chart-head{background:var(--blue);color:#fff;padding:8px 12px;font-size:12px;font-weight:700;letter-spacing:.2px;text-align:center}
+.chart-legend{padding:6px 12px;display:flex;align-items:center;gap:14px;font-size:10px;color:var(--muted);border-bottom:1px solid var(--line2);flex-wrap:wrap}
 .legend-item{display:flex;align-items:center;gap:4px}
 .legend-dot{width:8px;height:8px;border-radius:50%}
+.tog24{margin-left:auto;background:var(--tile);border:1px solid var(--line);color:var(--muted);font-size:10px;font-weight:600;padding:3px 9px;border-radius:6px;cursor:pointer}
 /* Vertical bar chart */
 .vchart{position:relative;display:flex;align-items:flex-end;height:558px;padding:6px 8px 22px 28px;gap:1px}
 .chart-datebg{position:absolute;top:12px;left:0;right:0;text-align:center;pointer-events:none;z-index:0;user-select:none;line-height:1}
-.cdb-day{display:block;font-size:96px;font-weight:900;letter-spacing:-4px;color:rgba(52,152,219,0.09)}
-.cdb-mon{display:block;font-size:28px;font-weight:700;letter-spacing:4px;color:rgba(52,152,219,0.09);margin-top:-8px}
-.vcol.vhalf .vhr{font-size:5px;color:rgba(74,106,133,0.35)}
-.vgrid{position:absolute;left:0;right:0;height:1px;background:rgba(255,255,255,0.06);z-index:1;pointer-events:none}
-.vglabel{position:absolute;left:2px;top:-7px;font-size:7px;color:rgba(90,138,170,0.5);line-height:1}
+.cdb-day{display:block;font-size:96px;font-weight:900;letter-spacing:-4px;color:var(--watermark)}
+.cdb-mon{display:block;font-size:28px;font-weight:700;letter-spacing:4px;color:var(--watermark);margin-top:-8px}
+.vcol.vhalf .vhr{font-size:5px;color:var(--faint);opacity:.6}
+.vgrid{position:absolute;left:0;right:0;height:1px;background:var(--grid);z-index:1;pointer-events:none}
+.vglabel{position:absolute;left:2px;top:-7px;font-size:7px;color:var(--faint);line-height:1}
 .vcol{flex:1;min-width:0;position:relative;cursor:default}
-.vcol.vwin{background:rgba(0,50,20,0.18);border-radius:2px}
-.vcol::after{content:attr(data-h)'m';position:absolute;top:0;left:50%;transform:translateX(-50%);background:rgba(8,20,40,0.92);color:#e0f0ff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;white-space:nowrap;z-index:10;pointer-events:none;opacity:0;transition:opacity .1s}
+.vcol.vwin{background:var(--win);border-radius:2px}
+.vcol::after{content:attr(data-h)'m';position:absolute;top:0;left:50%;transform:translateX(-50%);background:#111827;color:#e0f0ff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;z-index:10;pointer-events:none;opacity:0;transition:opacity .1s}
 .vcol:hover::after{opacity:1}
 .vbar{width:100%;height:100%;min-height:1px;border-radius:2px 2px 0 0;transition:height .3s}
-.vhr{position:absolute;top:100%;left:0;right:0;font-size:7px;color:#4a6a85;text-align:center;padding-top:3px;line-height:1}
-.vcol.vwin .vhr{color:#6ab090}
-/* The two horizontal "safety threshold" lines drawn across the bar chart.
-   .vthresh = orange line at the 1.4m DWS minimum. .vthresh2 = pale-yellow line at 1.5m.
-   Their vertical position (the "bottom" CSS value) is calculated in JS in render(). */
-.vthresh{position:absolute;left:8px;right:8px;height:1px;background:#f5a623;opacity:.8;z-index:2;pointer-events:none}
-.vthresh2{position:absolute;left:8px;right:8px;height:1px;background:#f5e88a;opacity:.8;z-index:2;pointer-events:none}
+.vhr{position:absolute;top:100%;left:0;right:0;font-size:7px;color:var(--faint);text-align:center;padding-top:3px;line-height:1}
+.vcol.vwin .vhr{color:var(--blue)}
+.vthresh{position:absolute;left:8px;right:8px;height:1px;background:#f5a623;opacity:.85;z-index:2;pointer-events:none}
+.vthresh2{position:absolute;left:8px;right:8px;height:1px;background:#f5e88a;opacity:.85;z-index:2;pointer-events:none}
 
 /* Calendar */
 .cal-wrap{padding:18px}
-.cal-title{font-size:12px;color:#4a7090;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-.cal-hdr{font-size:10px;color:#3a5070;text-align:center;padding:4px 2px;font-weight:700}
-.cal-day{background:#0d1520;border-radius:6px;padding:5px 3px;text-align:center;cursor:pointer;border:1px solid transparent;transition:.1s}
-.cal-day:hover{border-color:#1565C0}
-.cal-day.active{border-color:#1565C0;background:#1a3050}
-.cal-day.empty{background:transparent;cursor:default}
-.cdn{font-size:12px;font-weight:700}
+.cal-title{font-size:12px;color:var(--faint);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-hdr{font-size:10px;color:var(--faint);text-align:center;padding:4px 2px;font-weight:700}
+.cal-day{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 3px;text-align:center;cursor:pointer;transition:.1s}
+.cal-day:hover{border-color:var(--blue)}
+.cal-day.active{border-color:var(--blue);background:var(--blue-soft)}
+.cal-day.empty{background:transparent;border-color:transparent;cursor:default}
+.cdn{font-size:12px;font-weight:700;color:var(--txt)}
 .cdws{font-size:9px;font-weight:800;line-height:1.4;margin-top:1px}
-.cdmax{font-size:9px;color:#5a8ab0;line-height:1.3}
+.cdmax{font-size:9px;color:var(--muted);line-height:1.3}
 
-.station-note{padding:4px 18px 12px;font-size:11px;color:#3a6080}
-#lang-tog{font-size:11px;color:#3a6080;cursor:pointer;padding:0 6px;letter-spacing:.5px;font-weight:700;user-select:none}
-#lang-tog:hover{color:#5a9ab0}
+.station-note{padding:6px 18px 16px;font-size:11px;color:var(--faint)}
 
 @media(max-width:400px){
   .events{gap:6px}
   .ecard{padding:8px 10px}
   .etime{font-size:15px}
+  .badge{display:none}
 }
 </style>
 </head>
@@ -103,12 +128,18 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
 
 <!-- Top bar: title + the Fr/En language switch button (calls toggleLang() in the script). -->
 <header>
-  <div>
-    <div class="sub" id="hdr-sub">🌊 Marées astronomiques · ICT (UTC+7)</div>
-    <h1>Hòn Dấu — Station Hạ Long</h1>
+  <div class="brand">
+    <span class="logo"><svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M2.5 16 8.5 5 12 11 15 7 21.5 16Z" fill="#fff"/><path d="M2.5 19q3.15-1.3 6.3 0t6.3 0t6.3 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg></span>
+    <div>
+      <h1>Hòn Dấu — Hạ Long</h1>
+      <div class="sub" id="hdr-sub">Marées astronomiques · ICT (UTC+7)</div>
+    </div>
   </div>
-  <span id="lang-tog" onclick="toggleLang()">Fr</span>
-  <div class="badge" id="hdr-badge">Usage interne DWS</div>
+  <div class="hdr-actions">
+    <span id="lang-tog" onclick="toggleLang()">Fr</span>
+    <button id="theme-tog" onclick="toggleTheme()" aria-label="Toggle theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18Z" fill="currentColor" stroke="none"/></svg></button>
+    <span class="badge" id="hdr-badge">Usage interne DWS</span>
+  </div>
 </header>
 
 <!-- Empty on purpose: renderTabs() fills this with one button per month (Jan, Feb, ...). -->
@@ -132,7 +163,7 @@ header .sub{font-size:11px;color:#5a8aaa;margin-top:3px}
     <span class="legend-item" style="color:#f5e88a">— 1.5m</span>
     <!-- Toggle button: flips the showFull24 flag and redraws the chart either
          zoomed in (6h-19h) or showing the full 24h day. -->
-    <button id="tog24" onclick="showFull24=!showFull24;render()" style="margin-left:auto;background:#1a2a3a;border:1px solid #2a4060;color:#5a8aaa;font-size:10px;padding:2px 8px;border-radius:4px;cursor:pointer">24h</button>
+    <button id="tog24" class="tog24" onclick="showFull24=!showFull24;render()">24h</button>
   </div>
   <div id="chart-rows"></div>
 </div>
@@ -591,7 +622,7 @@ let mIdx = 9, curDay = 15, showFull24 = false, lang = 'fr';
 // can swap every label on the page just by switching which half of this object it reads from.
 const TR = {
   fr: {
-    sub:         '🌊 Marées astronomiques · ICT (UTC+7)',
+    sub:         'Marées astronomiques · ICT (UTC+7)',
     badge:       'Usage interne DWS',
     stationNote: 'Données officielles horaires · Hòn Dấu = station de référence nord Vietnam · Max oct/nov: 4.1 m',
     calTitle:    'Vue mensuelle — cliquer un jour',
@@ -609,7 +640,7 @@ const TR = {
     closed_win: 'Niveau insuffisant',
   },
   en: {
-    sub:         '🌊 Astronomical tides · ICT (UTC+7)',
+    sub:         'Astronomical tides · ICT (UTC+7)',
     badge:       'Internal DWS use',
     stationNote: 'Official hourly data · Hòn Dấu = north Vietnam reference station · Max Oct/Nov: 4.1 m',
     calTitle:    'Monthly view — click a day',
@@ -766,7 +797,7 @@ function render(){
   }
   // Update the 24h/6h-19h toggle button's text/color to reflect the current mode
   document.getElementById('tog24').textContent = showFull24 ? '6h–19h' : '24h';
-  document.getElementById('tog24').style.color = showFull24 ? '#3498db' : '#5a8aaa';
+  document.getElementById('tog24').style.color = showFull24 ? 'var(--blue)' : 'var(--muted)';
   // Faint horizontal gridlines every 0.5m, with a small number label on each
   const grids = [0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0].map(g =>
     `<div class="vgrid" style="bottom:${Math.round(g/MAX_H*BAREA)+22}px"><span class="vglabel">${g.toFixed(1)}</span></div>`
@@ -830,6 +861,15 @@ function toggleLang(){
   document.getElementById('legend-thresh').textContent = TR[lang].legendThresh;
   render();
   renderCal();
+}
+// Light/dark theme toggle — this page's own preference, saved in localStorage.
+// Default (no class) follows the device via the prefers-color-scheme media query.
+function toggleTheme(){
+  var r = document.documentElement;
+  var isDark = r.classList.contains('dark') || (!r.classList.contains('light') && window.matchMedia && matchMedia('(prefers-color-scheme:dark)').matches);
+  r.classList.remove('dark','light');
+  r.classList.add(isDark ? 'light' : 'dark');
+  try{ localStorage.setItem('tide_theme', isDark ? 'light' : 'dark'); }catch(e){}
 }
 // Called when a month tab button is clicked: switch month, reset to day 1, redraw everything.
 function selMonth(i){ mIdx=i; curDay=1; renderTabs(); renderCal(); render(); }
