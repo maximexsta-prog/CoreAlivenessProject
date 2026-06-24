@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Core Aliveness — Flyer carré (feed)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #e7b13a; --gold-ink: #11313c; --teal-1: #0c3a49; --white: #ffffff;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { background: #2a2a2a; }
+  /* 1080x1080 square for Instagram/Facebook feed */
+  .poster { position: relative; width: 1080px; height: 1080px; overflow: hidden;
+            background: var(--teal-1); font-family: "Archivo", sans-serif; color: var(--white); }
+  .poster .bg { position: absolute; inset: 0; width: 100%; height: 100%;
+                object-fit: cover; object-position: 70% 50%; }
+  .poster .overlay { position: absolute; inset: 0;
+    background: linear-gradient(105deg, rgba(12,58,73,.70) 0%, rgba(12,58,73,.46) 36%,
+                rgba(12,58,73,.20) 58%, rgba(12,58,73,0) 80%); }
+  .content { position: absolute; inset: 0; padding: 60px 60px; display: flex; flex-direction: column; }
+
+  .badge { align-self: flex-start; background: var(--gold); color: var(--gold-ink);
+           font-weight: 800; font-size: 30px; padding: 11px 22px; border-radius: 6px; text-transform: uppercase; }
+  h1 { font-family: "Anton", sans-serif; font-weight: 400; text-transform: uppercase;
+       font-size: 92px; line-height: .9; margin-top: 26px; text-shadow: 0 2px 16px rgba(0,0,0,.55), 0 1px 3px rgba(0,0,0,.4); }
+  h2 { font-family: "Anton", sans-serif; font-weight: 400; text-transform: uppercase;
+       font-size: 44px; line-height: 1; margin-top: 12px; letter-spacing: .02em; }
+  .rule { width: 110px; height: 4px; background: var(--gold); margin: 22px 0 20px; border-radius: 2px; }
+  .sub { font-size: 27px; font-weight: 600; line-height: 1.3; max-width: 470px;
+         text-shadow: 0 1px 8px rgba(0,0,0,.6), 0 1px 2px rgba(0,0,0,.5); }
+
+  .facts { margin-top: 34px; display: flex; flex-direction: column; gap: 18px; }
+  .fact { display: flex; align-items: center; gap: 18px; font-size: 29px; font-weight: 600;
+          text-shadow: 0 1px 8px rgba(0,0,0,.6), 0 1px 2px rgba(0,0,0,.5); }
+  .fact .ic { flex: 0 0 50px; height: 50px; background: var(--gold); border-radius: 10px;
+              display: flex; align-items: center; justify-content: center; }
+  .fact .ic svg { width: 28px; height: 28px; fill: none; stroke: var(--gold-ink); stroke-width: 2.2;
+                  stroke-linecap: round; stroke-linejoin: round; }
+
+  .cta-row { margin-top: auto; display: flex; align-items: flex-end; gap: 24px; }
+  .cta { background: var(--gold); color: var(--gold-ink); font-weight: 800; font-size: 31px;
+         text-transform: uppercase; padding: 20px 32px; border-radius: 10px; }
+  .qr { width: 126px; height: 126px; background: #fff; border-radius: 10px; padding: 7px; flex-shrink: 0; }
+  .qr img { width: 100%; height: 100%; display: block; }
+  .footer { display: flex; align-items: center; gap: 14px; margin-top: 26px; font-size: 26px; font-weight: 600; }
+  .footer svg { width: 32px; height: 32px; fill: none; stroke: var(--gold); stroke-width: 2; }
+</style>
+</head>
+<body>
+<div class="poster">
+  <img class="bg" src="bg.jpg" alt="" onerror="this.style.display='none'">
+  <div class="overlay"></div>
+  <div class="content">
+    <div class="badge">Inscriptions ouvertes</div>
+    <h1>Grimper<br>au-dessus<br>de l'eau</h1>
+    <h2>au Vietnam</h2>
+    <div class="rule"></div>
+    <div class="sub">Deep water solo • escalade • kayak •<br>aventure sur l'eau • petit groupe</div>
+    <div class="facts">
+      <div class="fact"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></span>Retraite de 5 jours</div>
+      <div class="fact"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 5.2a3 3 0 0 1 0 5.6M18 20c0-2.2-1-4.2-2.6-5.4"/></svg></span>9 places seulement</div>
+      <div class="fact"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>Départ : 19 octobre 2026</div>
+    </div>
+    <div class="cta-row">
+      <div class="cta">Réserver ma place →</div>
+      <div class="qr"><img src="qr.png" alt="QR"></div>
+    </div>
+    <div class="footer">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg>
+      corealivenessproject.com/retraite-dws
+    </div>
+  </div>
+</div>
+</body>
+</html>
