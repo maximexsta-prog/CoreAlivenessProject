@@ -25,7 +25,7 @@
     font-family: "Archivo", sans-serif; color: var(--white);
   }
   /* Background photo: save the clean climbing shot as ca-flyer/bg.jpg */
-  .poster .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .poster .bg { position: absolute; inset: 0; background: url(bg.jpg) no-repeat center / cover; }
   /* Legibility gradient: dark on the left where the text sits */
   .poster .overlay {
     position: absolute; inset: 0;
@@ -74,8 +74,8 @@
 </head>
 <body>
 <div class="poster">
-  <!-- Hero photo (add ca-flyer/bg.jpg). Hidden cleanly if absent. -->
-  <img class="bg" src="bg.jpg" alt="" onerror="this.style.display='none'">
+  <!-- Hero photo (add ca-flyer/bg.jpg) -->
+  <div class="bg"></div>
   <div class="overlay"></div>
 
   <div class="content">
