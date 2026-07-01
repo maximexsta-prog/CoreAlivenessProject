@@ -93,12 +93,12 @@ cockpit in v2. So — hold the API for now.
 
 | Needed | For |
 |---|---|
-| **Formspree endpoint** (free signup, ~5 min) | Where the application form sends submissions → set `FORMSPREE_ENDPOINT` in `postuler-dws/index.html` |
+| **Formspree endpoint** (free signup, ~5 min) | Where the application form sends submissions → set `FORMSPREE_ENDPOINT` in `inscription-dws/index.html` |
 | **Google Ads `AW-XXXXXXX/label`** | Fix the broken lead conversion + add deposit `Purchase` |
 | **Stripe Payment Link** (deposit, 1 400 CAD) | Reservation page button (`{{stripe_link}}`) |
 | **PayPal deposit link/button** | Reservation page button (`{{paypal_link}}`) |
 | ~~Interac~~ ✅ **438-345-1888** (enable Autodeposit) | wired into reservation page + emails |
-| ~~Tally URL~~ ✅ **self-hosted** at `/postuler-dws/` | CTAs already routed here w/ email prefill |
+| ~~Tally URL~~ ✅ **self-hosted** at `/inscription-dws/` | CTAs already routed here w/ email prefill |
 
 ---
 
@@ -111,7 +111,7 @@ cockpit in v2. So — hold the API for now.
 - `decline-script.md` — kind, safety-framed decline templates
 
 **Live funnel pages (published in repo root):**
-- `../postuler-dws/index.html` — self-hosted bilingual application wizard (13-question DWS flow). Set `FORMSPREE_ENDPOINT`; redirects to `/reservation-dws/` on submit. Site CTAs already route here (email prefilled).
+- `../inscription-dws/index.html` — self-hosted bilingual application wizard (13-question DWS flow). Set `FORMSPREE_ENDPOINT`; redirects to `/reservation-dws/` on submit. Site CTAs already route here (email prefilled).
 - `../reservation-dws/index.html` — reservation/deposit page (Stripe + PayPal + Interac 438-345-1888 + Purchase tracking). Fill `{{stripe_link}}` / `{{paypal_link}}` / Google Ads `send_to`.
 
 ## 5. Preflight status (from the launch checklist)
