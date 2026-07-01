@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<!--
+  DWS retreat — self-hosted application wizard (bilingual FR/EN).
+  One question at a time, branded, no third-party form tool.
+
+  Submission: posts JSON to Formspree (free). Create a form at formspree.io,
+  paste its endpoint into FORMSPREE_ENDPOINT below (looks like
+  https://formspree.io/f/xxxxxxx). On success → redirects to the reservation
+  page (set REDIRECT_URL). Email prefills from ?email= (passed by the site CTA).
+
+  Placeholders: FORMSPREE_ENDPOINT, REDIRECT_URL.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, follow">
+<title>Postuler — Retraite DWS | Core Aliveness Project</title>
+<style>
+  :root{ --bg:#18384E; --ink:#fff; --accent:#c0392b; --accent2:#6fae84; --muted:#b8c6d0;
+         --card:rgba(255,255,255,.06); --cardhi:rgba(255,255,255,.13); --line:rgba(255,255,255,.20); }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; height:100%; }
+  body{ background:var(--bg); color:var(--ink); font:17px/1.55 -apple-system,"Segoe UI",Roboto,sans-serif; }
+  .bar{ position:fixed; top:0; left:0; height:4px; background:var(--accent2); width:0; transition:width .3s ease; z-index:5; }
+  .top{ position:fixed; top:0; right:0; left:0; display:flex; justify-content:space-between; align-items:center; padding:16px 22px; z-index:4; }
+  .logo{ font-weight:800; letter-spacing:.5px; font-size:14px; }
+  .lang button{ background:none; border:1px solid var(--line); color:var(--muted); border-radius:8px; padding:4px 9px; cursor:pointer; font-weight:700; font-size:13px; }
+  .lang button.on{ color:#fff; border-color:#fff; }
+  .stage{ max-width:640px; margin:0 auto; min-height:100%; display:flex; flex-direction:column; justify-content:center; padding:96px 22px 120px; }
+  .qnum{ color:var(--accent2); font-weight:800; font-size:14px; letter-spacing:.5px; margin-bottom:8px; }
+  h1{ font-size:27px; line-height:1.25; margin:0 0 6px; }
+  .hint{ color:var(--muted); font-size:15px; margin:0 0 18px; }
+  .opts{ display:flex; flex-direction:column; gap:10px; margin-top:6px; }
+  .opt{ display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:13px 15px; cursor:pointer; transition:.15s; }
+  .opt:hover{ background:var(--cardhi); }
+  .opt.sel{ border-color:#fff; background:var(--cardhi); }
+  .opt .k{ display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border:1px solid var(--line); border-radius:6px; font-size:13px; font-weight:700; flex:none; }
+  .opt.sel .k{ background:var(--accent2); color:#0f2331; border-color:var(--accent2); }
+  input[type=text],input[type=email],input[type=tel],textarea,.datefield input{
+    width:100%; background:var(--card); border:1px solid var(--line); border-radius:12px; color:#fff; font:inherit; padding:13px 15px; }
+  textarea{ min-height:120px; resize:vertical; }
+  input::placeholder,textarea::placeholder{ color:#7d94a3; }
+  .field{ margin:10px 0; }
+  .field label{ display:block; font-size:13px; color:var(--muted); margin-bottom:5px; }
+  .datefield{ display:flex; gap:10px; }
+  .datefield input{ text-align:center; }
+  .err{ color:#ffb3ad; font-size:14px; margin-top:10px; min-height:1.2em; }
+  .nav{ position:fixed; bottom:0; right:0; left:0; display:flex; justify-content:space-between; align-items:center; gap:12px; padding:16px 22px; background:linear-gradient(to top, var(--bg) 70%, transparent); }
+  .nav .inner{ max-width:640px; margin:0 auto; width:100%; display:flex; justify-content:space-between; align-items:center; }
+  button.btn{ font:inherit; font-weight:800; border:none; border-radius:12px; padding:13px 26px; cursor:pointer; }
+  .btn.primary{ background:var(--accent); color:#fff; }
+  .btn.ghost{ background:none; color:var(--muted); border:1px solid var(--line); }
+  .btn:disabled{ opacity:.5; cursor:default; }
+  .enter{ font-size:12.5px; color:var(--muted); }
+  [data-lang=en]{ display:none; }
+  body.en [data-lang=fr]{ display:none; }
+  body.en [data-lang=en]{ display:inline; }
+  .center{ text-align:center; }
+  .lede{ color:var(--muted); font-size:16px; }
+  @media (max-width:520px){ .enter{ display:none; } h1{ font-size:23px; } }
+</style>
+<!-- GA4 (linked to Google Ads) + Meta Pixel -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9DDED3E5L1"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config','G-9DDED3E5L1');
+</script>
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','972812711774176'); fbq('track','PageView');
+</script>
+</head>
+<body>
+<div class="bar" id="bar"></div>
+<div class="top">
+  <div class="logo">CORE ALIVENESS</div>
+  <div class="lang"><button id="lfr" class="on" onclick="setLang('fr')">FR</button><button id="len" onclick="setLang('en')">EN</button></div>
+</div>
+
+<div class="stage" id="stage"><!-- rendered --></div>
+
+<div class="nav"><div class="inner">
+  <button class="btn ghost" id="back" onclick="go(-1)"><span data-lang="fr">← Retour</span><span data-lang="en">← Back</span></button>
+  <span class="enter"><span data-lang="fr">Entrée ↵ pour continuer</span><span data-lang="en">press Enter ↵</span></span>
+  <button class="btn primary" id="next" onclick="next()">OK</button>
+</div></div>
+
+<script>
+/* ---------- config ---------- */
+var FORMSPREE_ENDPOINT = "https://formspree.io/f/mbdvzpqa"; // live Formspree endpoint
+var REDIRECT_URL = "/reservation-dws/"; // <-- deposit page once published
+
+/* ---------- questions ---------- */
+var Q = [
+  { type:"intro" },
+  { id:"climbing_years", type:"radio", req:true,
+    fr:"Depuis combien de temps grimpes-tu ?", en:"How long have you been climbing?",
+    opts:[["0–1 an","0–1 year"],["1–3 ans","1–3 years"],["3–5 ans","3–5 years"],["5–10 ans","5–10 years"],["10+ ans","10+ years"]] },
+  { id:"outdoor_dws", type:"textarea", req:true,
+    fr:"As-tu déjà grimpé dehors ? Déjà fait du Deep Water Solo ?", en:"Have you climbed outdoors? Ever done Deep Water Solo?",
+    hintfr:"Quelques lignes (où, quel style, à quelle fréquence). Si jamais dehors, écris « non ».",
+    hinten:"A few lines (where, what style, how often). If never outdoors, write \"no\"." },
+  { id:"grade_lead", type:"radio", req:true,
+    fr:"Ton niveau max en tête / moulinette", en:"Your max grade (lead / top rope)",
+    hintfr:"Pas besoin de grimper en tête pour participer — c'est juste pour bien te placer.",
+    hinten:"You don't need to lead to join — this just helps place you well.",
+    opts:[["5.10b / 6a ou moins","5.10b / 6a or lower"],["5.10c–5.11c / 6a+–6c+","5.10c–5.11c / 6a+–6c+"],["5.11d–5.13a / 7a–7c+","5.11d–5.13a / 7a–7c+"],["5.13b / 8a ou plus","5.13b / 8a or higher"],["Je ne grimpe pas en tête/moulinette","I don't lead or top rope"]] },
+  { id:"grade_boulder", type:"radio", req:true,
+    fr:"Ton niveau max en bloc", en:"Your max grade (bouldering)",
+    opts:[["V3 et moins / 6A et moins","V3 and below / 6A and below"],["V4–V6 / 6B–7A","V4–V6 / 6B–7A"],["V7–V8 / 7A+–7B+","V7–V8 / 7A+–7B+"],["V9–V11 / 7C–8A","V9–V11 / 7C–8A"],["V11 / 8A+ ou plus","V11 / 8A+ or higher"],["Je ne fais pas de bloc","I don't boulder"]] },
+  { id:"swim", type:"radio", req:true,
+    fr:"🌊 À l'aise de nager en mer / eau profonde ?", en:"🌊 Comfortable swimming in open / deep water?",
+    opts:[["Oui, très à l'aise","Yes, very comfortable"],["Ça va, je nage correctement","Okay, I swim fine"],["Peu à l'aise, mais je flotte","Not very, but I float"],["Non, pas à l'aise dans l'eau","No, not comfortable in water"]] },
+  { id:"jump", type:"radio", req:true,
+    fr:"🪂 À l'aise de sauter d'une hauteur dans l'eau ?", en:"🪂 Comfortable jumping from height into water?",
+    opts:[["Oui, j'adore ça","Yes, I love it"],["Oui, avec un peu d'appréhension","Yes, with a bit of nerves"],["Jamais essayé, mais partant·e","Never tried, but game"],["Ça m'inquiète beaucoup","It worries me a lot"]] },
+  { id:"motivation", type:"textarea", req:true,
+    fr:"Qu'est-ce qui t'attire le plus dans cette aventure ?", en:"What draws you most to this adventure?",
+    hintfr:"Quelques lignes suffisent.", hinten:"A few lines is plenty." },
+  { id:"contact", type:"contact", req:true,
+    fr:"Tes coordonnées", en:"Your contact info" },
+  { id:"dob", type:"date", req:true,
+    fr:"Ta date de naissance", en:"Your date of birth",
+    hintfr:"Confirme que tu as 18 ans ou plus.", hinten:"Confirms you're 18+." },
+  { id:"payment_pref", type:"radio", req:true,
+    fr:"Préférence de paiement", en:"Payment preference",
+    hintfr:"Aucun paiement maintenant — juste ta préférence.", hinten:"No payment now — just your preference.",
+    opts:[["Paiement complet — 3 995 CAD","Pay in full — 3,995 CAD"],["3 versements de 1 400 CAD","3 payments of 1,400 CAD"],["J'aimerais discuter d'un arrangement","I'd like to discuss a custom plan"]] },
+  { id:"gender", type:"radio", req:true,
+    fr:"Pour l'attribution des chambres : ton genre", en:"For room assignment: your gender",
+    opts:[["Homme","Male"],["Femme","Female"],["Non-binaire","Non-binary"],["Autre","Other"]] },
+  { id:"heard", type:"radio", req:false,
+    fr:"Comment as-tu entendu parler de la retraite ?", en:"How did you hear about the retreat?",
+    opts:[["Instagram (Core Aliveness)","Instagram (Core Aliveness)"],["Pub Instagram/Facebook","IG/FB ad"],["Recherche Google","Google search"],["Bouche à oreille","Word of mouth"],["YouTube","YouTube"],["Autre","Other"]] },
+  { id:"anything", type:"textarea", req:false,
+    fr:"Autre chose à partager ?", en:"Anything else to share?",
+    hintfr:"Allergies, questions, besoins de paiement particuliers…", hinten:"Allergies, questions, custom payment needs…" },
+  { type:"end" }
+];
+
+/* ---------- state ---------- */
+var i = 0, data = {};
+var lang = (function(){ try{ return localStorage.getItem('cap_lang')||'fr'; }catch(e){ return 'fr'; } })();
+var qEmail = new URLSearchParams(location.search).get('email') || "";
+
+function setLang(l){ lang=l; document.body.classList.toggle('en', l==='en');
+  document.getElementById('lfr').classList.toggle('on', l==='fr');
+  document.getElementById('len').classList.toggle('on', l==='en');
+  document.documentElement.lang=l; try{localStorage.setItem('cap_lang',l)}catch(e){} render(); }
+function t(fr,en){ return lang==='en'?en:fr; }
+
+function render(){
+  var q = Q[i], s = document.getElementById('stage'), h='';
+  var realIdx = Q.slice(0,i).filter(function(x){return x.id;}).length;
+  var total = Q.filter(function(x){return x.id;}).length;
+  document.getElementById('bar').style.width = (i/(Q.length-1)*100)+'%';
+  document.getElementById('back').style.visibility = i>0 && i<Q.length-1 ? 'visible':'hidden';
+  var nextBtn = document.getElementById('next');
+
+  if(q.type==='intro'){
+    h = '<div class="center">'
+      + '<h1>'+t('Postule pour la retraite DWS','Apply for the DWS retreat')+'</h1>'
+      + '<p class="lede">'+t('Baie de Lan Ha, Vietnam · 19 octobre 2026 · petit groupe (max 9)','Lan Ha Bay, Vietnam · October 19, 2026 · small group (max 9)')+'</p>'
+      + '<p class="lede">'+t('Quelques questions (~3 min) pour apprendre à te connaître. Ce n\'est pas un paiement — c\'est une candidature. Je te réponds vite.','A few questions (~3 min) to get to know you. This isn\'t a payment — it\'s an application. I reply fast.')+'</p></div>';
+    nextBtn.textContent = t('Commencer →','Start →');
+  } else if(q.type==='end'){
+    h = '<div class="center"><h1>'+t('Prêt·e à envoyer','Ready to send')+'</h1>'
+      + '<p class="lede">'+t('Merci ! Je lis chaque candidature personnellement et je te réponds vite (souvent le jour même).','Thanks! I read every application personally and reply fast (often same-day).')+'</p></div>';
+    nextBtn.textContent = t('Envoyer ma candidature','Submit application');
+  } else {
+    h += '<div class="qnum">'+(realIdx+1)+' / '+total+'</div>';
+    h += '<h1>'+t(q.fr,q.en)+(q.req?'':' <span class="hint">('+t('optionnel','optional')+')</span>')+'</h1>';
+    if(q.hintfr) h += '<p class="hint">'+t(q.hintfr,q.hinten)+'</p>';
+    var v = data[q.id];
+    if(q.type==='radio'){
+      h += '<div class="opts">';
+      q.opts.forEach(function(o,idx){
+        var key = String.fromCharCode(65+idx), lab=t(o[0],o[1]);
+        h += '<div class="opt'+(v===lab?' sel':'')+'" data-val="'+lab.replace(/"/g,'&quot;')+'" onclick="pick(this)"><span class="k">'+key+'</span><span>'+lab+'</span></div>';
+      });
+      h += '</div>';
+    } else if(q.type==='textarea'){
+      h += '<div class="field"><textarea id="inp" placeholder="'+t('Écris ta réponse…','Type your answer…')+'">'+(v||'')+'</textarea></div>';
+    } else if(q.type==='contact'){
+      var c = v||{};
+      h += '<div class="field"><label>'+t('Prénom*','First name*')+'</label><input type="text" id="c_first" value="'+(c.first||'')+'"></div>'
+        + '<div class="field"><label>'+t('Nom','Last name')+'</label><input type="text" id="c_last" value="'+(c.last||'')+'"></div>'
+        + '<div class="field"><label>'+t('Téléphone (WhatsApp)*','Phone (WhatsApp)*')+'</label><input type="tel" id="c_phone" value="'+(c.phone||'')+'"></div>'
+        + '<div class="field"><label>'+t('Courriel*','Email*')+'</label><input type="email" id="c_email" value="'+(c.email||qEmail||'')+'"></div>';
+    } else if(q.type==='date'){
+      var d = v||{};
+      h += '<div class="datefield">'
+        + '<input type="text" id="d_d" inputmode="numeric" maxlength="2" placeholder="JJ" value="'+(d.d||'')+'">'
+        + '<input type="text" id="d_m" inputmode="numeric" maxlength="2" placeholder="MM" value="'+(d.m||'')+'">'
+        + '<input type="text" id="d_y" inputmode="numeric" maxlength="4" placeholder="AAAA" value="'+(d.y||'')+'"></div>';
+    }
+    h += '<div class="err" id="err"></div>';
+    nextBtn.textContent = 'OK';
+  }
+  s.innerHTML = h;
+  var first = s.querySelector('textarea,input'); if(first) first.focus();
+}
+
+function pick(el){
+  var q=Q[i]; data[q.id]=el.getAttribute('data-val');
+  var opts=el.parentNode.querySelectorAll('.opt'); opts.forEach(function(o){o.classList.remove('sel');}); el.classList.add('sel');
+  setTimeout(next,180); // auto-advance on choice
+}
+
+function collect(){
+  var q=Q[i]; if(!q.id) return true;
+  var err=document.getElementById('err'); function fail(m){ if(err) err.textContent=m; return false; }
+  if(q.type==='textarea'){ var val=(document.getElementById('inp').value||'').trim(); data[q.id]=val;
+    if(q.req && !val) return fail(t('Merci de répondre.','Please answer.')); }
+  else if(q.type==='contact'){
+    var c={ first:(v('c_first')), last:(v('c_last')), phone:(v('c_phone')), email:(v('c_email')) }; data[q.id]=c;
+    if(!c.first) return fail(t('Le prénom est requis.','First name is required.'));
+    if(!c.phone) return fail(t('Le téléphone est requis.','Phone is required.'));
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.email)) return fail(t('Courriel invalide.','Invalid email.')); }
+  else if(q.type==='date'){
+    var d={ d:v('d_d'), m:v('d_m'), y:v('d_y') }; data[q.id]=d;
+    var yr=parseInt(d.y,10);
+    if(!d.d||!d.m||!d.y||isNaN(yr)) return fail(t('Date incomplète.','Incomplete date.'));
+    if(yr>2008) return fail(t('Tu dois avoir 18 ans ou plus.','You must be 18 or older.')); }
+  else if(q.type==='radio'){ if(q.req && !data[q.id]) return fail(t('Choisis une option.','Pick an option.')); }
+  return true;
+  function v(id){ var e=document.getElementById(id); return e?(e.value||'').trim():''; }
+}
+
+function next(){ if(Q[i].type==='end'){ submit(); return; } if(!collect()) return; go(1); }
+function go(d){ i=Math.max(0,Math.min(Q.length-1,i+d)); render(); }
+
+function submit(){
+  var nb=document.getElementById('next'); nb.disabled=true; nb.textContent=t('Envoi…','Sending…');
+  var payload={ _subject:'Nouvelle candidature DWS', lang:lang };
+  Object.keys(data).forEach(function(k){ payload[k]=data[k]; });
+  fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body:JSON.stringify(payload) })
+    .then(function(r){ if(r.ok){ if(window.gtag) gtag('event','generate_lead',{value:0,currency:'CAD'}); if(window.fbq) fbq('track','Lead',{content_name:'DWS application'});
+      var em=(data.contact&&data.contact.email)?('?email='+encodeURIComponent(data.contact.email)):''; location.href=REDIRECT_URL+em; }
+      else { throw new Error('http'); } })
+    .catch(function(){ nb.disabled=false; nb.textContent=t('Réessayer','Try again');
+      document.getElementById('stage').insertAdjacentHTML('beforeend','<p class="err">'+t('Oups, envoi échoué. Réessaie ou écris à hello@corealivenessproject.com','Oops, send failed. Retry or email hello@corealivenessproject.com')+'</p>'); });
+}
+
+/* keyboard: Enter advances (not in textarea unless Ctrl/Cmd); A–F selects radio */
+document.addEventListener('keydown',function(e){
+  var q=Q[i];
+  if(e.key==='Enter'){ if(document.activeElement && document.activeElement.tagName==='TEXTAREA' && !(e.ctrlKey||e.metaKey)) return; e.preventDefault(); next(); }
+  else if(q && q.type==='radio' && /^[a-fA-F]$/.test(e.key)){ var idx=e.key.toUpperCase().charCodeAt(0)-65; var els=document.querySelectorAll('.opt'); if(els[idx]) pick(els[idx]); }
+});
+
+setLang(lang); // also renders
+</script>
+</body>
+</html>

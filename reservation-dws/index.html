@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--
+  DWS retreat — reservation / deposit page (DRAFT, standalone).
+  Replaces the passive "you're on the waitlist" thank-you with an action page:
+  "your spot is held 48h — confirm it with a 1,400 CAD deposit".
+
+  Publish target: e.g. /reservation-dws/  (set Tally's redirect-on-submit here).
+  Wired: PayPal (paypal.me/CoreAlivenessProject), Interac (438-345-1888).
+  ⚠️ Stripe link is currently a TEST link (buy.stripe.com/test_...) — replace with the
+  LIVE link before launch (Stripe → toggle Live mode → recreate Payment Link).
+  Set the Stripe Payment Link success URL to: /reservation-dws/?paid=1
+  {{AW_CONVERSION_ID}}/{{AW_LABEL}}  (Google Ads),  {{GA4_ID}}  {{META_PIXEL_ID}}.
+
+  Tracking model (honest): clicking a pay button fires InitiateCheckout only.
+  The REAL Purchase conversion must fire on the payment provider's success/return
+  page (Stripe success_url / PayPal return) — see the commented snippet at the
+  bottom. Do NOT count a button click as a paid deposit.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, follow">
+<title>Réserve ta place — Retraite DWS | Core Aliveness Project</title>
+<style>
+  :root{ --bg:#18384E; --ink:#fff; --accent:#c0392b; --accent2:#6fae84; --muted:#b8c6d0; --card:rgba(255,255,255,.06); --line:rgba(255,255,255,.18); }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 -apple-system,"Segoe UI",Roboto,sans-serif; }
+  .wrap{ max-width:640px; margin:0 auto; padding:40px 22px 64px; }
+  .top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; }
+  .logo{ font-weight:800; letter-spacing:.5px; }
+  .lang button{ background:none; border:1px solid var(--line); color:var(--muted); border-radius:8px; padding:4px 9px; cursor:pointer; font-weight:700; }
+  .lang button.on{ color:#fff; border-color:#fff; }
+  h1{ font-size:26px; line-height:1.25; margin:.2em 0 .4em; }
+  .lede{ color:var(--muted); }
+  .hold{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin:22px 0; }
+  .hold b{ color:#fff; }
+  .price{ display:flex; gap:10px; flex-wrap:wrap; margin:8px 0 4px; }
+  .price .n{ font-size:30px; font-weight:800; }
+  .price .sub{ color:var(--muted); font-size:14px; align-self:end; }
+  h2{ font-size:15px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin:30px 0 12px; }
+  .pay{ display:block; width:100%; text-align:center; text-decoration:none; font-weight:800; padding:15px 18px; border-radius:12px; margin:10px 0; border:1px solid var(--line); color:#fff; }
+  .pay.stripe{ background:#635bff; border-color:#635bff; }
+  .pay.paypal{ background:#ffc439; color:#111; border-color:#ffc439; }
+  .pay.interac{ background:transparent; }
+  .interac-info{ font-size:14px; color:var(--muted); background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-top:-2px; }
+  .consent{ display:flex; gap:10px; align-items:flex-start; margin:24px 0; font-size:14px; color:var(--muted); }
+  .consent input{ margin-top:4px; transform:scale(1.3); }
+  .fine{ font-size:12.5px; color:var(--muted); border-top:1px solid var(--line); padding-top:18px; margin-top:30px; }
+  a{ color:var(--accent2); }
+  [data-lang=en]{ display:none; }
+  body.en [data-lang=fr]{ display:none; }
+  body.en [data-lang=en]{ display:inline; }
+  body.en .pay [data-lang=en]{ display:inline; }
+</style>
+<!-- GA4 (linked to Google Ads) + Meta Pixel -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9DDED3E5L1"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config','G-9DDED3E5L1');
+</script>
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','972812711774176'); fbq('track','PageView');
+</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="logo">CORE ALIVENESS</div>
+    <div class="lang"><button id="fr" class="on" onclick="setLang('fr')">FR</button><button id="en" onclick="setLang('en')">EN</button></div>
+  </div>
+
+  <h1>
+    <span data-lang="fr">Candidature reçue — réserve ta place</span>
+    <span data-lang="en">Application received — reserve your spot</span>
+  </h1>
+  <p class="lede">
+    <span data-lang="fr">Merci ! Je lis chaque candidature personnellement. Si ton profil correspond, ta place est <b>réservée à ton nom pendant 48 h</b> — voici comment la confirmer.</span>
+    <span data-lang="en">Thank you! I read every application personally. If you're a fit, your spot is <b>held in your name for 48 hours</b> — here's how to confirm it.</span>
+  </p>
+
+  <div class="hold">
+    <div class="price"><span class="n">1&nbsp;400&nbsp;CAD</span><span class="sub" data-lang="fr">dépôt qui confirme ta place</span><span class="sub" data-lang="en">deposit that confirms your spot</span></div>
+    <p style="margin:.4em 0 0" data-lang="fr">Prix total <b>3&nbsp;995&nbsp;CAD</b> — solde de 2&nbsp;595&nbsp;CAD avant le départ. Les places sont limitées (max 9) et <b>confirmées dans l'ordre des dépôts reçus</b>.</p>
+    <p style="margin:.4em 0 0" data-lang="en">Total <b>3,995&nbsp;CAD</b> — 2,595&nbsp;CAD balance before departure. Spots are limited (max 9) and <b>confirmed in order of deposit received</b>.</p>
+  </div>
+
+  <h2><span data-lang="fr">Régler le dépôt</span><span data-lang="en">Pay the deposit</span></h2>
+
+  <a class="pay stripe" href="https://buy.stripe.com/test_5kQ3cubqN9CV0rZbCJfEk00" onclick="track('stripe')">
+    <span data-lang="fr">💳 Payer par carte (Stripe)</span><span data-lang="en">💳 Pay by card (Stripe)</span>
+  </a>
+  <a class="pay paypal" href="https://paypal.me/CoreAlivenessProject" onclick="track('paypal')">PayPal — 1&nbsp;400&nbsp;CAD</a>
+  <a class="pay interac" href="#interac" onclick="track('interac')">
+    <span data-lang="fr">🇨🇦 Virement Interac — économise 100&nbsp;$</span><span data-lang="en">🇨🇦 Interac e-Transfer — save 100&nbsp;$</span>
+  </a>
+  <div class="interac-info" id="interac">
+    <span data-lang="fr">Envoie ton virement au <b>438-345-1888</b> avec ton <b>nom complet en mémo</b>. Sans frais — et 100&nbsp;$ de rabais sur le total si tu paies en entier par Interac. Je confirme ta place dès réception (dépôt automatique activé).</span>
+    <span data-lang="en">Send your transfer to <b>438-345-1888</b> with your <b>full name in the memo</b>. No fees — and 100&nbsp;$ off the total if you pay in full by Interac. I confirm your spot on receipt (autodeposit enabled).</span>
+  </div>
+
+  <label class="consent">
+    <input type="checkbox" id="consent">
+    <span>
+      <span data-lang="fr">J'ai lu et j'accepte la <a href="/politique-de-confidentialite/">politique de réservation et d'annulation</a>, je m'engage à détenir l'assurance obligatoire (sports extrêmes + rapatriement), et je comprends qu'un dépôt de 1&nbsp;400&nbsp;CAD confirme ma place.</span>
+      <span data-lang="en">I have read and accept the <a href="/politique-de-confidentialite/">booking & cancellation policy</a>, agree to hold the mandatory insurance (extreme sports + repatriation), and understand a 1,400&nbsp;CAD deposit confirms my spot.</span>
+    </span>
+  </label>
+
+  <p class="lede" data-lang="fr">Tu préfères <b>3 versements de 1&nbsp;400&nbsp;CAD</b> ou tu as une question ? Écris-moi : <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
+  <p class="lede" data-lang="en">Prefer <b>3 payments of 1,400&nbsp;CAD</b> or have a question? Email <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
+
+  <p class="fine">
+    <span data-lang="fr">Le paiement est traité par notre partenaire local agréé qui opère la retraite sur place. Core Aliveness Project ne reçoit pas directement le paiement des participants.</span>
+    <span data-lang="en">Payment is processed by our licensed local operator partner who runs the retreat on site. Core Aliveness Project does not receive participant payments directly.</span>
+  </p>
+</div>
+
+<script>
+  function setLang(l){ document.body.classList.toggle('en', l==='en'); document.getElementById('fr').classList.toggle('on', l==='fr'); document.getElementById('en').classList.toggle('on', l==='en'); document.documentElement.lang=l; try{localStorage.setItem('cap_lang',l)}catch(e){} }
+  (function(){ try{ var l=localStorage.getItem('cap_lang'); if(l) setLang(l); }catch(e){} })();
+
+  // Fire the REAL Purchase when the payment provider redirects back with ?paid=1
+  // (set Stripe/PayPal success URL to /reservation-dws/?paid=1). This activates
+  // the GA4 "purchase" key event, which Google Ads imports as your conversion.
+  (function(){
+    var p = new URLSearchParams(location.search);
+    if(p.get('paid')==='1'){
+      var tx = p.get('tx') || ('dep-'+Date.now());
+      if(window.gtag) gtag('event','purchase',{value:1400,currency:'CAD',transaction_id:tx,items:[{item_name:'DWS deposit'}]});
+      if(window.fbq) fbq('track','Purchase',{value:1400,currency:'CAD'});
+    }
+  })();
+
+  // Require consent before leaving to a payment provider.
+  function track(rail){
+    if(!document.getElementById('consent').checked){
+      alert(document.body.classList.contains('en')
+        ? 'Please accept the booking & cancellation policy first.'
+        : "Merci d'accepter d'abord la politique de réservation et d'annulation.");
+      event.preventDefault(); return false;
+    }
+    // Fire InitiateCheckout ONLY (a click is not a paid deposit).
+    if(window.fbq) fbq('track','InitiateCheckout',{value:1400,currency:'CAD',content_name:'DWS deposit',payment_rail:rail});
+    if(window.gtag) gtag('event','begin_checkout',{value:1400,currency:'CAD',items:[{item_name:'DWS deposit'}]});
+    return true;
+  }
+
+  /* ===== Fire the REAL Purchase conversion on the payment SUCCESS page =====
+     Put this on the Stripe success_url / PayPal return page, NOT here:
+
+     gtag('event','conversion',{ send_to:'{{AW_CONVERSION_ID}}/{{AW_LABEL}}', value:1400.0, currency:'CAD', transaction_id: ORDER_ID });
+     gtag('event','purchase',{ value:1400.0, currency:'CAD', transaction_id: ORDER_ID });
+     fbq('track','Purchase',{ value:1400.0, currency:'CAD' });
+  ======================================================================= */
+</script>
+</body>
+</html>
