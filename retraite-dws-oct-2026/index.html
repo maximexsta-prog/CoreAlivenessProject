@@ -837,7 +837,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
 				</div>
 				<div class="elementor-element elementor-element-306dcdc elementor-widget__width-initial elementor-widget elementor-widget-text-editor" data-id="306dcdc" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									<h3>Exemple de journée de grimpe</h3><div><b>7h30-8h30</b><br>Déjeuner</div><div><b>9h00</b><br>Départ en bateau</div><div><b>9h30-12h30</b><br>Deep water solo ou escalade sportive</div><div><b>12h30-13h30</b><br>Lunch et pause sur l’eau</div><div><b>13h30-16h00</b><br>Plus de grimpe</div><div><b style="font-size: 1rem;">17h00-18h30</b></div><div>Repos, baignade, douche, temps libre</div><div><b>19h00</b><br>Dîner avec le groupe</div><div><b>Soirée</b><br>Discussion, intégration, yoga, repos ou moment tranquille sur l’eau</div>								</div>
+									<h3>Exemple de journée de grimpe</h3><div><b>7h30-8h30</b><br>Déjeuner</div><div><b>9h00</b><br>Départ en bateau</div><div><b>9h30-12h30</b><br>Deep water solo ou escalade sportive</div><div><b>12h30-13h30</b><br>Lunch et pause sur l’eau</div><div><b>13h30-16h00</b><br>Plus de grimpe</div><div><b style="font-size: 1rem;">17h00-18h30</b></div><div>Repos, baignade, douche, temps libre</div><div><b>19h00</b><br>Dîner avec le groupe</div><div>Soirée<br>Discussion, intégration, yoga, repos ou moment tranquille sur l’eau</div>								</div>
 				</div>
 				</div>
 				</div>
@@ -1478,7 +1478,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
 				</div>
 				<div class="elementor-element elementor-element-60381698 elementor-widget elementor-widget-text-editor" data-id="60381698" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									<p data-path-to-node="7,0"><b data-path-to-node="7,0" data-index-in-node="0">Inscriptions ouvertes.</b></p><p data-start="3599" data-end="3757">Départ le 19 octobre 2026. Quelques places seulement. Un dépôt de réservation de 1400 CAD confirme ta place — inscris-toi pour recevoir les prochaines étapes par courriel.</p>								</div>
+									<p data-path-to-node="7,0"><b data-path-to-node="7,0" data-index-in-node="0">Inscriptions ouvertes.</b></p><p data-start="3599" data-end="3757">Départ le 19 octobre 2026. Places limitées, confirmées dans l'ordre des dépôts reçus. Un dépôt de réservation de 1400 CAD confirme ta place — réserve la tienne dès maintenant.</p>								</div>
 				</div>
 				<div class="elementor-element elementor-element-4947c8f2 elementor-widget elementor-widget-html" data-id="4947c8f2" data-element_type="widget" data-e-type="widget" data-widget_type="html.default">
 				<div class="elementor-widget-container">
@@ -1705,7 +1705,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         "RÉSERVER MA PLACE": 'RESERVE MY SPOT',
         'Réserver ma place': 'Reserve my spot',
         "Inscriptions ouvertes.": 'Registrations open.',
-        "Départ le 19 octobre 2026. Quelques places seulement. Un dépôt de réservation de 1400 CAD confirme ta place — inscris-toi pour recevoir les prochaines étapes par courriel.": "Departure on October 19, 2026. Limited spots only. A 1400 CAD reservation deposit secures your place — sign up below to receive next steps by email.",
+        "Départ le 19 octobre 2026. Places limitées, confirmées dans l'ordre des dépôts reçus. Un dépôt de réservation de 1400 CAD confirme ta place — réserve la tienne dès maintenant.": "Departure on October 19, 2026. Limited spots, confirmed in the order deposits are received. A 1400 CAD reservation deposit secures your place — reserve yours now.",
         "Les inscriptions sont ouvertes pour le départ du 19 octobre 2026. Réserve ta place dès maintenant.": "Registrations are open for the October 19, 2026 departure. Reserve your spot now.",
         "Opérée localement avec notre partenaire agréé.": "Operated locally with our licensed partner.",
         "Date : 19 octobre 2026": "Date: October 19, 2026",
@@ -1865,6 +1865,16 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         /* FAQ - how to reserve (rich text with link) */
         "Un dépôt de réservation de 1400 CAD confirme ta place (solde de 2595 CAD payable avant le 19 octobre 2026). Le paiement est traité par notre partenaire local agréé qui opère la retraite. Conditions complètes d'annulation et de remboursement : voir notre politique de réservation.": "A 1,400 CAD reservation deposit secures your place (2,595 CAD balance payable before October 19, 2026). Payment is processed by our licensed local partner who operates the retreat. Full cancellation and refund terms: see our <a href=\"/politique-de-confidentialite/\">reservation policy</a>.",
     };
+
+    // Normalize dictionary keys so lookups match even when source strings contain
+    // em-dashes, non-breaking spaces, or curly quotes — norm() rewrites those on the
+    // DOM text at lookup time, so the keys must be stored in the same normalized form.
+    (function(){
+        var nT = {}, nTH = {}, k;
+        for (k in T) nT[norm(k)] = T[k];
+        for (k in TH) nTH[norm(k)] = TH[k];
+        T = nT; TH = nTH;
+    })();
 
     var SELECTORS_ELEM = 'h1,h2,h3,.elementor-button-text,.ekit-accordion-title,.feature-list-title';
     var SELECTORS_PARA = '.elementor-widget-text-editor p,.elementor-icon-list-text,.list-timeline_body,.comment-content p';

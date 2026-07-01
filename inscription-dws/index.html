@@ -141,7 +141,7 @@ var Q = [
 
 /* ---------- state ---------- */
 var i = 0, data = {};
-var lang = (function(){ try{ return localStorage.getItem('cap_lang')||'fr'; }catch(e){ return 'fr'; } })();
+var lang = 'fr'; // always open in French by default (French-led event); toggle still available
 var qEmail = new URLSearchParams(location.search).get('email') || "";
 
 function setLang(l){ lang=l; document.body.classList.toggle('en', l==='en');
@@ -160,8 +160,8 @@ function render(){
 
   if(q.type==='intro'){
     h = '<div class="center">'
-      + '<h1>'+t('Postule pour la retraite DWS','Apply for the DWS retreat')+'</h1>'
-      + '<p class="lede">'+t('Baie de Lan Ha, Vietnam · 19 octobre 2026 · petit groupe (max 9)','Lan Ha Bay, Vietnam · October 19, 2026 · small group (max 9)')+'</p>'
+      + '<h1>'+t('Inscription à la retraite DWS','Register for the DWS retreat')+'</h1>'
+      + '<p class="lede">'+t('Baie de Lan Ha, Vietnam · 19 octobre 2026','Lan Ha Bay, Vietnam · October 19, 2026')+'</p>'
       + '<p class="lede">'+t('Quelques questions (~3 min) pour apprendre à te connaître. Ce n\'est pas un paiement — c\'est une candidature. Je te réponds vite.','A few questions (~3 min) to get to know you. This isn\'t a payment — it\'s an application. I reply fast.')+'</p></div>';
     nextBtn.textContent = t('Commencer →','Start →');
   } else if(q.type==='end'){
