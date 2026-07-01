@@ -144,10 +144,10 @@ var i = 0, data = {};
 var lang = 'fr'; // always open in French by default (French-led event); toggle still available
 var qEmail = new URLSearchParams(location.search).get('email') || "";
 
-function setLang(l){ lang=l; document.body.classList.toggle('en', l==='en');
+function setLang(l, persist){ lang=l; document.body.classList.toggle('en', l==='en');
   document.getElementById('lfr').classList.toggle('on', l==='fr');
   document.getElementById('len').classList.toggle('on', l==='en');
-  document.documentElement.lang=l; try{localStorage.setItem('cap_lang',l)}catch(e){} render(); }
+  document.documentElement.lang=l; if(persist!==false){ try{localStorage.setItem('cap_lang',l)}catch(e){} } render(); }
 function t(fr,en){ return lang==='en'?en:fr; }
 
 function render(){
@@ -250,7 +250,7 @@ document.addEventListener('keydown',function(e){
   else if(q && q.type==='radio' && /^[a-fA-F]$/.test(e.key)){ var idx=e.key.toUpperCase().charCodeAt(0)-65; var els=document.querySelectorAll('.opt'); if(els[idx]) pick(els[idx]); }
 });
 
-setLang(lang); // also renders
+setLang(lang, false); // open in French, but don't overwrite the visitor's saved preference
 </script>
 </body>
 </html>

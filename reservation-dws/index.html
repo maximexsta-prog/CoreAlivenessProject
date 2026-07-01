@@ -107,13 +107,9 @@
     <span data-lang="fr">💳 Payer par carte (Stripe)</span><span data-lang="en">💳 Pay by card (Stripe)</span>
   </a>
   <a class="pay paypal" href="https://paypal.me/CoreAlivenessProject" onclick="return track('paypal')">PayPal — 1&nbsp;400&nbsp;CAD</a>
-  <button type="button" class="pay interac" onclick="showInterac()">
+  <a class="pay interac" href="/interac-dws/" onclick="return track('interac')">
     <span data-lang="fr">🇨🇦 Virement Interac — économise 50&nbsp;$</span><span data-lang="en">🇨🇦 Interac e-Transfer — save 50&nbsp;$</span>
-  </button>
-  <div class="interac-info" id="interac" hidden>
-    <span data-lang="fr">Envoie ton virement au <b>438-345-1888</b> avec ton <b>nom complet en mémo</b>. Sans frais — et 50&nbsp;$ de rabais sur le total si tu paies en entier par Interac. Ta place est réservée dès réception (dépôt automatique activé). ✅</span>
-    <span data-lang="en">Send your transfer to <b>438-345-1888</b> with your <b>full name in the memo</b>. No fees — and 50&nbsp;$ off the total if you pay in full by Interac. Your spot is reserved on receipt (autodeposit enabled). ✅</span>
-  </div>
+  </a>
 
   <p class="lede" data-lang="fr">Tu préfères <b>3 versements de 1&nbsp;400&nbsp;CAD</b> ou tu as une question ? Écris-moi : <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
   <p class="lede" data-lang="en">Prefer <b>3 payments of 1,400&nbsp;CAD</b> or have a question? Email <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
@@ -152,15 +148,6 @@
     if(window.fbq) fbq('track','InitiateCheckout',{value:1400,currency:'CAD',content_name:'DWS deposit',payment_rail:rail});
     if(window.gtag) gtag('event','begin_checkout',{value:1400,currency:'CAD',items:[{item_name:'DWS deposit'}]});
     return true;
-  }
-
-  // Interac is manual (no external link) — reveal the transfer instructions.
-  function showInterac(){
-    if(!document.getElementById('consent').checked) return;
-    track('interac');
-    var box = document.getElementById('interac');
-    box.hidden = false; box.classList.add('reveal');
-    box.scrollIntoView({behavior:'smooth', block:'center'});
   }
 
   /* ===== Fire the REAL Purchase conversion on the payment SUCCESS page =====
