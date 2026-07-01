@@ -5,7 +5,10 @@
   "your spot is held 48h — confirm it with a 1,400 CAD deposit".
 
   Publish target: e.g. /reservation-dws/  (set Tally's redirect-on-submit here).
-  Placeholders to fill: {{stripe_link}} {{paypal_link}}  (Interac wired: 438-345-1888)
+  Wired: PayPal (paypal.me/CoreAlivenessProject), Interac (438-345-1888).
+  ⚠️ Stripe link is currently a TEST link (buy.stripe.com/test_...) — replace with the
+  LIVE link before launch (Stripe → toggle Live mode → recreate Payment Link).
+  Set the Stripe Payment Link success URL to: /reservation-dws/?paid=1
   {{AW_CONVERSION_ID}}/{{AW_LABEL}}  (Google Ads),  {{GA4_ID}}  {{META_PIXEL_ID}}.
 
   Tracking model (honest): clicking a pay button fires InitiateCheckout only.
@@ -85,10 +88,10 @@
 
   <h2><span data-lang="fr">Régler le dépôt</span><span data-lang="en">Pay the deposit</span></h2>
 
-  <a class="pay stripe" href="{{stripe_link}}" onclick="track('stripe')">
+  <a class="pay stripe" href="https://buy.stripe.com/test_5kQ3cubqN9CV0rZbCJfEk00" onclick="track('stripe')">
     <span data-lang="fr">💳 Payer par carte (Stripe)</span><span data-lang="en">💳 Pay by card (Stripe)</span>
   </a>
-  <a class="pay paypal" href="{{paypal_link}}" onclick="track('paypal')">PayPal</a>
+  <a class="pay paypal" href="https://paypal.me/CoreAlivenessProject" onclick="track('paypal')">PayPal — 1&nbsp;400&nbsp;CAD</a>
   <a class="pay interac" href="#interac" onclick="track('interac')">
     <span data-lang="fr">🇨🇦 Virement Interac — économise 100&nbsp;$</span><span data-lang="en">🇨🇦 Interac e-Transfer — save 100&nbsp;$</span>
   </a>
