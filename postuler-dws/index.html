@@ -60,6 +60,16 @@
   .lede{ color:var(--muted); font-size:16px; }
   @media (max-width:520px){ .enter{ display:none; } h1{ font-size:23px; } }
 </style>
+<!-- GA4 (linked to Google Ads) + Meta Pixel -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9DDED3E5L1"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config','G-9DDED3E5L1');
+</script>
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','972812711774176'); fbq('track','PageView');
+</script>
 </head>
 <body>
 <div class="bar" id="bar"></div>
@@ -78,7 +88,7 @@
 
 <script>
 /* ---------- config ---------- */
-var FORMSPREE_ENDPOINT = "https://formspree.io/f/{{FORMSPREE_ID}}"; // <-- paste your Formspree endpoint
+var FORMSPREE_ENDPOINT = "https://formspree.io/f/mbdvzpqa"; // live Formspree endpoint
 var REDIRECT_URL = "/reservation-dws/"; // <-- deposit page once published
 
 /* ---------- questions ---------- */

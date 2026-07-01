@@ -50,6 +50,16 @@
   body.en [data-lang=en]{ display:inline; }
   body.en .pay [data-lang=en]{ display:inline; }
 </style>
+<!-- GA4 (linked to Google Ads) + Meta Pixel -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9DDED3E5L1"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config','G-9DDED3E5L1');
+</script>
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','972812711774176'); fbq('track','PageView');
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -107,6 +117,18 @@
 <script>
   function setLang(l){ document.body.classList.toggle('en', l==='en'); document.getElementById('fr').classList.toggle('on', l==='fr'); document.getElementById('en').classList.toggle('on', l==='en'); document.documentElement.lang=l; try{localStorage.setItem('cap_lang',l)}catch(e){} }
   (function(){ try{ var l=localStorage.getItem('cap_lang'); if(l) setLang(l); }catch(e){} })();
+
+  // Fire the REAL Purchase when the payment provider redirects back with ?paid=1
+  // (set Stripe/PayPal success URL to /reservation-dws/?paid=1). This activates
+  // the GA4 "purchase" key event, which Google Ads imports as your conversion.
+  (function(){
+    var p = new URLSearchParams(location.search);
+    if(p.get('paid')==='1'){
+      var tx = p.get('tx') || ('dep-'+Date.now());
+      if(window.gtag) gtag('event','purchase',{value:1400,currency:'CAD',transaction_id:tx,items:[{item_name:'DWS deposit'}]});
+      if(window.fbq) fbq('track','Purchase',{value:1400,currency:'CAD'});
+    }
+  })();
 
   // Require consent before leaving to a payment provider.
   function track(rail){
