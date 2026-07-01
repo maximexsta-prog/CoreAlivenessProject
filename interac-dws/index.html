@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+  DWS retreat — Interac e-transfer instructions page (the Interac "payment"
+  destination, mirroring how Stripe/PayPal navigate away). Bilingual FR/EN.
+  Fires InitiateCheckout/begin_checkout on load (Interac = manual, no callback).
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, follow">
+<title>Réserver par Interac — Retraite DWS | Core Aliveness Project</title>
+<style>
+  :root{ --bg:#18384E; --ink:#fff; --accent:#c0392b; --accent2:#6fae84; --muted:#b8c6d0; --card:rgba(255,255,255,.06); --line:rgba(255,255,255,.20); }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 -apple-system,"Segoe UI",Roboto,sans-serif; }
+  .wrap{ max-width:640px; margin:0 auto; padding:40px 22px 64px; }
+  .top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; }
+  .logo{ font-weight:800; letter-spacing:.5px; }
+  .lang button{ background:none; border:1px solid var(--line); color:var(--muted); border-radius:8px; padding:4px 9px; cursor:pointer; font-weight:700; }
+  .lang button.on{ color:#fff; border-color:#fff; }
+  h1{ font-size:26px; line-height:1.25; margin:.2em 0 .4em; }
+  .lede{ color:var(--muted); }
+  .box{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin:22px 0; }
+  .kv{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
+  .kv:last-child{ border-bottom:0; }
+  .kv .k{ color:var(--muted); font-size:14px; }
+  .kv .v{ font-weight:800; text-align:right; }
+  .v.big{ font-size:20px; }
+  .save{ color:var(--accent2); font-weight:700; }
+  .cta{ display:inline-block; text-decoration:none; font-weight:800; padding:13px 22px; border-radius:12px; border:1px solid var(--line); color:#fff; margin-top:8px; }
+  .fine{ font-size:12.5px; color:var(--muted); border-top:1px solid var(--line); padding-top:18px; margin-top:30px; }
+  a{ color:var(--accent2); }
+  [data-lang=en]{ display:none; }
+  body.en [data-lang=fr]{ display:none; }
+  body.en [data-lang=en]{ display:inline; }
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9DDED3E5L1"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config','G-9DDED3E5L1');
+</script>
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','972812711774176'); fbq('track','PageView');
+</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="logo">CORE ALIVENESS</div>
+    <div class="lang"><button id="fr" class="on" onclick="setLang('fr')">FR</button><button id="en" onclick="setLang('en')">EN</button></div>
+  </div>
+
+  <h1><span data-lang="fr">Réserve ta place par Interac</span><span data-lang="en">Reserve your spot by Interac</span></h1>
+  <p class="lede">
+    <span data-lang="fr">Fais un virement Interac. Ta place est réservée dès réception — je te confirme par courriel.</span>
+    <span data-lang="en">Send an Interac e-transfer. Your spot is reserved on receipt — I'll confirm by email.</span>
+  </p>
+
+  <div class="box">
+    <div class="kv"><span class="k" data-lang="fr">Envoie à</span><span class="k" data-lang="en">Send to</span><span class="v big">438-345-1888</span></div>
+    <div class="kv"><span class="k" data-lang="fr">Montant du dépôt</span><span class="k" data-lang="en">Deposit amount</span><span class="v">1&nbsp;400&nbsp;CAD</span></div>
+    <div class="kv"><span class="k" data-lang="fr">Mémo / message</span><span class="k" data-lang="en">Memo / message</span><span class="v" data-lang="fr">ton nom complet</span><span class="v" data-lang="en">your full name</span></div>
+    <div class="kv"><span class="k" data-lang="fr">Frais</span><span class="k" data-lang="en">Fees</span><span class="v" data-lang="fr">aucun</span><span class="v" data-lang="en">none</span></div>
+  </div>
+
+  <p class="lede">
+    <span data-lang="fr">💡 <span class="save">Économise 50&nbsp;$</span> : paie le total (3&nbsp;995&nbsp;CAD) en entier par Interac et je déduis 50&nbsp;$. Dépôt automatique activé — pas de question de sécurité.</span>
+    <span data-lang="en">💡 <span class="save">Save 50&nbsp;$</span>: pay the full total (3,995&nbsp;CAD) by Interac and I'll take 50&nbsp;$ off. Autodeposit is on — no security question.</span>
+  </p>
+
+  <a class="cta" href="/reservation-dws/"><span data-lang="fr">← Retour aux options de paiement</span><span data-lang="en">← Back to payment options</span></a>
+
+  <p class="lede" style="margin-top:22px" data-lang="fr">Une question ? <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
+  <p class="lede" style="margin-top:22px" data-lang="en">A question? <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
+
+  <p class="fine">
+    <span data-lang="fr">Le paiement est traité par notre partenaire local agréé qui opère la retraite sur place. Core Aliveness Project ne reçoit pas directement le paiement des participants.</span>
+    <span data-lang="en">Payment is processed by our licensed local operator partner who runs the retreat on site. Core Aliveness Project does not receive participant payments directly.</span>
+  </p>
+</div>
+
+<script>
+  function setLang(l){ document.body.classList.toggle('en', l==='en'); document.getElementById('fr').classList.toggle('on', l==='fr'); document.getElementById('en').classList.toggle('on', l==='en'); document.documentElement.lang=l; try{localStorage.setItem('cap_lang',l)}catch(e){} }
+  (function(){ try{ var l=localStorage.getItem('cap_lang'); if(l) setLang(l); }catch(e){} })();
+  // Interac has no payment callback — record intent on arrival.
+  if(window.fbq) fbq('track','InitiateCheckout',{value:1400,currency:'CAD',content_name:'DWS deposit',payment_rail:'interac'});
+  if(window.gtag) gtag('event','begin_checkout',{value:1400,currency:'CAD',items:[{item_name:'DWS deposit (Interac)'}]});
+</script>
+</body>
+</html>
