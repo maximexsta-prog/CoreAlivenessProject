@@ -97,7 +97,7 @@ cockpit in v2. So — hold the API for now.
 | **Google Ads `AW-XXXXXXX/label`** | Fix the broken lead conversion + add deposit `Purchase` |
 | **Stripe Payment Link** (deposit, 1 400 CAD) | Deposit page button |
 | **PayPal deposit link/button** | Deposit page button |
-| **Interac email/handle** | Deposit page instructions |
+| ~~Interac~~ ✅ **438-345-1888** (enable Autodeposit) | wired into deposit page + emails |
 
 ---
 

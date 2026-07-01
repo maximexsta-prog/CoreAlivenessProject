@@ -22,7 +22,7 @@ Voici les détails :
 Trois façons de régler le dépôt :
 - **Carte (Stripe)** : {{stripe_link}}
 - **PayPal** : {{paypal_link}}
-- **Interac** (Canada, sans frais — économise 100 $ sur le total en payant par Interac) : {{interac_email}} — mets ton **nom complet en mémo**.
+- **Interac** (Canada, sans frais — économise 100 $ sur le total en payant par Interac) : envoie au **438-345-1888**, avec ton **nom complet en mémo**.
 
 Tu peux payer en entier (3 995 CAD) ou en **3 versements de 1 400 CAD** (le dépôt étant le premier). Réponds-moi si tu préfères les versements et je t'organise ça.
 
@@ -72,7 +72,7 @@ Salut [Prénom],
 
 Petit rappel amical : je garde ta place pour la retraite DWS encore **~12 h**. Après, je la propose à la personne suivante sur la liste.
 
-Si tu es partant·e, le dépôt de 1 400 CAD la verrouille : {{stripe_link}} · PayPal {{paypal_link}} · Interac {{interac_email}} (mémo = ton nom).
+Si tu es partant·e, le dépôt de 1 400 CAD la verrouille : {{stripe_link}} · PayPal {{paypal_link}} · Interac au 438-345-1888 (mémo = ton nom).
 
 Un doute ou une question ? Réponds-moi, on en parle.
 
