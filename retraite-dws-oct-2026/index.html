@@ -2006,22 +2006,12 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         e.preventDefault();
         e.stopImmediatePropagation();
         var emailInput = form.querySelector('input[name="EMAIL"]');
-        var msgDiv = form.querySelector('.jkit-mailchimp-message');
-        var submitBtn = form.querySelector('button[type="submit"]');
         if (!emailInput || !emailInput.value) return;
-        if (msgDiv) { msgDiv.className = 'jkit-mailchimp-message'; msgDiv.innerHTML = ''; }
-        if (submitBtn) submitBtn.disabled = true;
-        mailchimpJSONP(emailInput.value, function(data) {
-            if (submitBtn) submitBtn.disabled = false;
-            if (data.result === 'success') {
-                window.location.href = '/merci-retraite-dws/';
-            } else {
-                if (msgDiv) {
-                    msgDiv.className = 'jkit-mailchimp-message error';
-                    msgDiv.innerHTML = data.msg || 'Une erreur est survenue. Veuillez réessayer.';
-                }
-            }
-        });
+        var email = emailInput.value;
+        // Keep growing the email list (best-effort, non-blocking), then send the
+        // visitor to the application funnel with their email prefilled.
+        try { mailchimpJSONP(email, function() {}); } catch (err) {}
+        window.location.href = '/postuler-dws/?email=' + encodeURIComponent(email);
     }, true);
 })();
 </script>
