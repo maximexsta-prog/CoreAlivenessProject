@@ -2,6 +2,9 @@ User-agent: *
 Disallow: /wp-admin/
 Allow: /wp-admin/admin-ajax.php
 Disallow: /wp-content/uploads/wpo/wpo-plugins-tables-list.json
+# Private admin dashboard + its API — keep crawlers out.
+Disallow: /admin
+Disallow: /api/
 
 # AI search crawlers — explicitly allowed
 User-agent: GPTBot
