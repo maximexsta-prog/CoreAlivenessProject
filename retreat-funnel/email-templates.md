@@ -6,6 +6,29 @@ are reservation emails, not newsletter.
 
 ---
 
+## 0. First contact — for people who signed up before the funnel existed (send the form link)
+
+**Objet : Les inscriptions sont ouvertes — ta place pour le Vietnam**
+
+Salut [Prénom],
+
+Merci de t'être manifesté·e pour la retraite Deep Water Solo dans la baie de Lan Ha (19 octobre 2026). Bonne nouvelle : les inscriptions sont maintenant ouvertes — et comme tu étais parmi les premières personnes, tu es en tête de liste.
+
+Prochaine étape : une courte candidature (~3 min) qui m'aide à bien te placer dans le groupe (max 9) :
+👉 https://corealivenessproject.com/postuler-dws/
+
+À la fin, tu pourras confirmer ta place avec le dépôt de réservation de **1 400 CAD**. Les places sont confirmées dans l'ordre des dépôts reçus.
+
+Petit bonus pour les premières personnes : je te réserve le **tarif fondateur de 3 720 CAD** (au lieu de 3 995).
+
+Une question ? Réponds-moi ici ou sur WhatsApp (+1 438 345 1888).
+
+À très bientôt,
+Maxime
+Core Aliveness Project — corealivenessproject.com
+
+---
+
 ## 1. Acceptance + deposit (STANDARD rate — 3 995 CAD)
 
 **Objet : Ta place pour le Vietnam**
