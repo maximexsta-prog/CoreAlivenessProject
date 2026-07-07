@@ -1,0 +1,36 @@
+# Netlify _headers — privacy hardening for the admin area.
+# (This file is consumed at deploy time; it is NOT served publicly.)
+
+# The private dashboard: never index, never cache, never frame.
+/admin
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Cache-Control: no-store
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  X-Content-Type-Options: nosniff
+
+/admin.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Cache-Control: no-store
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  X-Content-Type-Options: nosniff
+
+# The admin API: never index, never cache.
+/api/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Cache-Control: no-store
+  X-Content-Type-Options: nosniff
+
+# Belt-and-suspenders noindex for the existing link-only dashboards
+# (they already carry a <meta robots> tag; this adds the HTTP header too).
+/ca-dash-x7k2m9q4w8/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+/msa-dashboard-9b4k2f/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+/dws-launch-map-j6htw9sym2/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+/tides-hlb-7kx2m9/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+/tsla-watch-iwsvloxg/*
+  X-Robots-Tag: noindex, nofollow, noarchive

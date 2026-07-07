@@ -1,0 +1,11 @@
+# Netlify config for corealivenessproject.com
+# The static site publishes from the repo root; the admin dashboard is powered
+# by a Netlify Function (netlify/functions/admin.mjs) exposed at /api/admin.
+
+[build]
+  publish = "."
+
+# Serverless API behind the private /admin dashboard (Netlify Functions v2 + Blobs).
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
