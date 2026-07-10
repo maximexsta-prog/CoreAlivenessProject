@@ -17,7 +17,7 @@ Merci de t'être manifesté·e pour la retraite Deep Water Solo dans la baie de 
 Prochaine étape : une courte candidature (~3 min) qui m'aide à bien te placer dans le groupe (max 9) :
 👉 https://corealivenessproject.com/inscription-dws/
 
-À la fin, tu pourras confirmer ta place avec le dépôt de réservation de **1 400 CAD**. Les places sont confirmées dans l'ordre des dépôts reçus.
+Après ta candidature, on fait un court appel (15 min) pour valider le fit — puis je t'envoie ton lien de dépôt de **1 400 CAD**. Les places sont confirmées dans l'ordre des dépôts reçus.
 
 Petit bonus pour les premières personnes : je te réserve le **tarif fondateur de 3 720 CAD** (au lieu de 3 995).
 
