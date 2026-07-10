@@ -240,7 +240,7 @@ function submit(){
       // Call-first flow: no redirect to payment. Show the confirmation screen —
       // Maxime books a short fit/safety call, then sends the payment link.
       document.getElementById('bar').style.width='100%';
-      document.getElementById('back').style.visibility='hidden'; nb.style.display='none';
+      document.querySelector('.nav').style.display='none';
       document.getElementById('stage').innerHTML = '<div class="center">'
         + '<h1>'+t('Candidature reçue ! 🎉','Application received! 🎉')+'</h1>'
         + '<p class="lede">'+t("Dernière étape : un court appel avec Maxime (15 min, sans préparation) pour s'assurer que c'est le bon fit — dans les deux sens.","Last step: a short call with Maxime (15 min, no preparation) to make sure it's the right fit — both ways.")+'</p>'
