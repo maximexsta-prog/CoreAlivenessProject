@@ -129,14 +129,13 @@ var Q = [
     opts:[["Paiement complet — 3 995 CAD","Pay in full — 3,995 CAD"],["3 versements de 1 400 CAD","3 payments of 1,400 CAD"],["J'aimerais discuter d'un arrangement","I'd like to discuss a custom plan"]] },
   { id:"gender", type:"radio", req:true,
     fr:"Pour l'attribution des chambres : ton genre", en:"For room assignment: your gender",
-    opts:[["Homme","Male"],["Femme","Female"],["Non-binaire","Non-binary"],["Autre","Other"]] },
+    opts:[["Homme","Male"],["Femme","Female"],["Autre","Other"]] },
   { id:"heard", type:"radio", req:false,
     fr:"Comment as-tu entendu parler de la retraite ?", en:"How did you hear about the retreat?",
     opts:[["Instagram (Core Aliveness)","Instagram (Core Aliveness)"],["Pub Instagram/Facebook","IG/FB ad"],["Recherche Google","Google search"],["Bouche à oreille","Word of mouth"],["YouTube","YouTube"],["Autre","Other"]] },
   { id:"anything", type:"textarea", req:false,
     fr:"Autre chose à partager ?", en:"Anything else to share?",
-    hintfr:"Allergies, questions, besoins de paiement particuliers…", hinten:"Allergies, questions, custom payment needs…" },
-  { type:"end" }
+    hintfr:"Allergies, questions, besoins de paiement particuliers…", hinten:"Allergies, questions, custom payment needs…" }
 ];
 
 /* ---------- state ---------- */
@@ -161,13 +160,10 @@ function render(){
   if(q.type==='intro'){
     h = '<div class="center">'
       + '<h1>'+t('Inscription à la retraite DWS','Register for the DWS retreat')+'</h1>'
-      + '<p class="lede">'+t('Baie de Lan Ha, Vietnam · 19 octobre 2026','Lan Ha Bay, Vietnam · October 19, 2026')+'</p>'
-      + '<p class="lede">'+t('Quelques questions (~3 min) pour apprendre à te connaître. Ce n\'est pas un paiement — c\'est une candidature. Je te réponds vite.','A few questions (~3 min) to get to know you. This isn\'t a payment — it\'s an application. I reply fast.')+'</p></div>';
+      + '<p class="lede">'+t('Merci de ton intérêt à te joindre à un groupe de grimpeurs qui te ressemblent pour une retraite en octobre dans la baie d\'Halong ! Cette courte candidature nous aide à te placer dans le bon groupe — celui qui correspond à ton niveau actuel et à ce que tu veux retirer de l\'expérience.','Thank you for your interest in joining us with a group of like-minded climbers on a retreat in October in Ha Long Bay! This short application helps us place you with the right group — one that matches your current skill level and what you\'re hoping to get out of the experience.')+'</p>'
+      + '<p class="lede">'+t('On te pose quelques questions rapides sur ton parcours d\'escalade, puis on prend tes coordonnées pour pouvoir te joindre facilement.','We\'ll ask a few quick questions about your climbing background, then collect your contact details so we can reach you easily.')+'</p>'
+      + '<p class="lede">'+t('Ça prend environ 4 minutes. C\'est parti !','It takes about 4 minutes. Let\'s get started!')+'</p></div>';
     nextBtn.textContent = t('Commencer →','Start →');
-  } else if(q.type==='end'){
-    h = '<div class="center"><h1>'+t('Prêt·e à envoyer','Ready to send')+'</h1>'
-      + '<p class="lede">'+t('Merci ! Je lis chaque candidature personnellement et je te réponds vite (souvent le jour même).','Thanks! I read every application personally and reply fast (often same-day).')+'</p></div>';
-    nextBtn.textContent = t('Envoyer ma candidature','Submit application');
   } else {
     h += '<div class="qnum">'+(realIdx+1)+' / '+total+'</div>';
     h += '<h1>'+t(q.fr,q.en)+(q.req?'':' <span class="hint">('+t('optionnel','optional')+')</span>')+'</h1>';
@@ -196,7 +192,7 @@ function render(){
         + '<input type="text" id="d_y" inputmode="numeric" maxlength="4" placeholder="AAAA" value="'+(d.y||'')+'"></div>';
     }
     h += '<div class="err" id="err"></div>';
-    nextBtn.textContent = 'OK';
+    nextBtn.textContent = (i===Q.length-1) ? t('Envoyer ma candidature','Submit application') : 'OK';
   }
   s.innerHTML = h;
   var first = s.querySelector('textarea,input'); if(first) first.focus();
@@ -228,7 +224,7 @@ function collect(){
   function v(id){ var e=document.getElementById(id); return e?(e.value||'').trim():''; }
 }
 
-function next(){ if(Q[i].type==='end'){ submit(); return; } if(!collect()) return; go(1); }
+function next(){ if(!collect()) return; if(i===Q.length-1){ submit(); return; } go(1); }
 function go(d){ i=Math.max(0,Math.min(Q.length-1,i+d)); render(); }
 
 function submit(){
