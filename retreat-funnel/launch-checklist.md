@@ -7,8 +7,8 @@ sold-out flip (§4) and any copy tweaks.
 
 ## 0 · Before you send ANY traffic (do these first)
 
-- [ ] **Stripe** in **Live** mode, deposit link = 1 400 CAD, **success URL = `/reservation-dws/?paid=1`**, receipts ON
-- [ ] **Stripe test:** pay 1 400 CAD to yourself with a real card → confirm it lands → confirm you land on `/reservation-dws/?paid=1` → **refund it**
+- [ ] **Stripe** in **Live** mode, deposit link = 1 240 CAD (early bird; bump to 1 400 after Sep 8, 2026), **success URL = `/reservation-dws/?paid=1`**, receipts ON
+- [ ] **Stripe test:** pay 1 240 CAD to yourself with a real card → confirm it lands → confirm you land on `/reservation-dws/?paid=1` → **refund it**
 - [ ] **PayPal test:** send yourself 1 CAD via `paypal.me/CoreAlivenessProject` → confirm it lands in the `hello@` account
 - [ ] **Interac test:** e-transfer $1 to **438-345-1888** → confirm **autodeposit** (no security question) and it lands
 - [ ] **Formspree test:** submit the application form once → confirm the email arrives at `hello@corealivenessproject.com` with every answer

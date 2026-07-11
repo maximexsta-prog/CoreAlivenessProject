@@ -14,10 +14,10 @@ Salut [Prénom],
 
 Merci de t'être manifesté·e pour la retraite Deep Water Solo dans la baie de Lan Ha (19 octobre 2026). Bonne nouvelle : les inscriptions sont maintenant ouvertes — et comme tu étais parmi les premières personnes, tu es en tête de liste.
 
-Prochaine étape : une courte candidature (~3 min) qui m'aide à bien te placer dans le groupe (max 9) :
+Prochaine étape : une courte candidature (~4 min) qui m'aide à bien te placer dans le groupe (max 9) :
 👉 https://corealivenessproject.com/inscription-dws/
 
-Après ta candidature, on fait un court appel (15 min) pour valider le fit — puis je t'envoie ton lien de dépôt de **1 400 CAD**. Les places sont confirmées dans l'ordre des dépôts reçus.
+Après ta candidature, on fait un court appel (15 min) pour valider le fit — puis je t'envoie ton lien de dépôt de **1 240 CAD**. Les places sont confirmées dans l'ordre des dépôts reçus.
 
 Petit bonus pour les premières personnes : je te réserve le **tarif fondateur de 3 720 CAD** (au lieu de 3 995).
 
@@ -45,7 +45,7 @@ Voici les détails :
 Trois façons de régler le dépôt :
 - **Carte (Stripe)** : {{stripe_link}}
 - **PayPal** : {{paypal_link}}
-- **Interac** (Canada, sans frais — économise 100 $ sur le total en payant par Interac) : envoie au **438-345-1888**, avec ton **nom complet en mémo**.
+- **Interac** (Canada, sans frais — économise 50 $ sur le total en payant par Interac) : envoie au **438-345-1888**, avec ton **nom complet en mémo**.
 
 Tu peux payer en entier (3 995 CAD) ou en **3 versements de 1 400 CAD** (le dépôt étant le premier). Réponds-moi si tu préfères les versements et je t'organise ça.
 
@@ -61,7 +61,7 @@ Core Aliveness Project — corealivenessproject.com
 
 *Same as above, with this paragraph swapped in:*
 
-> Comme tu étais parmi les premières personnes intéressées, je te réserve le **tarif fondateur : 3 720 CAD** (au lieu de 3 995). **Ta place est réservée 48 h** ; elle se confirme avec le **dépôt de 1 400 CAD** (solde de 2 320 CAD avant le départ), ou en **3 versements de 1 240 CAD**. Ce tarif est limité aux toutes premières réservations.
+> Comme tu étais parmi les premières personnes intéressées, je te réserve le **tarif fondateur : 3 720 CAD** (au lieu de 3 995). **Ta place est réservée 48 h** ; elle se confirme avec le **dépôt de 1 240 CAD** (solde de 2 480 CAD avant le départ), ou en **3 versements de 1 240 CAD**. Ce tarif est limité aux toutes premières réservations.
 
 ---
 
@@ -74,7 +74,7 @@ Salut [Prénom],
 Dépôt bien reçu — **ta place est confirmée** pour la retraite DWS, 19 octobre 2026. Bienvenue dans le groupe !
 
 Prochaines étapes (je t'écris d'ici peu avec les détails) :
-- Solde de {{2 595 / 2 320}} CAD à régler avant le **[date]**.
+- Solde de {{2 595 / 2 480}} CAD à régler avant le **[date]**.
 - Preuve d'assurance (sports extrêmes + rapatriement) au moins 30 jours avant le départ.
 - Décharge de responsabilité à signer.
 - Infos pratiques : vols suggérés, logistique d'arrivée à Cat Ba, matériel à prévoir.
@@ -95,7 +95,7 @@ Salut [Prénom],
 
 Petit rappel amical : je garde ta place pour la retraite DWS encore **~12 h**. Après, je la propose à la personne suivante sur la liste.
 
-Si tu es partant·e, le dépôt de 1 400 CAD la verrouille : {{stripe_link}} · PayPal {{paypal_link}} · Interac au 438-345-1888 (mémo = ton nom).
+Si tu es partant·e, le dépôt de 1 240 CAD la verrouille : {{stripe_link}} · PayPal {{paypal_link}} · Interac au 438-345-1888 (mémo = ton nom).
 
 Un doute ou une question ? Réponds-moi, on en parle.
 
