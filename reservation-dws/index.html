@@ -2,7 +2,7 @@
 <!--
   DWS retreat — reservation / deposit page (DRAFT, standalone).
   Replaces the passive "you're on the waitlist" thank-you with an action page:
-  "your spot is held 48h — confirm it with a 1,400 CAD deposit".
+  "your spot is held 48h — confirm it with a 1,240 CAD deposit".
 
   Publish target: e.g. /reservation-dws/  (set Tally's redirect-on-submit here).
   Wired (LIVE): Stripe (buy.stripe.com/14AcN4bnQ9HSbE1cXI4F200),
@@ -87,7 +87,7 @@
   </p>
 
   <div class="hold">
-    <div class="price"><span class="n">1&nbsp;400&nbsp;CAD</span><span class="sub" data-lang="fr">dépôt qui confirme ta place</span><span class="sub" data-lang="en">deposit that confirms your spot</span></div>
+    <div class="price"><span class="n">1&nbsp;240&nbsp;CAD</span><span class="sub" data-lang="fr">dépôt qui confirme ta place</span><span class="sub" data-lang="en">deposit that confirms your spot</span></div>
     <p style="margin:.4em 0 0" data-lang="fr">Tarif early bird <b>3&nbsp;720&nbsp;CAD</b> jusqu'au 8 septembre 2026 (ensuite 3&nbsp;995&nbsp;CAD) — le solde après dépôt est payable avant le départ. Les places sont limitées (max 9) et <b>confirmées dans l'ordre des dépôts reçus</b>.</p>
     <p style="margin:.4em 0 0" data-lang="en">Early bird rate <b>3,720&nbsp;CAD</b> until September 8, 2026 (then 3,995&nbsp;CAD) — the balance after deposit is payable before departure. Spots are limited (max 9) and <b>confirmed in order of deposit received</b>.</p>
   </div>
@@ -95,8 +95,8 @@
   <label class="consent">
     <input type="checkbox" id="consent" onchange="onConsent()">
     <span>
-      <span data-lang="fr">J'ai lu et j'accepte la <a href="/politique-de-confidentialite/">politique de réservation et d'annulation</a>, je m'engage à détenir l'assurance obligatoire (sports extrêmes + rapatriement), et je comprends qu'un dépôt de 1&nbsp;400&nbsp;CAD confirme ma place.</span>
-      <span data-lang="en">I have read and accept the <a href="/politique-de-confidentialite/">booking & cancellation policy</a>, agree to hold the mandatory insurance (extreme sports + repatriation), and understand a 1,400&nbsp;CAD deposit confirms my spot.</span>
+      <span data-lang="fr">J'ai lu et j'accepte la <a href="/politique-de-confidentialite/">politique de réservation et d'annulation</a>, je m'engage à détenir l'assurance obligatoire (sports extrêmes + rapatriement), et je comprends qu'un dépôt de 1&nbsp;240&nbsp;CAD confirme ma place.</span>
+      <span data-lang="en">I have read and accept the <a href="/politique-de-confidentialite/">booking & cancellation policy</a>, agree to hold the mandatory insurance (extreme sports + repatriation), and understand a 1,240&nbsp;CAD deposit confirms my spot.</span>
     </span>
   </label>
 
@@ -106,13 +106,13 @@
   <a class="pay stripe" href="https://buy.stripe.com/14AcN4bnQ9HSbE1cXI4F200" onclick="return track('stripe')">
     <span data-lang="fr">💳 Payer par carte (Stripe)</span><span data-lang="en">💳 Pay by card (Stripe)</span>
   </a>
-  <a class="pay paypal" href="https://paypal.me/CoreAlivenessProject" onclick="return track('paypal')">PayPal — 1&nbsp;400&nbsp;CAD</a>
+  <a class="pay paypal" href="https://paypal.me/CoreAlivenessProject" onclick="return track('paypal')">PayPal — 1&nbsp;240&nbsp;CAD</a>
   <a class="pay interac" href="/interac-dws/" onclick="return track('interac')">
     <span data-lang="fr">🇨🇦 Virement Interac — économise 50&nbsp;$</span><span data-lang="en">🇨🇦 Interac e-Transfer — save 50&nbsp;$</span>
   </a>
 
-  <p class="lede" data-lang="fr">Tu préfères <b>3 versements de 1&nbsp;400&nbsp;CAD</b> ou tu as une question ? Écris-moi : <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
-  <p class="lede" data-lang="en">Prefer <b>3 payments of 1,400&nbsp;CAD</b> or have a question? Email <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
+  <p class="lede" data-lang="fr">Tu préfères <b>3 versements de 1&nbsp;240&nbsp;CAD</b> ou tu as une question ? Écris-moi : <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
+  <p class="lede" data-lang="en">Prefer <b>3 payments of 1,240&nbsp;CAD</b> or have a question? Email <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
 
   <p class="fine">
     <span data-lang="fr">Le paiement est traité par notre partenaire local agréé qui opère la retraite sur place. Core Aliveness Project ne reçoit pas directement le paiement des participants.</span>
@@ -131,8 +131,8 @@
     var p = new URLSearchParams(location.search);
     if(p.get('paid')==='1'){
       var tx = p.get('tx') || ('dep-'+Date.now());
-      if(window.gtag) gtag('event','purchase',{value:1400,currency:'CAD',transaction_id:tx,items:[{item_name:'DWS deposit'}]});
-      if(window.fbq) fbq('track','Purchase',{value:1400,currency:'CAD'});
+      if(window.gtag) gtag('event','purchase',{value:1240,currency:'CAD',transaction_id:tx,items:[{item_name:'DWS deposit'}]});
+      if(window.fbq) fbq('track','Purchase',{value:1240,currency:'CAD'});
     }
   })();
 
@@ -145,17 +145,17 @@
   // Fire InitiateCheckout on a real payment click (buttons are locked until consent).
   function track(rail){
     if(!document.getElementById('consent').checked) return false;
-    if(window.fbq) fbq('track','InitiateCheckout',{value:1400,currency:'CAD',content_name:'DWS deposit',payment_rail:rail});
-    if(window.gtag) gtag('event','begin_checkout',{value:1400,currency:'CAD',items:[{item_name:'DWS deposit'}]});
+    if(window.fbq) fbq('track','InitiateCheckout',{value:1240,currency:'CAD',content_name:'DWS deposit',payment_rail:rail});
+    if(window.gtag) gtag('event','begin_checkout',{value:1240,currency:'CAD',items:[{item_name:'DWS deposit'}]});
     return true;
   }
 
   /* ===== Fire the REAL Purchase conversion on the payment SUCCESS page =====
      Put this on the Stripe success_url / PayPal return page, NOT here:
 
-     gtag('event','conversion',{ send_to:'{{AW_CONVERSION_ID}}/{{AW_LABEL}}', value:1400.0, currency:'CAD', transaction_id: ORDER_ID });
-     gtag('event','purchase',{ value:1400.0, currency:'CAD', transaction_id: ORDER_ID });
-     fbq('track','Purchase',{ value:1400.0, currency:'CAD' });
+     gtag('event','conversion',{ send_to:'{{AW_CONVERSION_ID}}/{{AW_LABEL}}', value:1240.0, currency:'CAD', transaction_id: ORDER_ID });
+     gtag('event','purchase',{ value:1240.0, currency:'CAD', transaction_id: ORDER_ID });
+     fbq('track','Purchase',{ value:1240.0, currency:'CAD' });
   ======================================================================= */
 </script>
 </body>

@@ -60,14 +60,14 @@
 
   <div class="box">
     <div class="kv"><span class="k" data-lang="fr">Envoie à</span><span class="k" data-lang="en">Send to</span><span class="v big">438-345-1888</span></div>
-    <div class="kv"><span class="k" data-lang="fr">Montant du dépôt</span><span class="k" data-lang="en">Deposit amount</span><span class="v">1&nbsp;400&nbsp;CAD</span></div>
+    <div class="kv"><span class="k" data-lang="fr">Montant du dépôt</span><span class="k" data-lang="en">Deposit amount</span><span class="v">1&nbsp;240&nbsp;CAD</span></div>
     <div class="kv"><span class="k" data-lang="fr">Mémo / message</span><span class="k" data-lang="en">Memo / message</span><span class="v" data-lang="fr">ton nom complet</span><span class="v" data-lang="en">your full name</span></div>
     <div class="kv"><span class="k" data-lang="fr">Frais</span><span class="k" data-lang="en">Fees</span><span class="v" data-lang="fr">aucun</span><span class="v" data-lang="en">none</span></div>
   </div>
 
   <p class="lede">
-    <span data-lang="fr">💡 <span class="save">Économise 50&nbsp;$</span> : paie le total (3&nbsp;995&nbsp;CAD) en entier par Interac et je déduis 50&nbsp;$. Dépôt automatique activé — pas de question de sécurité.</span>
-    <span data-lang="en">💡 <span class="save">Save 50&nbsp;$</span>: pay the full total (3,995&nbsp;CAD) by Interac and I'll take 50&nbsp;$ off. Autodeposit is on — no security question.</span>
+    <span data-lang="fr">💡 <span class="save">Économise 50&nbsp;$</span> : paie le total en entier par Interac et je déduis 50&nbsp;$. Dépôt automatique activé — pas de question de sécurité.</span>
+    <span data-lang="en">💡 <span class="save">Save 50&nbsp;$</span>: pay the full total by Interac and I'll take 50&nbsp;$ off. Autodeposit is on — no security question.</span>
   </p>
 
   <a class="cta" href="/reservation-dws/"><span data-lang="fr">← Retour aux options de paiement</span><span data-lang="en">← Back to payment options</span></a>
@@ -85,8 +85,8 @@
   function setLang(l){ document.body.classList.toggle('en', l==='en'); document.getElementById('fr').classList.toggle('on', l==='fr'); document.getElementById('en').classList.toggle('on', l==='en'); document.documentElement.lang=l; try{localStorage.setItem('cap_lang',l)}catch(e){} }
   (function(){ try{ var l=localStorage.getItem('cap_lang'); if(l) setLang(l); }catch(e){} })();
   // Interac has no payment callback — record intent on arrival.
-  if(window.fbq) fbq('track','InitiateCheckout',{value:1400,currency:'CAD',content_name:'DWS deposit',payment_rail:'interac'});
-  if(window.gtag) gtag('event','begin_checkout',{value:1400,currency:'CAD',items:[{item_name:'DWS deposit (Interac)'}]});
+  if(window.fbq) fbq('track','InitiateCheckout',{value:1240,currency:'CAD',content_name:'DWS deposit',payment_rail:'interac'});
+  if(window.gtag) gtag('event','begin_checkout',{value:1240,currency:'CAD',items:[{item_name:'DWS deposit (Interac)'}]});
 </script>
 </body>
 </html>
