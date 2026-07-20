@@ -1,7 +1,7 @@
 # Booking, cancellation & refund policy — DWS retreat
 
 Aligned with `politique-de-confidentialite/index.html`. Numbers: total **3 995
-CAD**, deposit **1 400 CAD**, balance **2 595 CAD**, date **19 oct 2026**.
+CAD**, deposit **1 400 CAD**, balance **2 595 CAD**, date **16 nov 2026**.
 
 > ⚠️ Lawyer review recommended (see legal note in README). This mirrors the
 > ladder already on your policy page, updated to the final numbers.

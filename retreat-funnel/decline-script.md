@@ -55,7 +55,7 @@ Core Aliveness Project
 
 Salut [Prénom],
 
-Merci pour ta candidature. Il semble que les dates (19 oct 2026) ou la logistique
+Merci pour ta candidature. Il semble que les dates (16 nov 2026) ou la logistique
 ne collent pas parfaitement cette fois-ci. Aucun souci — je garde tes
 coordonnées et je te préviens en priorité pour les prochaines aventures qui
 pourraient mieux t'aller.

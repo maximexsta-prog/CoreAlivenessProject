@@ -13,7 +13,7 @@
 ## A. Liability waiver — Français (version principale)
 
 **DÉCHARGE DE RESPONSABILITÉ, RECONNAISSANCE DES RISQUES ET CONSENTEMENT**
-Retraite Deep Water Solo & escalade — Baie de Lan Ha (Halong), Vietnam — 19 octobre 2026
+Retraite Deep Water Solo & escalade — Baie de Lan Ha (Halong), Vietnam — 16 novembre 2026
 Organisée par **Core Aliveness Project** (« l'Organisateur ») et opérée sur place par son partenaire local agréé (« l'Opérateur »).
 
 Je soussigné·e, __________________________ (nom complet), né·e le ____________, déclare et reconnais ce qui suit :
@@ -113,7 +113,7 @@ Place these as a **required checkbox** on the deposit page before payment:
 ## D. Liability waiver — English (short reference version)
 
 **RELEASE OF LIABILITY, ASSUMPTION OF RISK & CONSENT** — Deep Water Solo &
-climbing retreat, Lan Ha Bay (Halong), Vietnam, October 19, 2026, organized by
+climbing retreat, Lan Ha Bay (Halong), Vietnam, November 16, 2026, organized by
 Core Aliveness Project ("Organizer") and operated locally by its licensed local
 operator partner ("Operator").
 

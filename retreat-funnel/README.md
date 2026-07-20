@@ -16,7 +16,7 @@ funnel; the live site files are edited separately.
 
 | Item | Value |
 |---|---|
-| **Date** | 19 octobre 2026 (5 jours) |
+| **Date** | du 16 au 21 novembre 2026 |
 | **Group cap** | 9 participants (sold out = 9 **deposits**, not 9 applications) |
 | **Standard price** | **3 995 CAD** / personne |
 | **Deposit** | **1 400 CAD** (confirms the spot) |
@@ -36,7 +36,7 @@ first installment; +205 vs paying in full — paying in full at 3 995 is framed 
 Public surfaces already updated to 3 995 / 1 400 / 2 595 / 19 Oct / max 9:
 `retraite-dws-oct-2026/index.html` (body + EN dictionary + both JSON-LD blocks +
 Event offer price + capacity), `politique-de-confidentialite/index.html`,
-`llms.txt`, `llms-full.txt`. Flyer already shows 19 oct 2026 and no price.
+`llms.txt`, `llms-full.txt`. Flyer already shows 16 nov 2026 and no price.
 
 ---
 
