@@ -1,7 +1,7 @@
 # Booking, cancellation & refund policy — DWS retreat
 
-Aligned with `politique-de-confidentialite/index.html`. Numbers: total **3 995
-CAD**, deposit **1 400 CAD**, balance **2 595 CAD**, date **16 nov 2026**.
+Aligned with `politique-de-confidentialite/index.html`. Numbers: total **3 495
+CAD**, deposit **1 165 CAD**, balance **2 330 CAD**, date **16 nov 2026**.
 
 > ⚠️ Lawyer review recommended (see legal note in README). This mirrors the
 > ladder already on your policy page, updated to the final numbers.
@@ -11,11 +11,11 @@ CAD**, deposit **1 400 CAD**, balance **2 595 CAD**, date **16 nov 2026**.
 ## Français
 
 **Réservation**
-- Le dépôt de **1 400 CAD** confirme la place. Les places sont limitées (max 9)
+- Le dépôt de **1 165 CAD** confirme la place. Les places sont limitées (max 9)
   et attribuées **dans l'ordre des dépôts reçus**.
 - Après acceptation, une place est **réservée 48 h** au nom du candidat ; sans
   dépôt dans ce délai, elle est offerte à la personne suivante.
-- Le solde de **2 595 CAD** est payable **avant le départ** (au plus tard le
+- Le solde de **2 330 CAD** est payable **avant le départ** (au plus tard le
   **[à fixer — ex. 19 août 2026, 60 jours avant]**).
 - Le paiement (dépôt et solde) est traité par notre partenaire local agréé.
   Core Aliveness Project ne reçoit pas directement le paiement des participants.
@@ -46,11 +46,11 @@ CAD**, deposit **1 400 CAD**, balance **2 595 CAD**, date **16 nov 2026**.
 ## English
 
 **Booking**
-- The **1,400 CAD** deposit confirms the spot. Places are limited (max 9) and
+- The **1,165 CAD** deposit confirms the spot. Places are limited (max 9) and
   allocated **in the order deposits are received**.
 - After acceptance, a spot is **held for 48 h** in the applicant's name; without
   a deposit in that window, it passes to the next person.
-- The **2,595 CAD** balance is due **before departure** (no later than
+- The **2,330 CAD** balance is due **before departure** (no later than
   **[to set — e.g. Aug 19, 2026, 60 days prior]**).
 - Payment (deposit and balance) is processed by our licensed local operator
   partner. Core Aliveness Project does not receive participant payments directly.

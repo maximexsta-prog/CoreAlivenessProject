@@ -94,8 +94,8 @@ invested before you ask for phone/email. Keep it ~2–4 minutes.
 
 ## Q10 · Préférence de paiement / Payment preference
 *(Multiple choice — required — preference only, no card collected here)*
-- Paiement complet — 3 995 CAD / Pay in full — 3,995 CAD
-- 3 versements de 1 400 CAD (dépôt + 2 versements) / 3 payments of 1,400 CAD
+- Paiement complet — 3 495 CAD / Pay in full — 3,495 CAD
+- 3 versements de 1 165 CAD (dépôt + 2 versements) / 3 payments of 1,165 CAD
 - J'aimerais discuter d'un arrangement / I'd like to discuss a custom plan
 
 ## Q11 · Pour l'attribution des chambres : ton genre / For room assignment: your gender
