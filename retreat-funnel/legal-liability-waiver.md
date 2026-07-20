@@ -100,12 +100,12 @@ Place these as a **required checkbox** on the deposit page before payment:
 > ☐ J'ai lu et j'accepte la [politique de réservation, d'annulation et de
 > remboursement](/politique-de-confidentialite/), je m'engage à détenir
 > l'assurance obligatoire (sports extrêmes + rapatriement), et je comprends
-> qu'un dépôt de 1 400 CAD confirme ma place. *(requis)*
+> qu'un dépôt de 1 165 CAD confirme ma place. *(requis)*
 
 **EN**
 > ☐ I have read and accept the [booking, cancellation and refund
 > policy](/politique-de-confidentialite/), I agree to hold the mandatory
-> insurance (extreme sports + repatriation), and I understand a 1,400 CAD
+> insurance (extreme sports + repatriation), and I understand a 1,165 CAD
 > deposit confirms my spot. *(required)*
 
 ---

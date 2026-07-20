@@ -2,7 +2,7 @@
 <!--
   DWS retreat — reservation / deposit page (DRAFT, standalone).
   Replaces the passive "you're on the waitlist" thank-you with an action page:
-  "your spot is held 48h — confirm it with a 1,240 CAD deposit".
+  "your spot is held 48h — confirm it with a 1,065 CAD deposit".
 
   Publish target: e.g. /reservation-dws/  (set Tally's redirect-on-submit here).
   Wired (LIVE): Stripe (buy.stripe.com/dRm5kCbnQ4ny4bzf5Q4F201),
@@ -96,16 +96,16 @@
   </p>
 
   <div class="hold">
-    <div class="price"><span class="n"><span data-lang="fr">1&nbsp;240&nbsp;CAD</span><span data-lang="en">1,240&nbsp;CAD</span></span><span class="sub" data-lang="fr">dépôt qui confirme ta place</span><span class="sub" data-lang="en">deposit that confirms your spot</span></div>
-    <p style="margin:.4em 0 0" data-lang="fr">Rabais de prépaiement : <b>3&nbsp;720&nbsp;CAD</b> jusqu'au 26 octobre 2026 (ensuite 3&nbsp;995&nbsp;CAD) — le solde après dépôt est payable avant le départ. Les places sont limitées (max 9) et <b>confirmées dans l'ordre des dépôts reçus</b>.</p>
-    <p style="margin:.4em 0 0" data-lang="en">Early payment discount: <b>3,720&nbsp;CAD</b> until October 26, 2026 (then 3,995&nbsp;CAD) — the balance after deposit is payable before departure. Spots are limited (max 9) and <b>confirmed in the order deposits are received</b>.</p>
+    <div class="price"><span class="n"><span data-lang="fr">1&nbsp;065&nbsp;CAD</span><span data-lang="en">1,065&nbsp;CAD</span></span><span class="sub" data-lang="fr">dépôt qui confirme ta place</span><span class="sub" data-lang="en">deposit that confirms your spot</span></div>
+    <p style="margin:.4em 0 0" data-lang="fr">Rabais de prépaiement : <b>3&nbsp;195&nbsp;CAD</b> jusqu'au 26 octobre 2026 (ensuite 3&nbsp;495&nbsp;CAD) — le solde après dépôt est payable avant le départ. Les places sont limitées (max 9) et <b>confirmées dans l'ordre des dépôts reçus</b>.</p>
+    <p style="margin:.4em 0 0" data-lang="en">Early payment discount: <b>3,195&nbsp;CAD</b> until October 26, 2026 (then 3,495&nbsp;CAD) — the balance after deposit is payable before departure. Spots are limited (max 9) and <b>confirmed in the order deposits are received</b>.</p>
   </div>
 
   <label class="consent">
     <input type="checkbox" id="consent" onchange="onConsent()">
     <span>
-      <span data-lang="fr">J'ai lu et j'accepte la <a href="/politique-de-confidentialite/">politique de réservation et d'annulation</a>, je m'engage à détenir l'assurance obligatoire (sports extrêmes + rapatriement), et je comprends qu'un dépôt de 1&nbsp;240&nbsp;CAD confirme ma place.</span>
-      <span data-lang="en">I have read and accept the <a href="/politique-de-confidentialite/">booking & cancellation policy</a>, agree to hold the mandatory insurance (extreme sports + repatriation), and understand a 1,240&nbsp;CAD deposit confirms my spot.</span>
+      <span data-lang="fr">J'ai lu et j'accepte la <a href="/politique-de-confidentialite/">politique de réservation et d'annulation</a>, je m'engage à détenir l'assurance obligatoire (sports extrêmes + rapatriement), et je comprends qu'un dépôt de 1&nbsp;065&nbsp;CAD confirme ma place.</span>
+      <span data-lang="en">I have read and accept the <a href="/politique-de-confidentialite/">booking & cancellation policy</a>, agree to hold the mandatory insurance (extreme sports + repatriation), and understand a 1,065&nbsp;CAD deposit confirms my spot.</span>
     </span>
   </label>
 
@@ -115,13 +115,13 @@
   <a class="pay stripe" href="https://buy.stripe.com/dRm5kCbnQ4ny4bzf5Q4F201" onclick="return track('stripe')">
     <span data-lang="fr">💳 Payer par carte (Stripe)</span><span data-lang="en">💳 Pay by card (Stripe)</span>
   </a>
-  <a class="pay paypal" href="https://paypal.me/CoreAlivenessProject" onclick="return track('paypal')"><span data-lang="fr">PayPal — 1&nbsp;240&nbsp;CAD</span><span data-lang="en">PayPal — 1,240&nbsp;CAD</span></a>
+  <a class="pay paypal" href="https://paypal.me/CoreAlivenessProject" onclick="return track('paypal')"><span data-lang="fr">PayPal — 1&nbsp;065&nbsp;CAD</span><span data-lang="en">PayPal — 1,065&nbsp;CAD</span></a>
   <a class="pay interac" href="/interac-dws/" onclick="return track('interac')">
     <span data-lang="fr">🇨🇦 Virement Interac — économise 50&nbsp;$</span><span data-lang="en">🇨🇦 Interac e-Transfer — save $50</span>
   </a>
 
-  <p class="lede" data-lang="fr">Tu préfères <b>3 versements mensuels de 1&nbsp;240&nbsp;CAD</b> ou tu as une question ? Écris-moi : <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
-  <p class="lede" data-lang="en">Prefer <b>3 monthly payments of 1,240&nbsp;CAD</b> or have a question? Email <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
+  <p class="lede" data-lang="fr">Tu préfères <b>3 versements mensuels de 1&nbsp;065&nbsp;CAD</b> ou tu as une question ? Écris-moi : <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
+  <p class="lede" data-lang="en">Prefer <b>3 monthly payments of 1,065&nbsp;CAD</b> or have a question? Email <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
 
   <p class="fine">
     <span data-lang="fr">Le paiement est traité par notre partenaire local agréé qui opère la retraite sur place. Core Aliveness Project ne reçoit pas directement le paiement des participants.</span>
@@ -134,25 +134,25 @@
   (function(){ try{ var l=localStorage.getItem('cap_lang'); if(l) setLang(l); }catch(e){} })();
 
   // ── Flip automatique du 26 octobre 2026 : après cette date, la page affiche le
-  //    tarif régulier (3 995 CAD, dépôt 1 400 CAD) sans intervention.
+  //    tarif régulier (3 495 CAD, dépôt 1 165 CAD) sans intervention.
   //    ⚠️ Le montant du lien Stripe doit être changé À LA MAIN dans Stripe.
-  //    Optionnel : créer dès maintenant un 2e lien Stripe à 1 400 CAD et coller
-  //    son adresse dans STRIPE_LINK_1400 — le bouton basculera aussi tout seul.
+  //    Optionnel : créer dès maintenant un 2e lien Stripe à 1 165 CAD et coller
+  //    son adresse dans STRIPE_LINK_1165 — le bouton basculera aussi tout seul.
   var PRICE_FLIPPED = Date.now() >= Date.parse('2026-10-27T04:00:00Z');
-  var DEPOSIT = PRICE_FLIPPED ? 1400 : 1240;
-  var STRIPE_LINK_1400 = ''; // ex. : 'https://buy.stripe.com/XXXXXXXX'
+  var DEPOSIT = PRICE_FLIPPED ? 1165 : 1065;
+  var STRIPE_LINK_1165 = ''; // ex. : 'https://buy.stripe.com/XXXXXXXX'
   if (PRICE_FLIPPED) (function(){
     document.querySelectorAll('.hold p').forEach(function(e){
       if (e.getAttribute('data-lang')==='fr' && /Rabais de prépaiement/.test(e.textContent))
-        e.innerHTML = "Tarif régulier : <b>3&nbsp;995&nbsp;CAD</b> — le solde après dépôt est payable avant le départ. Les places sont limitées (max 9) et <b>confirmées dans l'ordre des dépôts reçus</b>.";
+        e.innerHTML = "Tarif régulier : <b>3&nbsp;495&nbsp;CAD</b> — le solde après dépôt est payable avant le départ. Les places sont limitées (max 9) et <b>confirmées dans l'ordre des dépôts reçus</b>.";
       if (e.getAttribute('data-lang')==='en' && /Early payment discount/.test(e.textContent))
-        e.innerHTML = "Regular rate: <b>3,995&nbsp;CAD</b> — the balance after deposit is payable before departure. Spots are limited (max 9) and <b>confirmed in the order deposits are received</b>.";
+        e.innerHTML = "Regular rate: <b>3,495&nbsp;CAD</b> — the balance after deposit is payable before departure. Spots are limited (max 9) and <b>confirmed in the order deposits are received</b>.";
     });
     var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
     while ((n = w.nextNode())) {
-      n.nodeValue = n.nodeValue.replace(/1[\u00a0\u202f ]240/g, '1\u00a0400').replace(/1,240/g, '1,400');
+      n.nodeValue = n.nodeValue.replace(/1[\u00a0\u202f ]065/g, '1\u00a0165').replace(/1,065/g, '1,165');
     }
-    if (STRIPE_LINK_1400) { var s = document.querySelector('a.pay.stripe'); if (s) s.href = STRIPE_LINK_1400; }
+    if (STRIPE_LINK_1165) { var s = document.querySelector('a.pay.stripe'); if (s) s.href = STRIPE_LINK_1165; }
   })();
 
   // Fire the REAL Purchase when the payment provider redirects back with ?paid=1
@@ -184,9 +184,9 @@
   /* ===== Fire the REAL Purchase conversion on the payment SUCCESS page =====
      Put this on the Stripe success_url / PayPal return page, NOT here:
 
-     gtag('event','conversion',{ send_to:'{{AW_CONVERSION_ID}}/{{AW_LABEL}}', value:1240.0, currency:'CAD', transaction_id: ORDER_ID });
-     gtag('event','purchase',{ value:1240.0, currency:'CAD', transaction_id: ORDER_ID });
-     fbq('track','Purchase',{ value:1240.0, currency:'CAD' });
+     gtag('event','conversion',{ send_to:'{{AW_CONVERSION_ID}}/{{AW_LABEL}}', value:1065.0, currency:'CAD', transaction_id: ORDER_ID });
+     gtag('event','purchase',{ value:1065.0, currency:'CAD', transaction_id: ORDER_ID });
+     fbq('track','Purchase',{ value:1065.0, currency:'CAD' });
   ======================================================================= */
 </script>
 </body>

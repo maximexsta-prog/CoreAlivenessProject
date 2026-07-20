@@ -18,22 +18,22 @@ funnel; the live site files are edited separately.
 |---|---|
 | **Date** | du 16 au 21 novembre 2026 |
 | **Group cap** | 9 participants (sold out = 9 **deposits**, not 9 applications) |
-| **Standard price** | **3 995 CAD** / personne |
-| **Deposit** | **1 400 CAD** (confirms the spot) |
-| **Balance** | **2 595 CAD** (due before departure) |
-| **Early payment discount** | **3 720 CAD** until Oct 26, 2026 (public) |
+| **Standard price** | **3 495 CAD** / personne |
+| **Deposit** | **1 165 CAD** (confirms the spot) |
+| **Balance** | **2 330 CAD** (due before departure) |
+| **Early payment discount** | **3 195 CAD** until Oct 26, 2026 (public) |
 
-**Fondateur rate:** 3 720 CAD is *not* published on the site — it's offered by
+**Fondateur rate:** 3 195 CAD is *not* published on the site — it's offered by
 email/at acceptance to the current waitlist + the first ~4 deposits, then it
-disappears and everyone pays 3 995. This (a) rewards the two people already
-quoted 3 720, (b) lets the public price be a clean, premium 3 995, and (c)
+disappears and everyone pays 3 495. This (a) rewards the two people already
+quoted 3 195, (b) lets the public price be a clean, premium 3 495, and (c)
 creates honest urgency ("tarif fondateur jusqu'à la place #5").
 
-Installment option (offered at acceptance): **3 × 1 400 = 4 200** (deposit is the
-first installment; +205 vs paying in full — paying in full at 3 995 is framed as
-"économise ~200"). Fondateur installments: 3 × 1 240 = 3 720.
+Installment option (offered at acceptance): **3 × 1 165 = 4 200** (deposit is the
+first installment; +205 vs paying in full — paying in full at 3 495 is framed as
+"économise ~200"). Fondateur installments: 3 × 1 065 = 3 195.
 
-Public surfaces already updated to 3 995 / 1 400 / 2 595 / 19 Oct / max 9:
+Public surfaces already updated to 3 495 / 1 165 / 2 330 / 19 Oct / max 9:
 `retraite-dws-nov-2026/index.html` (body + EN dictionary + both JSON-LD blocks +
 Event offer price + capacity), `politique-de-confidentialite/index.html`,
 `llms.txt`, `llms-full.txt`. Flyer already shows 16 nov 2026 and no price.
@@ -49,7 +49,7 @@ one counts toward the 9 seats:
 1. **Candidature reçue** — form submitted. Not a spot.
 2. **Place réservée (48 h)** — you accept and *hold* the spot in their name for
    **48 hours**. Message: *"Ta place est réservée à ton nom pendant 48 h. Elle
-   se confirme dès réception du dépôt de 1 400 CAD. Passé ce délai, elle est
+   se confirme dès réception du dépôt de 1 165 CAD. Passé ce délai, elle est
    offerte à la personne suivante sur la liste."*
 3. **Place confirmée** — deposit received. Now it counts.
 
@@ -61,7 +61,7 @@ now or lose the spot." Track the state in the cockpit's **Client status** column
 (New → Held (48h) → Confirmed → Waitlist).
 
 ### Q2 — "How much Interac discount?"
-Card fees run ~2.9 % + $0.30 ≈ **$116 on a 3 995 payment** (~$41 on the 1 400
+Card fees run ~2.9 % + $0.30 ≈ **$116 on a 3 495 payment** (~$41 on the 1 165
 deposit). Interac is free to you. Recommendation: **100 CAD off the total for
 full payment by Interac** — roughly fee-neutral for you, a clean nudge to the
 free rail, and simple to say: *"Paie par Interac (virement, sans frais) et
@@ -73,8 +73,8 @@ perk, not a universal one.
 ### Q3 — "Vietnam tax is 20 %."
 That 20 % VAT is charged by your **local operator on what they bill you** — it's
 a **cost input, not a checkout tax you add to the customer.** You sell an
-all-in CAD package from Canada; the customer sees one price (3 995) with no
-surprise tax. Action: make sure your 3 995 price is built on the operator's
+all-in CAD package from Canada; the customer sees one price (3 495) with no
+surprise tax. Action: make sure your 3 495 price is built on the operator's
 **VAT-inclusive** quote so the 20 % doesn't eat your margin. Confirm with your
 accountant whether your Canadian sale is zero-rated/out-of-scope for GST/QST
 (service delivered abroad) — likely, but get it in writing.
@@ -95,7 +95,7 @@ cockpit in v2. So — hold the API for now.
 |---|---|
 | **Formspree endpoint** (free signup, ~5 min) | Where the application form sends submissions → set `FORMSPREE_ENDPOINT` in `inscription-dws/index.html` |
 | **Google Ads `AW-XXXXXXX/label`** | Fix the broken lead conversion + add deposit `Purchase` |
-| **Stripe Payment Link** (deposit, 1 400 CAD) | Reservation page button (`{{stripe_link}}`) |
+| **Stripe Payment Link** (deposit, 1 165 CAD) | Reservation page button (`{{stripe_link}}`) |
 | **PayPal deposit link/button** | Reservation page button (`{{paypal_link}}`) |
 | ~~Interac~~ ✅ **438-345-1888** (enable Autodeposit) | wired into reservation page + emails |
 | ~~Tally URL~~ ✅ **self-hosted** at `/inscription-dws/` | CTAs already routed here w/ email prefill |
