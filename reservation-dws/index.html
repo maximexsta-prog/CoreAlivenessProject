@@ -124,6 +124,28 @@
   function setLang(l){ document.body.classList.toggle('en', l==='en'); document.getElementById('fr').classList.toggle('on', l==='fr'); document.getElementById('en').classList.toggle('on', l==='en'); document.documentElement.lang=l; try{localStorage.setItem('cap_lang',l)}catch(e){} }
   (function(){ try{ var l=localStorage.getItem('cap_lang'); if(l) setLang(l); }catch(e){} })();
 
+  // ── Flip automatique du 6 octobre 2026 : après cette date, la page affiche le
+  //    tarif régulier (3 995 CAD, dépôt 1 400 CAD) sans intervention.
+  //    ⚠️ Le montant du lien Stripe doit être changé À LA MAIN dans Stripe.
+  //    Optionnel : créer dès maintenant un 2e lien Stripe à 1 400 CAD et coller
+  //    son adresse dans STRIPE_LINK_1400 — le bouton basculera aussi tout seul.
+  var PRICE_FLIPPED = Date.now() >= Date.parse('2026-10-07T04:00:00Z');
+  var DEPOSIT = PRICE_FLIPPED ? 1400 : 1240;
+  var STRIPE_LINK_1400 = ''; // ex. : 'https://buy.stripe.com/XXXXXXXX'
+  if (PRICE_FLIPPED) (function(){
+    document.querySelectorAll('.hold p').forEach(function(e){
+      if (e.getAttribute('data-lang')==='fr' && /Rabais de prépaiement/.test(e.textContent))
+        e.innerHTML = "Tarif régulier : <b>3&nbsp;995&nbsp;CAD</b> — le solde après dépôt est payable avant le départ. Les places sont limitées (max 9) et <b>confirmées dans l'ordre des dépôts reçus</b>.";
+      if (e.getAttribute('data-lang')==='en' && /Early payment discount/.test(e.textContent))
+        e.innerHTML = "Regular rate: <b>3,995&nbsp;CAD</b> — the balance after deposit is payable before departure. Spots are limited (max 9) and <b>confirmed in the order deposits are received</b>.";
+    });
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
+    while ((n = w.nextNode())) {
+      n.nodeValue = n.nodeValue.replace(/1[\u00a0\u202f ]240/g, '1\u00a0400').replace(/1,240/g, '1,400');
+    }
+    if (STRIPE_LINK_1400) { var s = document.querySelector('a.pay.stripe'); if (s) s.href = STRIPE_LINK_1400; }
+  })();
+
   // Fire the REAL Purchase when the payment provider redirects back with ?paid=1
   // (set Stripe/PayPal success URL to /reservation-dws/?paid=1). This activates
   // the GA4 "purchase" key event, which Google Ads imports as your conversion.
@@ -131,8 +153,8 @@
     var p = new URLSearchParams(location.search);
     if(p.get('paid')==='1'){
       var tx = p.get('tx') || ('dep-'+Date.now());
-      if(window.gtag) gtag('event','purchase',{value:1240,currency:'CAD',transaction_id:tx,items:[{item_name:'DWS deposit'}]});
-      if(window.fbq) fbq('track','Purchase',{value:1240,currency:'CAD'});
+      if(window.gtag) gtag('event','purchase',{value:DEPOSIT,currency:'CAD',transaction_id:tx,items:[{item_name:'DWS deposit'}]});
+      if(window.fbq) fbq('track','Purchase',{value:DEPOSIT,currency:'CAD'});
     }
   })();
 
@@ -145,8 +167,8 @@
   // Fire InitiateCheckout on a real payment click (buttons are locked until consent).
   function track(rail){
     if(!document.getElementById('consent').checked) return false;
-    if(window.fbq) fbq('track','InitiateCheckout',{value:1240,currency:'CAD',content_name:'DWS deposit',payment_rail:rail});
-    if(window.gtag) gtag('event','begin_checkout',{value:1240,currency:'CAD',items:[{item_name:'DWS deposit'}]});
+    if(window.fbq) fbq('track','InitiateCheckout',{value:DEPOSIT,currency:'CAD',content_name:'DWS deposit',payment_rail:rail});
+    if(window.gtag) gtag('event','begin_checkout',{value:DEPOSIT,currency:'CAD',items:[{item_name:'DWS deposit'}]});
     return true;
   }
 
