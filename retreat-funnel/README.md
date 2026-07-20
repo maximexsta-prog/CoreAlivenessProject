@@ -21,7 +21,7 @@ funnel; the live site files are edited separately.
 | **Standard price** | **3 995 CAD** / personne |
 | **Deposit** | **1 400 CAD** (confirms the spot) |
 | **Balance** | **2 595 CAD** (due before departure) |
-| **Early payment discount** | **3 720 CAD** until Oct 6, 2026 (public) |
+| **Early payment discount** | **3 720 CAD** until Oct 26, 2026 (public) |
 
 **Fondateur rate:** 3 720 CAD is *not* published on the site — it's offered by
 email/at acceptance to the current waitlist + the first ~4 deposits, then it
