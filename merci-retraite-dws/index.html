@@ -107,11 +107,20 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  // Loi 25 / RGPD : Consent Mode v2 - refus par defaut, mis a jour par cap-consent.js
+  gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',wait_for_update:500});
   gtag('js', new Date());
 
   gtag('config', 'G-9DDED3E5L1');
 </script>
-<!-- Meta Pixel Code --><script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '972812711774176'); fbq('track', 'PageView');</script><noscript> <img height="1" width="1" src="https://www.facebook.com/tr?id=972812711774176&amp;ev=PageView&amp;noscript=1"></noscript><!-- End Meta Pixel Code --><style id="wp-custom-css">
+<!-- Meta Pixel Code --><script>!function(f,b){if(f.fbq)return;var n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[]}(window,document);
+  // Loi 25 / RGPD : le pixel Meta ne se charge qu'apres consentement (cap-consent.js).
+  // Les fbq('track', ...) s'accumulent en file d'attente et partent au chargement.
+  window.capLoadPixel=function(){ if(window.capPixelReady) return; window.capPixelReady=true;
+    var t=document.createElement('script'); t.async=!0; t.src='https://connect.facebook.net/en_US/fbevents.js';
+    document.head.appendChild(t);
+    fbq('init','972812711774176'); fbq('track','PageView');
+  };</script><!-- End Meta Pixel Code --><style id="wp-custom-css">
 html, body {
     overflow-x: hidden !important;
     width: 100vw !important;
@@ -120,7 +129,8 @@ html, body {
 
 .site-footer { display: none !important; }
 </style>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"></head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><script defer src="/cap-consent.js"></script>
+</head>
 <body class="wp-singular page-template-default page page-id-410 wp-embed-responsive wp-theme-hello-elementor jkit-color-scheme hello-elementor-default elementor-default elementor-template-canvas elementor-kit-11 elementor-page elementor-page-410">
 			<div data-elementor-type="wp-page" data-elementor-id="410" class="elementor elementor-410">
 				<div class="elementor-element elementor-element-2d6cf16c e-flex e-con-boxed e-con e-parent" data-id="2d6cf16c" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">

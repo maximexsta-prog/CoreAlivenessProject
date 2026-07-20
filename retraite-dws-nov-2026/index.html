@@ -134,11 +134,20 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  // Loi 25 / RGPD : Consent Mode v2 - refus par defaut, mis a jour par cap-consent.js
+  gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',wait_for_update:500});
   gtag('js', new Date());
 
   gtag('config', 'G-9DDED3E5L1');
 </script>
-<!-- Meta Pixel Code --><script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '972812711774176'); fbq('track', 'PageView');</script><noscript> <img height="1" width="1" src="https://www.facebook.com/tr?id=972812711774176&amp;ev=PageView&amp;noscript=1"></noscript><!-- End Meta Pixel Code --><style id="wp-custom-css">
+<!-- Meta Pixel Code --><script>!function(f,b){if(f.fbq)return;var n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[]}(window,document);
+  // Loi 25 / RGPD : le pixel Meta ne se charge qu'apres consentement (cap-consent.js).
+  // Les fbq('track', ...) s'accumulent en file d'attente et partent au chargement.
+  window.capLoadPixel=function(){ if(window.capPixelReady) return; window.capPixelReady=true;
+    var t=document.createElement('script'); t.async=!0; t.src='https://connect.facebook.net/en_US/fbevents.js';
+    document.head.appendChild(t);
+    fbq('init','972812711774176'); fbq('track','PageView');
+  };</script><!-- End Meta Pixel Code --><style id="wp-custom-css">
 html, body {
     overflow-x: hidden !important;
     width: 100vw !important;
@@ -367,6 +376,7 @@ html, body {
     }
 }
 </style>
+<script defer src="/cap-consent.js"></script>
 </head>
 <body class="wp-singular page-template page-template-elementor_header_footer page page-id-46 wp-embed-responsive wp-theme-hello-elementor jkit-color-scheme hello-elementor-default elementor-default elementor-template-full-width elementor-kit-11 elementor-page elementor-page-46">
 
@@ -429,7 +439,7 @@ html, body {
 				</div>
 				<div class="elementor-element elementor-element-6f4bae6 elementor-widget elementor-widget-text-editor" data-id="6f4bae6" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									<p data-start="1529" data-end="1667">Les inscriptions sont ouvertes pour le départ du 16 novembre 2026.</p><p data-start="239" data-end="441">Opérée localement avec notre partenaire agréé.</p>								</div>
+									<p data-start="1529" data-end="1667">Les inscriptions sont ouvertes pour le départ du 16 novembre 2026.</p><p data-start="239" data-end="441">Opérée sur place avec notre partenaire local agréé.</p>								</div>
 				</div>
 					</div>
 		</div>
@@ -496,7 +506,7 @@ html, body {
 				</div>
 				<div class="elementor-element elementor-element-0ac4eda elementor-widget elementor-widget-text-editor" data-id="0ac4eda" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									<p data-start="241" data-end="456">Pendant six jours, on prend le temps d’entrer dans l’expérience : grimper au-dessus de l’eau, explorer la baie en bateau, pagayer en kayak, se baigner, récupérer, manger ensemble et finir les journées sur l’eau.</p><p data-start="998" data-end="1230">Le rythme restera flexible : une aventure guidée, vivante, ajustée aux conditions, aux marées, à la mer et au niveau du groupe.</p>								</div>
+									<p data-start="241" data-end="456">La baie de Lan Ha est l’un des rares endroits au monde où l’on grimpe sans corde au-dessus de la mer. Pendant six jours, on prend le temps d’entrer dans l’expérience : grimper au-dessus de l’eau, explorer la baie en bateau, pagayer en kayak, se baigner, récupérer, manger ensemble et finir les journées sur l’eau.</p><p data-start="998" data-end="1230">Le programme suit la mer, pas l'horaire : c'est la météo, les marées et le groupe qui décident de la journée — et c'est exactement ce qui rend chacune différente.</p>								</div>
 				</div>
 				<div class="elementor-element elementor-element-4b682eac elementor-widget elementor-widget-heading" data-id="4b682eac" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
 				<div class="elementor-widget-container">
@@ -711,7 +721,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
 				</div>
 				<div class="elementor-element elementor-element-7c6ee811 elementor-widget-mobile__width-inherit elementor-widget elementor-widget-text-editor" data-id="7c6ee811" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									<p data-start="335" data-end="487">L’ordre des activités restera flexible selon la météo, les marées, la mer et le niveau du groupe.</p>								</div>
+									<p data-start="335" data-end="487">L’ordre exact se décide sur place, avec la mer.</p>								</div>
 				</div>
 		<div class="elementor-element elementor-element-52f43b1a e-con-full e-flex e-con e-child" data-id="52f43b1a" data-element_type="container" data-e-type="container">
 				<div class="elementor-element elementor-element-1a1861f6 elementor-widget__width-initial elementor-widget-tablet__width-initial elementor-widget elementor-widget-html" data-id="1a1861f6" data-element_type="widget" data-e-type="widget" data-widget_type="html.default">
@@ -970,7 +980,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
 				<div class="elementor-element elementor-element-302b01a1 e-con-full e-flex e-con e-parent" data-id="302b01a1" data-element_type="container" data-e-type="container">
 				<div class="elementor-element elementor-element-2677b6c5 elementor-widget elementor-widget-text-editor" data-id="2677b6c5" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									<p data-start="2392" data-end="2533">Cette expédition est née de ce lien fort avec la baie, de l’envie d’en faire découvrir les plus beaux secteurs, et de proposer bien plus qu’une simple sortie. Un ou plusieurs guides locaux seront présents aux côtés de Maxime pour te donner accès aux meilleurs sites d’escalade.</p>								</div>
+									<p data-start="2392" data-end="2533">Cette retraite est née de ce lien fort avec la baie, de l’envie d’en faire découvrir les plus beaux secteurs, et de créer une expérience où la grimpe, l’eau, le groupe et le rythme du voyage ont chacun leur place. Un ou plusieurs guides locaux seront présents aux côtés de Maxime pour te donner accès aux meilleurs sites d’escalade.</p>								</div>
 				</div>
 				</div>
 					</div>
@@ -1213,37 +1223,6 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
 
             
                 <div class="elementskit-card ">
-                    <div class="elementskit-card-header" id="primaryHeading-0-3ad14ca1">
-                        <a href="#collapse-77199dc6a23702296cb4" class="ekit-accordion--toggler elementskit-btn-link collapsed" data-ekit-toggle="collapse" data-target="#Collapse-77199dc6a23702296cb4" aria-expanded="false" aria-controls="Collapse-77199dc6a23702296cb4">
-                            
-                            <span class="ekit-accordion-title">Combien de personnes pourront participer ?</span>
-
-                            
-                                <div class="ekit_accordion_icon_group">
-                                    <div class="ekit_accordion_normal_icon">
-                                        <!-- Normal Icon -->
-										<i class="icon icon-plus"></i>                                    </div>
-
-                                    <div class="ekit_accordion_active_icon">
-                                        <!-- Active Icon -->
-										<i class="icon icon-cross"></i>                                    </div>
-                                </div>
-
-                            
-                                                    </a>
-                    </div>
-
-                    <div id="Collapse-77199dc6a23702296cb4" class=" collapse" aria-labelledby="primaryHeading-0-3ad14ca1" data-parent="#accordion-6a23702296cb4">
-
-                        <div class="elementskit-card-body ekit-accordion--content">
-                            <p>L’objectif est que chaque personne ait du vrai temps de grimpe et plusieurs occasions de connecter avec le groupe et l’équipe sur place. Pour garder cette qualité d’expérience, le format est limité à un maximum de 9 participants par retraite.</p>                        </div>
-
-                    </div>
-
-                </div><!-- .elementskit-card END -->
-
-                
-                <div class="elementskit-card ">
                     <div class="elementskit-card-header" id="primaryHeading-1-3ad14ca1">
                         <a href="#collapse-8e61a646a23702296cb4" class="ekit-accordion--toggler elementskit-btn-link collapsed" data-ekit-toggle="collapse" data-target="#Collapse-8e61a646a23702296cb4" aria-expanded="false" aria-controls="Collapse-8e61a646a23702296cb4">
                             
@@ -1267,7 +1246,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
                     <div id="Collapse-8e61a646a23702296cb4" class=" collapse" aria-labelledby="primaryHeading-1-3ad14ca1" data-parent="#accordion-6a23702296cb4">
 
                         <div class="elementskit-card-body ekit-accordion--content">
-                            <p>À des personnes qui aiment l’aventure, la nature, l’escalade et les expériences humaines fortes.</p><p>À des grimpeurs et grimpeuses qui veulent vivre une aventure active, guidée et en petit groupe dans la région de la baie d’Halong. Le séjour combine deep water solo, escalade, kayak, bateau, vie sur l’eau et temps de récupération.</p><p>Il faut aimer bouger, être dehors, passer du temps sur l’eau et partager l’expérience avec un petit groupe.</p>                        </div>
+                            <p>À des personnes qui aiment l’aventure, la nature, l’escalade et les expériences humaines fortes.</p><p>À des grimpeurs et grimpeuses qui veulent vivre une aventure active, guidée et en petit groupe dans la région de la baie d’Halong. Le séjour combine deep water solo, escalade, kayak, bateau, vie sur l’eau et temps de récupération.</p><p>Il faut aimer bouger, être dehors, passer du temps sur l’eau et partager l’expérience avec un petit groupe.</p><p>L’objectif est que chaque personne ait du vrai temps de grimpe et plusieurs occasions de connecter avec le groupe et l’équipe sur place. Pour garder cette qualité d’expérience, le format est limité à un maximum de 9 participants par retraite.</p>                        </div>
 
                     </div>
 
@@ -1298,44 +1277,13 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
                     <div id="Collapse-68ccdef6a23702296cb4" class=" collapse" aria-labelledby="primaryHeading-2-3ad14ca1" data-parent="#accordion-6a23702296cb4">
 
                         <div class="elementskit-card-body ekit-accordion--content">
-                            <p>Il faut déjà avoir une base en escalade et être à l’aise dans l’eau. Comme repère, il est recommandé d’être confortable autour de <strong>5.10a / 6a en moulinette ou en salle</strong>, ou environ <strong>V2-V3 en bloc</strong>. Tu n’as pas besoin d’avoir déjà fait du deep water solo, mais tu dois pouvoir grimper, nager calmement, flotter et te sentir à l’aise en milieu naturel.</p>                        </div>
+                            <p>Il faut déjà avoir une base en escalade et être à l’aise dans l’eau. Comme repère, il est recommandé d’être confortable autour de <strong>5.10a / 6a en moulinette ou en salle</strong>, ou environ <strong>V2-V3 en bloc</strong>. Tu n’as pas besoin d’avoir déjà fait du deep water solo, mais tu dois pouvoir grimper, nager calmement, flotter et te sentir à l’aise en milieu naturel.</p><p>Pas besoin d'avoir déjà fait du deep water solo, ni de grimper en tête. Si tu es à l'aise autour de <strong>6a en moulinette</strong> (ou <strong>V2-V3 en bloc</strong>) et à l'aise dans l'eau, tu as ta place. La moitié des grimpeurs viennent surtout de la salle. On adapte chaque voie à ton niveau, et les guides sont là pour que tu te sentes en sécurité, même quand tu hésites à sauter.</p><p>Il faut savoir nager et être à l'aise en eau profonde : nager calmement, flotter, garder ton calme après une chute. Pas besoin d'être un athlète de natation — le bateau ou un kayak reste à proximité des zones de grimpe.</p>                        </div>
 
                     </div>
 
                 </div><!-- .elementskit-card END -->
 
                 
-                <div class="elementskit-card ">
-                    <div class="elementskit-card-header" id="primaryHeading-goodenough-3ad14ca1">
-                        <a href="#collapse-goodenough6a23702296cb4" class="ekit-accordion--toggler elementskit-btn-link collapsed" data-ekit-toggle="collapse" data-target="#Collapse-goodenough6a23702296cb4" aria-expanded="false" aria-controls="Collapse-goodenough6a23702296cb4">
-
-                            <span class="ekit-accordion-title">Est-ce que j'ai le niveau ?</span>
-
-
-                                <div class="ekit_accordion_icon_group">
-                                    <div class="ekit_accordion_normal_icon">
-                                        <!-- Normal Icon -->
-										<i class="icon icon-plus"></i>                                    </div>
-
-                                    <div class="ekit_accordion_active_icon">
-                                        <!-- Active Icon -->
-										<i class="icon icon-cross"></i>                                    </div>
-                                </div>
-
-
-                                                    </a>
-                    </div>
-
-                    <div id="Collapse-goodenough6a23702296cb4" class=" collapse" aria-labelledby="primaryHeading-goodenough-3ad14ca1" data-parent="#accordion-6a23702296cb4">
-
-                        <div class="elementskit-card-body ekit-accordion--content">
-                            <p>Pas besoin d'avoir déjà fait du deep water solo, ni de grimper en tête. Si tu es à l'aise autour de <strong>6a en moulinette</strong> (ou <strong>V2-V3 en bloc</strong>) et à l'aise dans l'eau, tu as ta place. La moitié des grimpeurs viennent surtout de la salle. On adapte chaque voie à ton niveau, et les guides sont là pour que tu te sentes en sécurité, même quand tu hésites à sauter.</p>                        </div>
-
-                    </div>
-
-                </div><!-- .elementskit-card END -->
-
-
                 <div class="elementskit-card ">
                     <div class="elementskit-card-header" id="primaryHeading-3-3ad14ca1">
                         <a href="#collapse-828571e6a23702296cb4" class="ekit-accordion--toggler elementskit-btn-link collapsed" data-ekit-toggle="collapse" data-target="#Collapse-828571e6a23702296cb4" aria-expanded="false" aria-controls="Collapse-828571e6a23702296cb4">
@@ -1461,37 +1409,6 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
 
                 
                 <div class="elementskit-card ">
-                    <div class="elementskit-card-header" id="primaryHeading-pourquoiappel-3ad14ca1">
-                        <a href="#collapse-pourquoiappel6a23702296cb4" class="ekit-accordion--toggler elementskit-btn-link collapsed" data-ekit-toggle="collapse" data-target="#Collapse-pourquoiappel6a23702296cb4" aria-expanded="false" aria-controls="Collapse-pourquoiappel6a23702296cb4">
-
-                            <span class="ekit-accordion-title">Pourquoi un appel avant de réserver ?</span>
-
-
-                                <div class="ekit_accordion_icon_group">
-                                    <div class="ekit_accordion_normal_icon">
-                                        <!-- Normal Icon -->
-										<i class="icon icon-plus"></i>                                    </div>
-
-                                    <div class="ekit_accordion_active_icon">
-                                        <!-- Active Icon -->
-										<i class="icon icon-cross"></i>                                    </div>
-                                </div>
-
-
-                                                    </a>
-                    </div>
-
-                    <div id="Collapse-pourquoiappel6a23702296cb4" class=" collapse" aria-labelledby="primaryHeading-pourquoiappel-3ad14ca1" data-parent="#accordion-6a23702296cb4">
-
-                        <div class="elementskit-card-body ekit-accordion--content">
-                            <p>Le DWS se grimpe sans corde, au-dessus de la mer, en petit groupe de 9 personnes maximum. L'appel sert à s'assurer que la retraite est le bon fit pour toi — niveau, aisance dans l'eau, attentes — et à répondre à toutes tes questions avant de t'engager. C’est une conversation de 15 minutes, sans préparation. La plupart des personnes qui se reconnaissent dans cette page sont un bon fit.</p>                        </div>
-
-                    </div>
-
-                </div><!-- .elementskit-card END -->
-
-
-                <div class="elementskit-card ">
                     <div class="elementskit-card-header" id="primaryHeading-7-3ad14ca1">
                         <a href="#collapse-014e2536a23702296cb4" class="ekit-accordion--toggler elementskit-btn-link collapsed" data-ekit-toggle="collapse" data-target="#Collapse-014e2536a23702296cb4" aria-expanded="false" aria-controls="Collapse-014e2536a23702296cb4">
 
@@ -1515,7 +1432,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
                     <div id="Collapse-014e2536a23702296cb4" class=" collapse" aria-labelledby="primaryHeading-7-3ad14ca1" data-parent="#accordion-6a23702296cb4">
 
                         <div class="elementskit-card-body ekit-accordion--content">
-                            <p>Remplis la courte candidature (3 minutes), puis Maxime te contacte pour un court appel — pour valider le fit et la sécurité, dans les deux sens. Après l’appel, tu reçois ton lien de paiement.</p><p>Un dépôt de réservation de 1 240 CAD confirme ta place (le solde est payable avant le départ). Le paiement est traité par notre partenaire local agréé qui opère la retraite. Conditions complètes d’annulation et de remboursement : voir notre <a href="/politique-de-confidentialite/">politique de réservation</a>.</p><h2> </h2>                        </div>
+                            <p>Remplis la courte candidature (3 minutes), puis Maxime te contacte pour un court appel — pour valider le fit et la sécurité, dans les deux sens. Après l’appel, tu reçois ton lien de paiement.</p><p>Un dépôt de réservation de 1 240 CAD confirme ta place (le solde est payable avant le départ). Le paiement est traité par notre partenaire local agréé qui opère la retraite. Conditions complètes d’annulation et de remboursement : voir notre <a href="/politique-de-confidentialite/">politique de réservation</a>.</p><h2> </h2><p>Le DWS se grimpe sans corde, au-dessus de la mer, en petit groupe de 9 personnes maximum. L'appel sert à s'assurer que la retraite est le bon fit pour toi — niveau, aisance dans l'eau, attentes — et à répondre à toutes tes questions avant de t'engager. C’est une conversation de 15 minutes, sans préparation. La plupart des personnes qui se reconnaissent dans cette page sont un bon fit.</p>                        </div>
 
                     </div>
 
@@ -1600,33 +1517,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
 
                 </div><!-- .elementskit-card END -->
 
-                <div class="elementskit-card ">
-                    <div class="elementskit-card-header" id="primaryHeading-nage-3ad14ca1">
-                        <a href="#collapse-nage-6a23702296cb4" class="ekit-accordion--toggler elementskit-btn-link collapsed" data-ekit-toggle="collapse" data-target="#Collapse-nage-6a23702296cb4" aria-expanded="false" aria-controls="Collapse-nage-6a23702296cb4">
-
-                            <span class="ekit-accordion-title">Faut-il être un bon nageur ?</span>
-
-                                <div class="ekit_accordion_icon_group">
-                                    <div class="ekit_accordion_normal_icon">
-										<i class="icon icon-plus"></i>                                    </div>
-
-                                    <div class="ekit_accordion_active_icon">
-										<i class="icon icon-cross"></i>                                    </div>
-                                </div>
-
-                                                    </a>
-                    </div>
-
-                    <div id="Collapse-nage-6a23702296cb4" class=" collapse" aria-labelledby="primaryHeading-nage-3ad14ca1" data-parent="#accordion-6a23702296cb4">
-
-                        <div class="elementskit-card-body ekit-accordion--content">
-                            <p>Il faut savoir nager et être à l'aise en eau profonde : nager calmement, flotter, garder ton calme après une chute. Pas besoin d'être un athlète de natation — le bateau ou un kayak reste à proximité des zones de grimpe.</p>                        </div>
-
-                    </div>
-
-                </div><!-- .elementskit-card END -->
-
-                                        </div>
+                </div>
     </div>				</div>
 				</div>
 				</div>
@@ -1859,10 +1750,8 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         'À prévoir de ton côté': "What’s Not Included",
         'A prevoir de ton cote': "What’s Not Included",
         /* FAQ questions */
-        'Combien de personnes pourront participer ?': 'How many people can participate?',
         'À qui s\'adresse cette retraite ?': 'Who is this retreat for?',
         'Quel niveau faut-il avoir ?': 'What level is required?',
-        "Est-ce que j'ai le niveau ?": 'Am I good enough?',
         'Quel est le prix visé ?': 'What is the target price?',
         'Les dates sont-elles confirmées ?': 'Are the dates confirmed?',
         'En quelle langue se déroule la retraite ?': 'What language is the retreat in?',
@@ -1876,7 +1765,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         "Inscriptions ouvertes.": 'Registration is open.',
         "Départ le 16 novembre 2026. Places limitées, confirmées dans l'ordre des dépôts reçus. Un dépôt de réservation de 1 240 CAD confirme ta place.": "Departure on November 16, 2026. Limited spots, confirmed in the order deposits are received. A 1,240 CAD reservation deposit secures your spot.",
         "Les inscriptions sont ouvertes pour le départ du 16 novembre 2026.": "Registration is open for the November 16, 2026 departure.",
-        "Opérée localement avec notre partenaire agréé.": "Operated locally with our licensed partner.",
+        "Opérée sur place avec notre partenaire local agréé.": "Operated on site with our licensed local partner.",
         "Date : 16 novembre 2026": "Date: November 16, 2026",
         "Comment réserver ma place ?": "How do I reserve my spot?",
         "Vols et visa — comment ça marche ?": "Flights and visa — how does it work?",
@@ -1886,7 +1775,6 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         "Si la retraite est annulée par l'organisation (par exemple moins de 5 grimpeurs inscrits), tout ce que tu as payé est remboursé à 100 %. Si tu annules toi-même : 80 % du dépôt est remboursé à plus de 60 jours du départ, 50 % entre 60 et 30 jours, et le dépôt n'est plus remboursable à moins de 30 jours. Les conditions complètes sont dans la politique de réservation, au bas du site.": "If the retreat is cancelled by the organization (for example fewer than 5 registered climbers), everything you paid is refunded at 100%. If you cancel: 80% of the deposit is refunded more than 60 days before departure, 50% between 60 and 30 days, and the deposit is non-refundable under 30 days. Full terms are in the reservation policy, at the bottom of the site.",
         "Où dort-on pendant la retraite ?": "Where do we sleep during the retreat?",
         "En hébergement simple et confortable dans la région de Cat Ba, en chambres partagées — l'attribution tient compte du genre indiqué à l'inscription. Les 5 nuits sont incluses. Les détails sont communiqués aux inscrits avant le départ.": "In simple, comfortable lodging in the Cat Ba area, in shared rooms — assignment takes into account the gender indicated at registration. All 5 nights are included. Details are shared with registered participants before departure.",
-        "Faut-il être un bon nageur ?": "Do I need to be a strong swimmer?",
         "Il faut savoir nager et être à l'aise en eau profonde : nager calmement, flotter, garder ton calme après une chute. Pas besoin d'être un athlète de natation — le bateau ou un kayak reste à proximité des zones de grimpe.": "You need to know how to swim and be comfortable in deep water: swim calmly, float, stay composed after a fall. You don't need to be a competitive swimmer — the boat or a kayak stays close to the climbing zones.",
         "Quel est le prix ?": "What is the price?",
         "La retraite a lieu du 16 au 21 novembre 2026, dans la baie de Lan Ha (Halong), Vietnam. Les places sont limitées — un dépôt de réservation confirme ta place. Le départ est confirmé dès que le groupe atteint 5 grimpeurs — sinon, ton dépôt est remboursé à 100 %.": "The retreat takes place from November 16 to 21, 2026, in Lan Ha Bay (Halong), Vietnam. Spots are limited — a reservation deposit confirms your place. The departure is confirmed once the group reaches 5 climbers — otherwise your deposit is refunded in full.",
@@ -1998,12 +1886,12 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         "Les inscriptions ne sont pas encore ouvertes. Rejoins la liste d'attente pour recevoir les details en premier.": "Registrations aren't open yet. Join the waitlist to receive details first.",
         "Opérée localement avec un partenaire vietnamien agréé.": 'Operated locally with a licensed Vietnamese partner.',
         "Operee localement avec un partenaire vietnamien agree.": 'Operated locally with a licensed Vietnamese partner.',
-        "Pendant six jours, on prend le temps d'entrer dans l'expérience : grimper au-dessus de l'eau, explorer la baie en bateau, pagayer en kayak, se baigner, récupérer, manger ensemble et finir les journées sur l'eau.": "Over six days, we take time to fully enter the experience: climbing above the water, exploring the bay by boat, paddling by kayak, swimming, recovering, eating together, and ending the days on the water.",
-        "Pendant six jours, on prend le temps d'entrer dans l'experience : grimper au-dessus de l'eau, explorer la baie en bateau, pagayer en kayak, se baigner, recuperer, manger ensemble et finir les journees sur l'eau.": "Over six days, we take time to fully enter the experience: climbing above the water, exploring the bay by boat, paddling by kayak, swimming, recovering, eating together, and ending the days on the water.",
-        "Le rythme restera flexible : une aventure guidée, vivante, ajustée aux conditions, aux marées, à la mer et au niveau du groupe.": "The pace will remain flexible: a guided, living adventure, adjusted to conditions, tides, sea, and group level.",
-        "Le rythme restera flexible : une aventure guidee, vivante, ajustee aux conditions, aux marees, a la mer et au niveau du groupe.": "The pace will remain flexible: a guided, living adventure, adjusted to conditions, tides, sea, and group level.",
-        "L'ordre des activités restera flexible selon la météo, les marées, la mer et le niveau du groupe.": 'The schedule will remain flexible depending on weather, tides, sea conditions and group level.',
-        "L'ordre des activites restera flexible selon la meteo, les marees, la mer et le niveau du groupe.": 'The schedule will remain flexible depending on weather, tides, sea conditions and group level.',
+        "La baie de Lan Ha est l'un des rares endroits au monde où l'on grimpe sans corde au-dessus de la mer. Pendant six jours, on prend le temps d'entrer dans l'expérience : grimper au-dessus de l'eau, explorer la baie en bateau, pagayer en kayak, se baigner, récupérer, manger ensemble et finir les journées sur l'eau.": "Lan Ha Bay is one of the few places on Earth where you climb ropeless above the sea. Over six days, we take time to fully enter the experience: climbing above the water, exploring the bay by boat, paddling by kayak, swimming, recovering, eating together, and ending the days on the water.",
+        "La baie de Lan Ha est l'un des rares endroits au monde où l'on grimpe sans corde au-dessus de la mer. Pendant six jours, on prend le temps d'entrer dans l'experience : grimper au-dessus de l'eau, explorer la baie en bateau, pagayer en kayak, se baigner, recuperer, manger ensemble et finir les journees sur l'eau.": "Lan Ha Bay is one of the few places on Earth where you climb ropeless above the sea. Over six days, we take time to fully enter the experience: climbing above the water, exploring the bay by boat, paddling by kayak, swimming, recovering, eating together, and ending the days on the water.",
+        "Le programme suit la mer, pas l'horaire : c'est la météo, les marées et le groupe qui décident de la journée — et c'est exactement ce qui rend chacune différente.": "The program follows the sea, not the clock: the weather, the tides and the group decide each day — and that's exactly what makes every one different.",
+        "Le programme suit la mer, pas l'horaire : c'est la meteo, les marees et le groupe qui decident de la journee — et c'est exactement ce qui rend chacune differente.": "The program follows the sea, not the clock: the weather, the tides and the group decide each day — and that's exactly what makes every one different.",
+        "L'ordre exact se décide sur place, avec la mer.": 'The exact order is decided on site, with the sea.',
+        "L'ordre des activites restera flexible selon la meteo, les marees, la mer et le niveau du groupe.": 'The exact order is decided on site, with the sea.',
         "Reste à l'affût.": 'Stay tuned.',
         "Reste a l'affut.": 'Stay tuned.',
         "On peaufine encore les derniers détails. Inscris-toi pour être averti dès que les places sont disponibles et recevoir le guide de la retraite par courriel. Aucun spam. Juste l'essentiel pour ton aventure.": "We're still fine-tuning the last details. Sign up to be notified as soon as spots are available and receive the retreat guide by email. No spam. Just the essentials for your adventure.",
@@ -2016,15 +1904,14 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         "Cette retraite est nee de ce lien fort avec la baie, de l'envie d'en faire decouvrir les plus beaux secteurs, et de creer une experience ou la grimpe, l'eau, le groupe et le rythme du voyage ont chacun leur place.": "This retreat was born from a deep connection to the bay — the desire to share its most beautiful sectors and create an experience where climbing, water, the group, and the travel rhythm each have their place.",
         "Un ou plusieurs guides locaux seront présents aux côtés de Maxime pour te donner accès aux meilleurs sites d'escalade.": "One or more local guides will be alongside Maxime to give you access to the best climbing spots.",
         "Un ou plusieurs guides locaux seront presents aux cotes de Maxime pour te donner acces aux meilleurs sites d'escalade.": "One or more local guides will be alongside Maxime to give you access to the best climbing spots.",
-        "Cette expédition est née de ce lien fort avec la baie, de l'envie d'en faire découvrir les plus beaux secteurs, et de proposer bien plus qu'une simple sortie. Un ou plusieurs guides locaux seront présents aux côtés de Maxime pour te donner accès aux meilleurs sites d'escalade.": "This expedition was born from a deep connection to the bay — the desire to share its most beautiful sectors and offer far more than a simple day out. One or more local guides will be alongside Maxime to give you access to the best climbing spots.",
-        "Cette expedition est nee de ce lien fort avec la baie, de l'envie d'en faire decouvrir les plus beaux secteurs, et de proposer bien plus qu'une simple sortie. Un ou plusieurs guides locaux seront presents aux cotes de Maxime pour te donner acces aux meilleurs sites d'escalade.": "This expedition was born from a deep connection to the bay — the desire to share its most beautiful sectors and offer far more than a simple day out. One or more local guides will be alongside Maxime to give you access to the best climbing spots.",
+        "Cette retraite est née de ce lien fort avec la baie, de l'envie d'en faire découvrir les plus beaux secteurs, et de créer une expérience où la grimpe, l'eau, le groupe et le rythme du voyage ont chacun leur place. Un ou plusieurs guides locaux seront présents aux côtés de Maxime pour te donner accès aux meilleurs sites d'escalade.": "This retreat was born from a deep connection to the bay — the desire to share its most beautiful sectors, and to craft an experience where the climbing, the water, the group and the rhythm of the journey each have their place. One or more local guides will be alongside Maxime to give you access to the best climbing spots.",
+        "Cette retraite est nee de ce lien fort avec la baie, de l'envie d'en faire decouvrir les plus beaux secteurs, et de creer une experience ou la grimpe, l'eau, le groupe et le rythme du voyage ont chacun leur place. Un ou plusieurs guides locaux seront presents aux cotes de Maxime pour te donner acces aux meilleurs sites d'escalade.": "This retreat was born from a deep connection to the bay — the desire to share its most beautiful sectors, and to craft an experience where the climbing, the water, the group and the rhythm of the journey each have their place. One or more local guides will be alongside Maxime to give you access to the best climbing spots.",
         /* FAQ8 - two separate paragraphs */
         "Non. Rejoindre la liste ne réserve pas automatiquement une place et ne t'engage à rien.": "No. Joining the list does not automatically reserve a spot and commits you to nothing.",
         "Le format 2026 est en préparation. Cette page sert à recueillir l'intérêt et à constituer une liste d'attente. Les inscriptions ne sont pas encore ouvertes et aucun paiement n'est accepté pour le moment. Le format final, les dates exactes, le prix, l'opérateur local et les prochaines étapes seront confirmés avant l'ouverture officielle.": "The 2026 format is in development. This page is to gather interest and build a waitlist. Registrations are not yet open and no payment is accepted at this time. The final format, exact dates, price, local operator, and next steps will be confirmed before the official opening.",
         /* FAQ - reservation steps (plain text) */
         "Remplis la courte candidature (3 minutes), puis Maxime te contacte pour un court appel — pour valider le fit et la sécurité, dans les deux sens. Après l'appel, tu reçois ton lien de paiement.": "Fill out the short application (3 minutes), then Maxime contacts you for a short call — to confirm fit and safety, both ways. After the call, you receive your payment link.",
         /* New FAQ - why a call */
-        "Pourquoi un appel avant de réserver ?": "Why a call before reserving?",
         "Le DWS se grimpe sans corde, au-dessus de la mer, en petit groupe de 9 personnes maximum. L'appel sert à s'assurer que la retraite est le bon fit pour toi — niveau, aisance dans l'eau, attentes — et à répondre à toutes tes questions avant de t'engager. C’est une conversation de 15 minutes, sans préparation. La plupart des personnes qui se reconnaissent dans cette page sont un bon fit.": "DWS is climbed without a rope, above the sea, in a small group of 9 people maximum. The call is there to make sure the retreat is the right fit for you — level, comfort in the water, expectations — and to answer all your questions before you commit. It’s a 15-minute conversation, no preparation needed. Most people who see themselves in this page are a great fit.",
         /* Long-form injected sections */
         "Pas besoin d'avoir déjà fait de deep water solo, ni de grimper en tête. Si tu es à l'aise autour de 6a en moulinette (ou V2-V3 en bloc) et à l'aise dans l'eau, tu as ta place. La moitié des grimpeurs viennent surtout de la salle. On adapte chaque voie à ton niveau, et les guides sont là pour que tu te sentes en sécurité, même quand tu hésites à sauter.": "You don't need any deep water solo experience, and you don't need to lead. If you're comfortable around 6a on top rope (or V2-V3 bouldering) and at ease in the water, you belong here. Half our climbers come mostly from the gym. We adapt every route to your level, and the guides are there so you feel safe, even when you're nervous to jump.",
