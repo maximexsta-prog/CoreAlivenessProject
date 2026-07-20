@@ -21,7 +21,7 @@ funnel; the live site files are edited separately.
 | **Standard price** | **3 995 CAD** / personne |
 | **Deposit** | **1 400 CAD** (confirms the spot) |
 | **Balance** | **2 595 CAD** (due before departure) |
-| **Fondateur (early) price** | **3 720 CAD** — private early-bird rate (see below) |
+| **Early payment discount** | **3 720 CAD** until Oct 6, 2026 (public) |
 
 **Fondateur rate:** 3 720 CAD is *not* published on the site — it's offered by
 email/at acceptance to the current waitlist + the first ~4 deposits, then it
@@ -34,7 +34,7 @@ first installment; +205 vs paying in full — paying in full at 3 995 is framed 
 "économise ~200"). Fondateur installments: 3 × 1 240 = 3 720.
 
 Public surfaces already updated to 3 995 / 1 400 / 2 595 / 19 Oct / max 9:
-`retraite-dws-oct-2026/index.html` (body + EN dictionary + both JSON-LD blocks +
+`retraite-dws-nov-2026/index.html` (body + EN dictionary + both JSON-LD blocks +
 Event offer price + capacity), `politique-de-confidentialite/index.html`,
 `llms.txt`, `llms-full.txt`. Flyer already shows 16 nov 2026 and no price.
 

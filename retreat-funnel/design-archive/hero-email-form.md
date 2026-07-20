@@ -11,7 +11,8 @@ bas mobile (`ec7cdd8`) — remplacés par des boutons CTA directs vers `/inscrip
 ## Pour le restaurer
 
 ```bash
-# tout le fichier tel qu'il était :
+# tout le fichier tel qu'il était (la page vivait alors dans retraite-dws-oct-2026/,
+# renommée depuis en retraite-dws-nov-2026/ — copier le bloc voulu vers le nouveau chemin) :
 git checkout hero-email-form-v1 -- retraite-dws-oct-2026/index.html
 # ou consulter : git show 289603c:retraite-dws-oct-2026/index.html
 ```
