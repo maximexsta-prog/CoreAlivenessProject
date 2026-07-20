@@ -163,7 +163,8 @@ if (Date.now() >= Date.parse('2026-10-07T04:00:00Z')) (function(){
 
 /* ---------- state ---------- */
 var i = 0, data = {}, sending = false;
-var lang = 'fr'; // always open in French by default; bilingual retreat, toggle available
+// Français par défaut — sauf si la page de vente en anglais nous envoie ?lang=en.
+var lang = (new URLSearchParams(location.search).get('lang') === 'en') ? 'en' : 'fr';
 var qEmail = new URLSearchParams(location.search).get('email') || "";
 
 /* Draft persistence — a reload mid-application must not lose the answers. */
