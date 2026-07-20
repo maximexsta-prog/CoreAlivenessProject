@@ -120,6 +120,9 @@ var Q = [
     hintfr:"Quelques lignes suffisent.", hinten:"A few lines is plenty." },
   { id:"contact", type:"contact", req:true,
     fr:"Tes coordonnées", en:"Your contact info" },
+  { id:"location", type:"text", req:true,
+    fr:"Où habites-tu ?", en:"Where do you live?",
+    hintfr:"Ville et pays — ex. Montréal, Canada.", hinten:"City and country — e.g. Montréal, Canada." },
   { id:"dob", type:"date", req:true,
     fr:"Ta date de naissance", en:"Your date of birth",
     hintfr:"Confirme que tu as 18 ans ou plus.", hinten:"Confirms you're 18+." },
@@ -139,9 +142,16 @@ var Q = [
 ];
 
 /* ---------- state ---------- */
-var i = 0, data = {};
+var i = 0, data = {}, sending = false;
 var lang = 'fr'; // always open in French by default; bilingual retreat, toggle available
 var qEmail = new URLSearchParams(location.search).get('email') || "";
+
+/* Draft persistence — a reload mid-application must not lose the answers. */
+try{
+  var _draft = JSON.parse(sessionStorage.getItem('dws_app_draft')||'null');
+  if(_draft && _draft.data){ data = _draft.data; i = Math.min(_draft.i||0, Q.length-1); }
+}catch(e){}
+function saveDraft(){ try{ sessionStorage.setItem('dws_app_draft', JSON.stringify({data:data, i:i})); }catch(e){} }
 
 function setLang(l, persist){ lang=l; document.body.classList.toggle('en', l==='en');
   document.getElementById('lfr').classList.toggle('on', l==='fr');
@@ -178,12 +188,14 @@ function render(){
       h += '</div>';
     } else if(q.type==='textarea'){
       h += '<div class="field"><textarea id="inp" placeholder="'+t('Écris ta réponse…','Type your answer…')+'">'+(v||'')+'</textarea></div>';
+    } else if(q.type==='text'){
+      h += '<div class="field"><input type="text" id="inp" autocomplete="address-level2" placeholder="'+t('Ville, pays','City, country')+'" value="'+String(v||'').replace(/"/g,'&quot;')+'"></div>';
     } else if(q.type==='contact'){
       var c = v||{};
-      h += '<div class="field"><label>'+t('Prénom*','First name*')+'</label><input type="text" id="c_first" value="'+(c.first||'')+'"></div>'
-        + '<div class="field"><label>'+t('Nom','Last name')+'</label><input type="text" id="c_last" value="'+(c.last||'')+'"></div>'
-        + '<div class="field"><label>'+t('Téléphone (WhatsApp)*','Phone (WhatsApp)*')+'</label><input type="tel" id="c_phone" value="'+(c.phone||'')+'"></div>'
-        + '<div class="field"><label>'+t('Courriel*','Email*')+'</label><input type="email" id="c_email" value="'+(c.email||qEmail||'')+'"></div>';
+      h += '<div class="field"><label>'+t('Prénom*','First name*')+'</label><input type="text" id="c_first" autocomplete="given-name" value="'+(c.first||'')+'"></div>'
+        + '<div class="field"><label>'+t('Nom','Last name')+'</label><input type="text" id="c_last" autocomplete="family-name" value="'+(c.last||'')+'"></div>'
+        + '<div class="field"><label>'+t('Téléphone (WhatsApp), avec indicatif du pays*','Phone (WhatsApp), with country code*')+'</label><input type="tel" id="c_phone" autocomplete="tel" inputmode="tel" placeholder="+1 …" value="'+(c.phone||'')+'"></div>'
+        + '<div class="field"><label>'+t('Courriel*','Email*')+'</label><input type="email" id="c_email" autocomplete="email" value="'+(c.email||qEmail||'')+'"></div>';
     } else if(q.type==='date'){
       var d = v||{};
       h += '<div class="datefield">'
@@ -207,32 +219,40 @@ function pick(el){
 function collect(){
   var q=Q[i]; if(!q.id) return true;
   var err=document.getElementById('err'); function fail(m){ if(err) err.textContent=m; return false; }
-  if(q.type==='textarea'){ var val=(document.getElementById('inp').value||'').trim(); data[q.id]=val;
+  if(q.type==='textarea'||q.type==='text'){ var val=(document.getElementById('inp').value||'').trim(); data[q.id]=val;
     if(q.req && !val) return fail(t('Merci de répondre.','Please answer.')); }
   else if(q.type==='contact'){
     var c={ first:(v('c_first')), last:(v('c_last')), phone:(v('c_phone')), email:(v('c_email')) }; data[q.id]=c;
     if(!c.first) return fail(t('Le prénom est requis.','First name is required.'));
     if(!c.phone) return fail(t('Le téléphone est requis.','Phone is required.'));
+    if(c.phone.replace(/\D/g,'').length<8) return fail(t("Ce numéro semble trop court — inclus l'indicatif du pays (ex. +1, +33, +852).","That number looks too short — include your country code (e.g. +1, +33, +852)."));
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.email)) return fail(t('Courriel invalide.','Invalid email.')); }
   else if(q.type==='date'){
     var d={ d:v('d_d'), m:v('d_m'), y:v('d_y') }; data[q.id]=d;
-    var yr=parseInt(d.y,10);
-    if(!d.d||!d.m||!d.y||isNaN(yr)) return fail(t('Date incomplète.','Incomplete date.'));
+    var dd=parseInt(d.d,10), mm=parseInt(d.m,10), yr=parseInt(d.y,10);
+    if(!d.d||!d.m||!d.y||isNaN(dd)||isNaN(mm)||isNaN(yr)) return fail(t('Date incomplète.','Incomplete date.'));
+    var dt=new Date(yr, mm-1, dd);
+    if(mm<1||mm>12||dd<1||dd>31||dt.getDate()!==dd||dt.getMonth()!==mm-1) return fail(t("Cette date n'existe pas — vérifie le format JJ / MM / AAAA.","That date doesn't exist — check the DD / MM / YYYY format."));
+    if(yr<1930) return fail(t("Vérifie l'année de naissance.","Check the birth year."));
     if(yr>2008) return fail(t('Tu dois avoir 18 ans ou plus.','You must be 18 or older.')); }
   else if(q.type==='radio'){ if(q.req && !data[q.id]) return fail(t('Choisis une option.','Pick an option.')); }
+  saveDraft();
   return true;
   function v(id){ var e=document.getElementById(id); return e?(e.value||'').trim():''; }
 }
 
-function next(){ if(!collect()) return; if(i===Q.length-1){ submit(); return; } go(1); }
-function go(d){ i=Math.max(0,Math.min(Q.length-1,i+d)); render(); }
+function next(){ if(sending) return; if(!collect()) return; if(i===Q.length-1){ submit(); return; } go(1); }
+function go(d){ i=Math.max(0,Math.min(Q.length-1,i+d)); saveDraft(); render(); }
 
 function submit(){
+  if(sending) return; sending=true;
   var nb=document.getElementById('next'); nb.disabled=true; nb.textContent=t('Envoi…','Sending…');
   var payload={ _subject:'Nouvelle candidature DWS', lang:lang };
   Object.keys(data).forEach(function(k){ payload[k]=data[k]; });
+  if(data.contact && data.contact.email) payload._replyto = data.contact.email;
   fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body:JSON.stringify(payload) })
-    .then(function(r){ if(r.ok){ if(window.gtag) gtag('event','generate_lead',{value:0,currency:'CAD'}); if(window.fbq) fbq('track','Lead',{content_name:'DWS application'});
+    .then(function(r){ if(r.ok){ try{sessionStorage.removeItem('dws_app_draft')}catch(e){}
+      if(window.gtag) gtag('event','generate_lead',{value:0,currency:'CAD'}); if(window.fbq) fbq('track','Lead',{content_name:'DWS application'});
       // Call-first flow: no redirect to payment. Show the confirmation screen —
       // Maxime books a short fit/safety call, then sends the payment link.
       document.getElementById('bar').style.width='100%';
@@ -244,7 +264,7 @@ function submit(){
         + '<p class="lede">'+t('Trop hâte ? Écris-moi directement :','Can\'t wait? Message me directly:')+' <a href="https://wa.me/14383451888" style="color:var(--accent2)">WhatsApp +1 438 345 1888</a></p>'
         + '</div>'; }
       else { throw new Error('http'); } })
-    .catch(function(){ nb.disabled=false; nb.textContent=t('Réessayer','Try again');
+    .catch(function(){ sending=false; nb.disabled=false; nb.textContent=t('Réessayer','Try again');
       document.getElementById('stage').insertAdjacentHTML('beforeend','<p class="err">'+t('Oups, envoi échoué. Réessaie ou écris à hello@corealivenessproject.com','Oops, send failed. Retry or email hello@corealivenessproject.com')+'</p>'); });
 }
 
