@@ -104,11 +104,16 @@ Règles importantes :
 3. **Virement Interac** : au 438-345-1888 (dépôt automatique, pas de question de
    sécurité, mémo = nom complet du participant). Page dédiée : `/interac-dws/`.
 
-**⚠️ Le « flip » du 6 octobre** : le lien Stripe est fixé à 1 240 $ et ne change
-pas tout seul. Le 6 octobre au soir, deux gestes manuels : (1) Maxime modifie le
-montant du lien Stripe à 1 400 $, (2) les prix affichés sur le site passent au
-tarif régulier. Tant que ces deux gestes ne sont pas faits, le site et Stripe
-racontent l'ancienne histoire.
+**Le « flip » du 6 octobre est automatique côté site** : à partir du 7 octobre
+2026 à 00:00 (heure de l'Est), les quatre pages (retraite, réservation,
+formulaire, Interac) affichent seules le tarif régulier — 3 995 $, dépôt et
+versements à 1 400 $ — dans les deux langues, statistiques comprises. **Un seul
+geste manuel reste : le lien Stripe**, dont le montant vit chez Stripe. Deux
+options : (a) le 6 octobre au soir, Maxime modifie le montant du lien à
+1 400 $ ; ou (b) mieux — il crée dès maintenant un 2e lien Stripe à 1 400 $
+(même URL de succès `/reservation-dws/?paid=1`) et on le colle dans la variable
+`STRIPE_LINK_1400` de la page réservation : le bouton basculera alors tout seul
+lui aussi.
 
 ### Qui encaisse
 
@@ -138,7 +143,7 @@ Page de vente  →  Candidature (4 min)  →  Appel avec Maxime (15 min)
    objections (« Ça fonctionne, même si… tu n'as jamais fait de DWS / tu grimpes
    en salle / tu voyages seul·e / tu as peur d'être le plus faible / le prix est
    un effort / tu ne parles pas anglais »), témoignages, bio de l'hôte, FAQ de
-   15 questions, clôture émotive (« Presque tout le monde a hésité avant
+   14 questions, clôture émotive (« Presque tout le monde a hésité avant
    d'embarquer »). Tous les boutons « RÉSERVER MA PLACE » mènent au formulaire.
 2. **Le formulaire** (`/inscription-dws/`) : fait maison (pas de Typeform/Tally),
    une question à la fois, 14 questions : années de grimpe, expérience
