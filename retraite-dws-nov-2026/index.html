@@ -2129,11 +2129,21 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         be.classList.toggle('active', l==='en');
     }
 
+    // Les CTA transmettent la langue au formulaire : en anglais, ils pointent
+    // vers /inscription-dws/?lang=en (le formulaire lit ce paramètre et ouvre
+    // en anglais; sans paramètre, il ouvre en français comme toujours).
+    function syncCtaLang(l) {
+        document.querySelectorAll('a[href^="/inscription-dws/"]').forEach(function(a){
+            a.setAttribute('href', '/inscription-dws/' + (l === 'en' ? '?lang=en' : ''));
+        });
+    }
+
     window.setLang = function(toLang) {
         if (toLang === lang) return;
         lang = toLang;
         if (toLang === 'en') applyEN(); else applyFR();
         setButtons(toLang);
+        syncCtaLang(toLang);
         document.documentElement.lang = toLang;
         localStorage.setItem('cap_lang', toLang);
     };
