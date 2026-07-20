@@ -543,6 +543,7 @@ html, body {
   .dws-pb-price{ font-size:44px; font-weight:800; margin:0; color:#fff; line-height:1.1; }
   .dws-pb-price s{ font-size:24px; font-weight:600; opacity:.55; margin-left:10px; }
   .dws-pb-sub{ font-size:17px; margin:8px 0 4px; color:#dbe6ee; }
+  .dws-pb-call{ font-size:14px; font-style:italic; color:#b9cad6; max-width:430px; margin:16px auto 0; line-height:1.5; }
   .dws-pb-note{ font-size:14px; color:#9fb3c2; margin:4px 0 22px; }
   .dws-pb-cta{ display:inline-block; margin-top:18px; background:#c0392b; color:#fff !important; text-decoration:none; font-weight:800; font-size:17px; letter-spacing:.5px; padding:16px 40px; border-radius:10px; }
   .dws-pb-cta:hover{ background:#a93226; }
@@ -564,6 +565,17 @@ html, body {
   @media (max-width:560px){
     .dws-pb-price{ font-size:34px; }
     .dws-pb-price s{ display:block; font-size:18px; margin:6px 0 0; }
+  }
+  /* Footer : trois blocs (politique / icônes / FR-EN) — ailes égales pour que
+     les icônes soient au centre géométrique de la page. */
+  @media (min-width:768px){
+    .elementor .elementor-element.elementor-element-b536e73,
+    .elementor .elementor-element.elementor-element-99a5878{ flex:1 1 0 !important; --flex-grow:1; --flex-shrink:1; --flex-basis:0; }
+    .elementor .elementor-element.elementor-element-c6bd307{ flex:0 1 auto !important; width:auto !important; --width:auto; }
+    /* Contenu des ailes collé aux bords, comme avant le centrage */
+    .elementor .elementor-element.elementor-element-99a5878 > .e-con-inner{ margin-left:0 !important; }
+    .elementor .elementor-element.elementor-element-b536e73 > .e-con-inner{ margin-right:0 !important; }
+    .elementor .elementor-element.elementor-element-99a5878 .elementor-element.elementor-element-8091b99{ align-self:flex-start !important; --align-self:flex-start; }
   }
   /* Section titles with a custom Elementor widget width sat flush-left, so their
      centered text landed left of the section's true center. Full width fixes it. */
@@ -868,6 +880,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
     <p class="dws-pb-sub">par grimpeur · ou 3 versements de 1 240 CAD</p>
 
     <a class="dws-pb-cta" href="/inscription-dws/"><span class="elementor-button-text">RÉSERVER MA PLACE</span></a>
+    <p class="dws-pb-call">En raison de la nature intense de cette expérience, une conversation téléphonique est nécessaire afin de réserver ta place.</p>
 
   </div></div>
 </section>
@@ -1146,6 +1159,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
     <p class="dws-pb-sub">par grimpeur · ou 3 versements de 1 240 CAD</p>
 
     <a class="dws-pb-cta" href="/inscription-dws/"><span class="elementor-button-text">RÉSERVER MA PLACE</span></a>
+    <p class="dws-pb-call">En raison de la nature intense de cette expérience, une conversation téléphonique est nécessaire afin de réserver ta place.</p>
 
   </div></div>
 </section>
@@ -1173,6 +1187,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
     <p class="dws-pb-sub">par grimpeur · ou 3 versements de 1 240 CAD</p>
 
     <a class="dws-pb-cta" href="/inscription-dws/"><span class="elementor-button-text">RÉSERVER MA PLACE</span></a>
+    <p class="dws-pb-call">En raison de la nature intense de cette expérience, une conversation téléphonique est nécessaire afin de réserver ta place.</p>
 
   </div></div>
 </section>
@@ -1862,6 +1877,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         /* Buttons */
         "REJOINDRE LA LISTE D'ATTENTE": 'JOIN THE WAITLIST',
         "RÉSERVER MA PLACE": 'RESERVE MY SPOT',
+        "En raison de la nature intense de cette expérience, une conversation téléphonique est nécessaire afin de réserver ta place.": "Because of the intense nature of this experience, a phone conversation is required to reserve your spot.",
         'Réserver ma place': 'Reserve my spot',
         "Inscriptions ouvertes.": 'Registration is open.',
         "Départ le 16 novembre 2026. Places limitées, confirmées dans l'ordre des dépôts reçus. Un dépôt de réservation de 1 240 CAD confirme ta place.": "Departure on November 16, 2026. Limited spots, confirmed in the order deposits are received. A 1,240 CAD reservation deposit secures your spot.",
