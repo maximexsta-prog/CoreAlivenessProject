@@ -81,7 +81,7 @@ dépenses personnelles et alcool, hébergement avant/après la retraite.
 |---|---|---|
 | **Prix total** | **3 195 CAD** | 3 495 CAD |
 | **Dépôt de réservation** | **1 065 CAD** | 1 165 CAD |
-| **Valide** | Jusqu'au **26 octobre 2026** | Après le 26 octobre |
+| **Valide** | Jusqu'au **5 octobre 2026** | Après le 5 octobre |
 
 Règles importantes :
 - Le vocabulaire officiel est « **Rabais de prépaiement** » (EN : « Early payment
@@ -90,7 +90,7 @@ Règles importantes :
   C'est voulu : aucun chiffre mystère pour le client.
 - Le solde est payable **au plus tard le 2 novembre 2026** (deux semaines avant le départ).
 - Réserver au rabais **verrouille le prix**, même si les versements suivants
-  tombent après le 26 octobre.
+  tombent après le 5 octobre.
 - Paiement complet par Interac = **50 $ de rabais** additionnel.
 
 ### Les trois façons de payer
@@ -104,12 +104,12 @@ Règles importantes :
 3. **Virement Interac** : au 438-345-1888 (dépôt automatique, pas de question de
    sécurité, mémo = nom complet du participant). Page dédiée : `/interac-dws/`.
 
-**Le « flip » du 26 octobre est automatique côté site** : à partir du 27 octobre
+**Le « flip » du 5 octobre est automatique côté site** : à partir du 6 octobre
 2026 à 00:00 (heure de l'Est), les quatre pages (retraite, réservation,
 formulaire, Interac) affichent seules le tarif régulier — 3 495 $, dépôt et
 versements à 1 165 $ — dans les deux langues, statistiques comprises. **Un seul
 geste manuel reste : le lien Stripe**, dont le montant vit chez Stripe. Deux
-options : (a) le 26 octobre au soir, Maxime modifie le montant du lien à
+options : (a) le 5 octobre au soir, Maxime modifie le montant du lien à
 1 165 $ ; ou (b) mieux — il crée dès maintenant un 2e lien Stripe à 1 165 $
 (même URL de succès `/reservation-dws/?paid=1`) et on le colle dans la variable
 `STRIPE_LINK_1165` de la page réservation : le bouton basculera alors tout seul
@@ -217,7 +217,7 @@ système plus simple : chaque phrase existe en double (`<span data-lang="fr">` /
 ## 7. Les règles (légal et sécurité)
 
 - **Politique de réservation** (sur la page politique) : dates 16-21 novembre
-  2026 (6 jours/5 nuits) ; prix 3 495 $ (3 195 $ avec rabais jusqu'au 26 octobre) ;
+  2026 (6 jours/5 nuits) ; prix 3 495 $ (3 195 $ avec rabais jusqu'au 5 octobre) ;
   dépôt 1 065 $ (1 165 $ ensuite) ; solde dû le 2 novembre 2026.
 - **Annulation par l'organisation** (ex. moins de 5 participants) :
   **remboursement à 100 %** de tout ce qui a été payé.
@@ -261,7 +261,7 @@ système plus simple : chaque phrase existe en double (`<span data-lang="fr">` /
 | Date | Quoi |
 |---|---|
 | **Maintenant → 6 oct** | Vente au rabais de prépaiement (3 195 $ / dépôt 1 065 $) |
-| **26 octobre 2026** | Fin du rabais. Flip manuel : lien Stripe → 1 165 $, prix du site → 3 495 $ |
+| **5 octobre 2026** | Fin du rabais. Flip manuel : lien Stripe → 1 165 $, prix du site → 3 495 $ |
 | **2 novembre 2026** | Date limite du solde pour les inscrits |
 | **16-21 novembre 2026** | La retraite (lundi au samedi) |
 | **Fin janvier 2027 (idée)** | La retraite yoga de l'amie, Maxime en prestataire |
