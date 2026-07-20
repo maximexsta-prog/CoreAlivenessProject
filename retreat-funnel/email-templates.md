@@ -47,7 +47,7 @@ Trois façons de régler le dépôt :
 - **PayPal** : {{paypal_link}}
 - **Interac** (Canada, sans frais — économise 50 $ sur le total en payant par Interac) : envoie au **438-345-1888**, avec ton **nom complet en mémo**.
 
-Tu peux payer en entier (3 995 CAD) ou en **3 versements de 1 400 CAD** (le dépôt étant le premier). Réponds-moi si tu préfères les versements et je t'organise ça.
+Tu peux payer en entier (3 995 CAD) ou en **3 versements mensuels de 1 400 CAD** (le dépôt étant le premier). Réponds-moi si tu préfères les versements et je t'organise ça.
 
 Une dernière chose avant le départ : une assurance voyage couvrant les sports extrêmes et le rapatriement est obligatoire (détails à suivre).
 

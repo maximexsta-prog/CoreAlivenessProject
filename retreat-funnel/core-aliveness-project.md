@@ -86,7 +86,7 @@ dépenses personnelles et alcool, hébergement avant/après la retraite.
 Règles importantes :
 - Le vocabulaire officiel est « **Rabais de prépaiement** » (EN : « Early payment
   discount »). On ne dit plus « early bird » ni « tarif fondateur ».
-- **Le dépôt est toujours égal au premier des 3 versements** (1 240 × 3 = 3 720).
+- **Le dépôt est toujours égal au premier des 3 versements mensuels** (1 240 × 3 = 3 720).
   C'est voulu : aucun chiffre mystère pour le client.
 - Le solde est payable **au plus tard le 2 novembre 2026** (deux semaines avant le départ).
 - Réserver au rabais **verrouille le prix**, même si les versements suivants
