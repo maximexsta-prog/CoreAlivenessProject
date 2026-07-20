@@ -117,7 +117,7 @@ var Q = [
     opts:[["5.10b / 6a ou moins","5.10b / 6a or lower"],["5.10c–5.11c / 6a+–6c+","5.10c–5.11c / 6a+–6c+"],["5.11d–5.13a / 7a–7c+","5.11d–5.13a / 7a–7c+"],["5.13b / 8a ou plus","5.13b / 8a or higher"],["Je ne grimpe pas en tête/moulinette","I don't lead or top rope"]] },
   { id:"grade_boulder", type:"radio", req:true,
     fr:"Ton niveau max en bloc", en:"Your max grade (bouldering)",
-    opts:[["V3 et moins / 6A et moins","V3 and below / 6A and below"],["V4–V6 / 6B–7A","V4–V6 / 6B–7A"],["V7–V8 / 7A+–7B+","V7–V8 / 7A+–7B+"],["V9–V11 / 7C–8A","V9–V11 / 7C–8A"],["V11 / 8A+ ou plus","V11 / 8A+ or higher"],["Je ne fais pas de bloc","I don't boulder"]] },
+    opts:[["V3 et moins / 6A et moins","V3 and below / 6A and below"],["V4–V6 / 6B–7A","V4–V6 / 6B–7A"],["V7–V8 / 7A+–7B+","V7–V8 / 7A+–7B+"],["V9 ou plus / 7C ou plus","V9 or higher / 7C or higher"],["Je ne fais pas de bloc","I don't boulder"]] },
   { id:"swim", type:"radio", req:true,
     fr:"🌊 À l'aise de nager en mer / eau profonde ?", en:"🌊 Comfortable swimming in open / deep water?",
     opts:[["Oui, très à l'aise","Yes, very comfortable"],["Ça va, je nage correctement","Okay, I swim fine"],["Peu à l'aise, mais je flotte","Not very, but I float"],["Non, pas à l'aise dans l'eau","No, not comfortable in water"]] },
@@ -183,6 +183,9 @@ function render(){
   var q = Q[i], s = document.getElementById('stage'), h='';
   var realIdx = Q.slice(0,i).filter(function(x){return x.id;}).length;
   var total = Q.filter(function(x){return x.id;}).length;
+  // Le choix de langue ne s'affiche que sur la page d'intro — après « Commencer »,
+  // on reste dans la langue choisie.
+  var langBox = document.querySelector('.lang'); if(langBox) langBox.style.display = (i===0) ? '' : 'none';
   document.getElementById('bar').style.width = (i/(Q.length-1)*100)+'%';
   document.getElementById('back').style.visibility = i>0 && i<Q.length-1 ? 'visible':'hidden';
   var nextBtn = document.getElementById('next');
