@@ -17,7 +17,7 @@ invested before you ask for phone/email. Keep it ~2–4 minutes.
 ## Screen 0 — Welcome / Bienvenue
 
 **FR**
-> ### Postule pour la retraite DWS — Baie de Lan Ha, Vietnam · 19 octobre 2026
+> ### Postule pour la retraite DWS — Baie de Lan Ha, Vietnam · 16 novembre 2026
 > Merci de vouloir embarquer dans l'aventure. Quelques questions (~3 min) pour
 > apprendre à te connaître et bien te placer dans le groupe (max 9 personnes).
 > Ce n'est pas un paiement — c'est une candidature. Je te réponds vite.
@@ -25,7 +25,7 @@ invested before you ask for phone/email. Keep it ~2–4 minutes.
 > **Commencer →**
 
 **EN**
-> ### Apply for the DWS retreat — Lan Ha Bay, Vietnam · October 19, 2026
+> ### Apply for the DWS retreat — Lan Ha Bay, Vietnam · November 16, 2026
 > Thanks for wanting to join. A few questions (~3 min) so I can get to know you
 > and place you well in the group (max 9). This isn't a payment — it's an
 > application. I reply fast.

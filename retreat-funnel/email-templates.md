@@ -12,7 +12,7 @@ are reservation emails, not newsletter.
 
 Salut [Prénom],
 
-Merci de t'être manifesté·e pour la retraite Deep Water Solo dans la baie de Lan Ha (19 octobre 2026). Bonne nouvelle : les inscriptions sont maintenant ouvertes — et comme tu étais parmi les premières personnes, tu es en tête de liste.
+Merci de t'être manifesté·e pour la retraite Deep Water Solo dans la baie de Lan Ha (16 novembre 2026). Bonne nouvelle : les inscriptions sont maintenant ouvertes — et comme tu étais parmi les premières personnes, tu es en tête de liste.
 
 Prochaine étape : une courte candidature (~4 min) qui m'aide à bien te placer dans le groupe (max 9) :
 👉 https://corealivenessproject.com/inscription-dws/
@@ -35,7 +35,7 @@ Core Aliveness Project — corealivenessproject.com
 
 Salut [Prénom],
 
-Content de te voir embarquer dans la retraite DWS et escalade dans la baie de Lan Ha, le **19 octobre 2026**.
+Content de te voir embarquer dans la retraite DWS et escalade dans la baie de Lan Ha, le **16 novembre 2026**.
 
 Voici les détails :
 5 jours dans la région de Cat Ba / baie de Lan Ha, en petit groupe (max 9). Deep water solo, escalade sportive, kayak, bateau et temps sur l'eau. Le prix est de **3 995 CAD** par personne.
@@ -71,7 +71,7 @@ Core Aliveness Project — corealivenessproject.com
 
 Salut [Prénom],
 
-Dépôt bien reçu — **ta place est confirmée** pour la retraite DWS, 19 octobre 2026. Bienvenue dans le groupe !
+Dépôt bien reçu — **ta place est confirmée** pour la retraite DWS, 16 novembre 2026. Bienvenue dans le groupe !
 
 Prochaines étapes (je t'écris d'ici peu avec les détails) :
 - Solde de {{2 595 / 2 480}} CAD à régler avant le **[date]**.
