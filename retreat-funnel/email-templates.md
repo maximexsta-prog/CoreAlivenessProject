@@ -38,7 +38,7 @@ Salut [Prénom],
 Content de te voir embarquer dans la retraite DWS et escalade dans la baie de Lan Ha, le **16 novembre 2026**.
 
 Voici les détails :
-5 jours dans la région de Cat Ba / baie de Lan Ha, en petit groupe (max 9). Deep water solo, escalade sportive, kayak, bateau et temps sur l'eau. Le prix est de **3 995 CAD** par personne.
+6 jours dans la baie de Lan Ha, en petit groupe (max 9). Deep water solo, escalade sportive, kayak, bateau et temps sur l'eau. Le prix est de **3 995 CAD** par personne.
 
 **Ta place est réservée à ton nom pendant 48 h.** Elle se confirme dès réception du **dépôt de 1 400 CAD** (le solde de 2 595 CAD est payable avant le départ). Les places sont limitées et confirmées dans l'ordre des dépôts reçus — passé 48 h, la place est offerte à la personne suivante sur la liste.
 
