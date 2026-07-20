@@ -565,6 +565,19 @@ html, body {
     .dws-pb-price{ font-size:34px; }
     .dws-pb-price s{ display:block; font-size:18px; margin:6px 0 0; }
   }
+  /* Section titles with a custom Elementor widget width sat flush-left, so their
+     centered text landed left of the section's true center. Full width fixes it. */
+  .elementor .elementor-element.elementor-element-10bcc488,
+  .elementor .elementor-element.elementor-element-2fe08f59{ width:100% !important; max-width:100% !important; }
+  /* Column wrap had a stray 50px right padding, pushing the whole "Ce qui est
+     prévu" section 25px left of center. */
+  .elementor .elementor-element.elementor-element-467bfc5a > .elementor-widget-wrap{ padding-right:0 !important; }
+  @media (max-width:767px){
+    /* Desktop-only -32px pull on the itinerary title leaked into mobile. */
+    .elementor .elementor-element.elementor-element-0dd6afa .elementor-widget-container{ margin-left:0 !important; }
+    .elementor .elementor-element.elementor-element-0dd6afa .ekit-heading,
+    .elementor .elementor-element.elementor-element-0dd6afa .ekit-heading--title{ text-align:center !important; }
+  }
 </style>
 				<section class="elementor-section elementor-top-section elementor-element elementor-element-19c24b1a elementor-section-full_width elementor-section-height-default elementor-section-height-default" data-id="19c24b1a" data-element_type="section" data-e-type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
 						<div class="elementor-container elementor-column-gap-no">
