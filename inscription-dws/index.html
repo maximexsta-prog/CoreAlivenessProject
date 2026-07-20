@@ -141,6 +141,17 @@ var Q = [
     hintfr:"Allergies, questions, besoins de paiement particuliers…", hinten:"Allergies, questions, custom payment needs…" }
 ];
 
+/* Flip automatique du 6 octobre 2026 : après la date limite du rabais, les
+   options de paiement affichent le tarif régulier (3 995 / 1 400). */
+if (Date.now() >= Date.parse('2026-10-07T04:00:00Z')) (function(){
+  for (var qi=0; qi<Q.length; qi++) if (Q[qi].id==='payment_pref') {
+    Q[qi].hintfr = Q[qi].hintfr.replace('1 240', '1 400');
+    Q[qi].hinten = Q[qi].hinten.replace('1,240', '1,400');
+    Q[qi].opts[0] = ["Paiement complet — 3 995 CAD", "Pay in full — 3,995 CAD"];
+    Q[qi].opts[1] = ["3 versements de 1 400 CAD", "3 payments of 1,400 CAD"];
+  }
+})();
+
 /* ---------- state ---------- */
 var i = 0, data = {}, sending = false;
 var lang = 'fr'; // always open in French by default; bilingual retreat, toggle available

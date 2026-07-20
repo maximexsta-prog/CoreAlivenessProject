@@ -84,9 +84,18 @@
 <script>
   function setLang(l){ document.body.classList.toggle('en', l==='en'); document.getElementById('fr').classList.toggle('on', l==='fr'); document.getElementById('en').classList.toggle('on', l==='en'); document.documentElement.lang=l; try{localStorage.setItem('cap_lang',l)}catch(e){} }
   (function(){ try{ var l=localStorage.getItem('cap_lang'); if(l) setLang(l); }catch(e){} })();
+  // Flip automatique du 6 octobre 2026 : après cette date, montants au tarif régulier.
+  var PRICE_FLIPPED = Date.now() >= Date.parse('2026-10-07T04:00:00Z');
+  var DEPOSIT = PRICE_FLIPPED ? 1400 : 1240;
+  if (PRICE_FLIPPED) (function(){
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
+    while ((n = w.nextNode())) {
+      n.nodeValue = n.nodeValue.replace(/1[\u00a0\u202f ]240/g, '1\u00a0400').replace(/1,240/g, '1,400');
+    }
+  })();
   // Interac has no payment callback — record intent on arrival.
-  if(window.fbq) fbq('track','InitiateCheckout',{value:1240,currency:'CAD',content_name:'DWS deposit',payment_rail:'interac'});
-  if(window.gtag) gtag('event','begin_checkout',{value:1240,currency:'CAD',items:[{item_name:'DWS deposit (Interac)'}]});
+  if(window.fbq) fbq('track','InitiateCheckout',{value:DEPOSIT,currency:'CAD',content_name:'DWS deposit',payment_rail:'interac'});
+  if(window.gtag) gtag('event','begin_checkout',{value:DEPOSIT,currency:'CAD',items:[{item_name:'DWS deposit (Interac)'}]});
 </script>
 </body>
 </html>
