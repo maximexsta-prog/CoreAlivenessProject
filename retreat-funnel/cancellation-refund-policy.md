@@ -22,7 +22,7 @@ CAD**, deposit **1 400 CAD**, balance **2 595 CAD**, date **16 nov 2026**.
 
 **Annulation par l'organisateur**
 - Si la retraite est annulée par Core Aliveness Project ou son partenaire local
-  agréé (nombre insuffisant de participants, conditions météo/marées rendant
+  agréé (moins de 5 participants, conditions météo/marées rendant
   l'activité impossible, force majeure), **le dépôt et tout montant payé sont
   remboursés à 100 %**.
 
@@ -57,7 +57,7 @@ CAD**, deposit **1 400 CAD**, balance **2 595 CAD**, date **16 nov 2026**.
 
 **Cancellation by the organizer**
 - If the retreat is cancelled by Core Aliveness Project or its licensed local
-  operator partner (too few participants, weather/tide making the activity
+  operator partner (fewer than 5 participants, weather/tide making the activity
   impossible, force majeure), **the deposit and all amounts paid are refunded
   100 %**.
 
