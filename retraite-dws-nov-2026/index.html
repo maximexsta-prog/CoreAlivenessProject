@@ -2157,6 +2157,10 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
     document.addEventListener('DOMContentLoaded', function() {
         snapshot();
         var saved = localStorage.getItem('cap_lang');
+        // ?lang=en dans l'URL gagne sur la préférence sauvegardée — permet de
+        // partager un lien qui ouvre directement la version anglaise.
+        var qp = new URLSearchParams(location.search).get('lang');
+        if (qp === 'en' || qp === 'fr') saved = qp;
         if (saved === 'en') { lang = 'fr'; window.setLang('en'); }
         else setButtons('fr');
     });
