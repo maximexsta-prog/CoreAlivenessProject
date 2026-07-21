@@ -547,6 +547,8 @@ html, body {
   .dws-pb-price{ font-size:44px; font-weight:800; margin:0; color:#fff; line-height:1.1; }
   .dws-pb-price s{ font-size:24px; font-weight:600; opacity:.55; margin-left:10px; }
   .dws-pb-sub{ font-size:17px; margin:8px 0 4px; color:#dbe6ee; }
+  .dws-pb-usd{ display:none; font-size:14px; letter-spacing:.5px; margin:4px 0 0; color:#9fb3c2; }
+  html[lang="en"] .dws-pb-usd{ display:block; }
   .dws-pb-call{ font-size:14px; font-style:italic; color:#b9cad6; max-width:430px; margin:16px auto 0; line-height:1.5; }
   .dws-close .dws-pb-call{ color:#5d6b75; }
   .dws-pb-note{ font-size:14px; color:#9fb3c2; margin:4px 0 22px; }
@@ -889,6 +891,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
   <div class="dws-block elementor-widget-text-editor"><div class="elementor-widget-container">
     <p class="dws-pb-label">Rabais de prépaiement — jusqu'au 5 octobre 2026</p>
     <p class="dws-pb-price">3 195 CAD <s>3 495 CAD</s></p>
+    <p class="dws-pb-usd">≈ 2,350 USD</p>
     <p class="dws-pb-sub">ou 3 versements mensuels de 1 065 CAD</p>
 
     <a class="dws-pb-cta" href="/inscription-dws/"><span class="elementor-button-text">RÉSERVER MA PLACE</span></a>
@@ -1167,6 +1170,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
   <div class="dws-block elementor-widget-text-editor"><div class="elementor-widget-container">
     <p class="dws-pb-label">Rabais de prépaiement — jusqu'au 5 octobre 2026</p>
     <p class="dws-pb-price">3 195 CAD <s>3 495 CAD</s></p>
+    <p class="dws-pb-usd">≈ 2,350 USD</p>
     <p class="dws-pb-sub">ou 3 versements mensuels de 1 065 CAD</p>
 
     <a class="dws-pb-cta" href="/inscription-dws/"><span class="elementor-button-text">RÉSERVER MA PLACE</span></a>
@@ -1194,6 +1198,7 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
   <div class="dws-block elementor-widget-text-editor"><div class="elementor-widget-container">
     <p class="dws-pb-label">Rabais de prépaiement — jusqu'au 5 octobre 2026</p>
     <p class="dws-pb-price">3 195 CAD <s>3 495 CAD</s></p>
+    <p class="dws-pb-usd">≈ 2,350 USD</p>
     <p class="dws-pb-sub">ou 3 versements mensuels de 1 065 CAD</p>
 
     <a class="dws-pb-cta" href="/inscription-dws/"><span class="elementor-button-text">RÉSERVER MA PLACE</span></a>
@@ -1981,6 +1986,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
     if (PRICE_FLIPPED) (function(){
         document.querySelectorAll('.dws-pb-label').forEach(function(e){ e.textContent = 'Tarif régulier'; });
         document.querySelectorAll('.dws-pb-price').forEach(function(e){ e.textContent = '3 495 CAD'; });
+        document.querySelectorAll('.dws-pb-usd').forEach(function(e){ e.textContent = '≈ 2,550 USD'; });
         document.querySelectorAll('.ekit-accordion--content p').forEach(function(e){
             if (/Rabais de prépaiement :/.test(e.textContent)) {
                 e.innerHTML = 'Le prix est de <b>3 495 CAD</b> par personne. Un dépôt de réservation de <b>1 165 CAD</b> confirme ta place; le solde est payable avant le départ, avec possibilité de 3 versements mensuels. Le paiement est traité par notre partenaire local agréé.';
