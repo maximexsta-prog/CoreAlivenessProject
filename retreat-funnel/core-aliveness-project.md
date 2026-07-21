@@ -85,6 +85,7 @@ dépenses personnelles et alcool, hébergement avant/après la retraite.
 | | Avec rabais de prépaiement | Prix régulier |
 |---|---|---|
 | **Prix total** | **3 195 CAD** | 3 495 CAD |
+| **Équivalent USD (affichage)** | ≈ 2,350 USD | ≈ 2,550 USD |
 | **Dépôt de réservation** | **1 065 CAD** | 1 165 CAD |
 | **Valide** | Jusqu'au **5 octobre 2026** | Après le 5 octobre |
 
