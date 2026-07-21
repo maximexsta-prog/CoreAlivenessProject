@@ -31,8 +31,26 @@
   if (choice === 'granted') { grant(); return; }
   if (choice === 'denied') { return; }
 
-  var fr = true;
-  try { fr = (localStorage.getItem('cap_lang') || 'fr') !== 'en'; } catch (e) {}
+  /* Langue lue au moment de l'affichage (pas au chargement du script).
+     L'attribut lang de la page est le signal le plus frais (toutes les pages
+     le posent à chaque bascule), puis cap_lang, puis ?lang= de l'URL. */
+  function isFr() {
+    var l = (document.documentElement.lang || '').slice(0, 2);
+    if (l !== 'en' && l !== 'fr') { try { l = localStorage.getItem('cap_lang'); } catch (e) {} }
+    if (l !== 'en' && l !== 'fr') { try { l = new URLSearchParams(location.search).get('lang'); } catch (e) {} }
+    return l !== 'en';
+  }
+
+  function render(card, fr) {
+    card.setAttribute('aria-label', fr ? 'Consentement aux témoins' : 'Cookie consent');
+    card.innerHTML = fr
+      ? '<p>On utilise des témoins (cookies) pour mesurer ce qui fonctionne et améliorer le site. <a href="/politique-de-confidentialite/">Politique de confidentialité</a></p>' +
+        '<div class="row"><button class="ok" type="button">Accepter</button><button class="no" type="button">Refuser</button></div>'
+      : '<p>We use cookies to measure what works and improve the site. <a href="/politique-de-confidentialite/">Privacy policy</a></p>' +
+        '<div class="row"><button class="ok" type="button">Accept</button><button class="no" type="button">Decline</button></div>';
+    card.querySelector('.ok').addEventListener('click', function () { save('granted'); grant(); card.remove(); });
+    card.querySelector('.no').addEventListener('click', function () { save('denied'); card.remove(); });
+  }
 
   function show() {
     if (document.getElementById('cap-consent')) return;
@@ -56,17 +74,18 @@
     var card = document.createElement('div');
     card.id = 'cap-consent';
     card.setAttribute('role', 'dialog');
-    card.setAttribute('aria-label', fr ? 'Consentement aux témoins' : 'Cookie consent');
-    card.innerHTML = fr
-      ? '<p>On utilise des témoins (cookies) pour mesurer ce qui fonctionne et améliorer le site. <a href="/politique-de-confidentialite/">Politique de confidentialité</a></p>' +
-        '<div class="row"><button class="ok" type="button">Accepter</button><button class="no" type="button">Refuser</button></div>'
-      : '<p>We use cookies to measure what works and improve the site. <a href="/politique-de-confidentialite/">Privacy policy</a></p>' +
-        '<div class="row"><button class="ok" type="button">Accept</button><button class="no" type="button">Decline</button></div>';
+    render(card, isFr());
     document.body.appendChild(card);
     setTimeout(function () { card.classList.add('on'); }, 700);
 
-    card.querySelector('.ok').addEventListener('click', function () { save('granted'); grant(); card.remove(); });
-    card.querySelector('.no').addEventListener('click', function () { save('denied'); card.remove(); });
+    /* Si le visiteur change de langue pendant que la carte est visible
+       (toutes les pages posent document.documentElement.lang), on suit. */
+    try {
+      new MutationObserver(function () {
+        var c = document.getElementById('cap-consent');
+        if (c) render(c, isFr());
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    } catch (e) {}
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', show);
