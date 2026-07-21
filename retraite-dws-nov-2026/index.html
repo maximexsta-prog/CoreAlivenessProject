@@ -329,11 +329,19 @@ html, body {
     justify-content: center !important;
 }
 
-/* Footer mobile : compacte la pile politique / icônes / FR-EN */
+/* Footer mobile : compacte la pile politique / icônes / FR-EN.
+   Espacements cibles : ~16px au-dessus de « Politique », ~12px vers les
+   icônes, ~8px vers le toggle. */
 @media (max-width: 767px) {
     .elementor-element.elementor-element-6cf00120 { padding-top: 14px !important; padding-bottom: 10px !important; gap: 2px !important; }
     .elementor-element-6cf00120 .e-con-inner { padding-top: 2px !important; padding-bottom: 2px !important; gap: 8px !important; }
     .elementor-element-6cf00120 #dws-lang-toggle { padding-top: 4px !important; padding-bottom: 4px !important; }
+    .elementor-element.elementor-element-6cf00120 a[href="/politique-de-confidentialite"] { margin-top: 24px !important; }
+    .elementor-element-6cf00120 .elementor-widget-icon-list { margin-top: -26px !important; }
+    .elementor-element.elementor-element-b536e73 { margin-top: -22px !important; }
+    /* Toggle du hero : zone tactile élargie sans changer l'apparence */
+    #dws-lang-top button { padding: 10px 6px; }
+    #dws-lang-top { top: 6px; right: 12px; }
 }
 
 /* Mailchimp signup button: pinned flush-right INSIDE the rounded input pill via
