@@ -144,25 +144,43 @@ html, body {
   .elementor-420 .elementor-element.elementor-element-39e53d3{ width:100% !important; }
   /* Bouton retour : centré */
   .elementor-420 .elementor-element-4805ea3a{ text-align:center !important; width:100%; }
+  /* Bilingue FR/EN : blocs data-lang + classe cap-en sur le body.
+     !important : le CSS du thème force inline-block sur les spans de titre. */
+  [data-lang="en"]{ display:none !important; }
+  body.cap-en div[data-lang="fr"], body.cap-en span[data-lang="fr"]{ display:none !important; }
+  body.cap-en div[data-lang="en"]{ display:block !important; }
+  body.cap-en span[data-lang="en"]{ display:inline !important; }
+  /* Toggle FR/EN en haut à droite, même discrétion que sur la page de l'événement */
+  #cap-lang-top{ position:absolute; top:14px; right:18px; z-index:60; display:flex; align-items:center; gap:4px; }
+  #cap-lang-top button{ background:none; border:none; color:#fff; cursor:pointer; font-size:11px; font-weight:400; letter-spacing:.12em; padding:2px 0; opacity:.45; transition:opacity .2s; text-transform:uppercase; font-family:inherit; line-height:1; }
+  #cap-lang-top button.active{ opacity:1; font-weight:700; }
+  #cap-lang-top .lang-sep{ color:rgba(255,255,255,.35); font-size:11px; line-height:1; pointer-events:none; }
+  @media (max-width:767px){ #cap-lang-top button{ padding:10px 6px; } #cap-lang-top{ top:6px; right:12px; } }
 </style>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><script defer src="/cap-consent.js"></script>
 </head>
 <body class="wp-singular page-template-default page page-id-420 wp-embed-responsive wp-theme-hello-elementor jkit-color-scheme hello-elementor-default elementor-default elementor-template-canvas elementor-kit-11 elementor-page elementor-page-420">
 			<div data-elementor-type="wp-page" data-elementor-id="420" class="elementor elementor-420">
+				<div id="cap-lang-top">
+					<button id="cap-btn-fr" class="active" onclick="capSetLang('fr')" aria-label="Version française">FR</button>
+					<span class="lang-sep">/</span>
+					<button id="cap-btn-en" onclick="capSetLang('en')" aria-label="English version">EN</button>
+				</div>
 				<div class="elementor-element elementor-element-28331b44 e-flex e-con-boxed e-con e-parent" data-id="28331b44" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
 					<div class="e-con-inner">
 				<div class="elementor-element elementor-element-1577044f elementor-widget__width-initial elementor-widget-tablet__width-initial elementor-widget-mobile__width-inherit elementor-invisible elementor-widget elementor-widget-elementskit-heading" data-id="1577044f" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeIn&quot;,&quot;_animation_delay&quot;:200}" data-widget_type="elementskit-heading.default">
 				<div class="elementor-widget-container">
-					<div class="ekit-wid-con"><div class="ekit-heading elementskit-section-title-wraper text_center   ekit_heading_tablet-   ekit_heading_mobile-"><h2 class="ekit-heading--title elementskit-section-title ">Politique de confidentialité</h2></div></div>				</div>
+					<div class="ekit-wid-con"><div class="ekit-heading elementskit-section-title-wraper text_center   ekit_heading_tablet-   ekit_heading_mobile-"><h2 class="ekit-heading--title elementskit-section-title "><span data-lang="fr">Politique de confidentialité</span><span data-lang="en">Privacy Policy</span></h2></div></div>				</div>
 				</div>
 				<div class="elementor-element elementor-element-39e53d3 elementor-widget elementor-widget-heading" data-id="39e53d3" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
 				<div class="elementor-widget-container">
-					<h2 class="elementor-heading-title elementor-size-default">Dernière mise à jour : 20 juillet 2026
+					<h2 class="elementor-heading-title elementor-size-default"><span data-lang="fr">Dernière mise à jour : 20 juillet 2026</span><span data-lang="en">Last updated: July 20, 2026</span>
 </h2>				</div>
 				</div>
 				<div class="elementor-element elementor-element-350a298 elementor-widget elementor-widget-text-editor" data-id="350a298" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									<nav class="cap-chips"><a href="#confidentialite">Confidentialité</a><a href="#reservation">Politique de réservation</a></nav>
+									<div data-lang="fr">
+<nav class="cap-chips"><a href="#confidentialite">Confidentialité</a><a href="#reservation">Politique de réservation</a></nav>
 <hr>
 <p class="cap-lede">Cette politique explique comment Core Aliveness Project recueille, utilise et protège les renseignements transmis sur ce site.</p>
 <h2 id="confidentialite">Renseignements recueillis</h2>
@@ -226,7 +244,75 @@ html, body {
 </div>
 <h2>Contact</h2>
 <p>Core Aliveness Project<br>Maxime X. St-Arnault<br><a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a><br>corealivenessproject.com</p>
-<hr>								</div>
+<hr>
+</div>
+<div data-lang="en">
+<nav class="cap-chips"><a href="#privacy">Privacy</a><a href="#reservation-policy">Reservation Policy</a></nav>
+<hr>
+<p class="cap-lede">This policy explains how Core Aliveness Project collects, uses and protects the information submitted on this site.</p>
+<h2 id="privacy">Information we collect</h2>
+<p>When you fill out a form on this site, we may collect certain information, such as your email address and any information you choose to share voluntarily.</p>
+<p>We may also collect certain technical data related to your browsing, such as pages viewed, device type, browser used, approximate IP address and certain interactions with the page.</p>
+<h2>How the information is used</h2>
+<p>The information collected may be used to:</p>
+<ul>
+<li>
+<p>send you information about retreats, workshops, events or projects related to Core Aliveness Project</p>
+</li>
+<li>
+<p>manage retreat applications and registrations</p>
+</li>
+<li>
+<p>answer your questions</p>
+</li>
+<li>
+<p>understand interest in upcoming events</p>
+</li>
+<li>
+<p>improve the site, communications and advertising campaigns</p>
+</li>
+</ul>
+<h2>Tools we use</h2>
+<p>The site may use third-party tools, such as Mailchimp, Meta Pixel, Google Analytics or similar services, to manage sign-ups, measure site traffic, understand interest in events and improve communications.</p>
+<p>These tools may use cookies, pixels or similar technologies. Some information may be processed by these providers under their own privacy policies.</p>
+<h2>Email communications</h2>
+<p>If you leave your email address, you consent to receiving news about Core Aliveness Project retreats, workshops, events or projects.</p>
+<p>You can withdraw your consent at any time. To stop receiving news, simply reply “unsubscribe” to any email you receive, or write to:</p>
+<p><a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a></p>
+<p>Unsubscribe requests are processed as soon as possible.</p>
+<h2>Data retention</h2>
+<p>Information is kept only as long as necessary for the purposes described in this policy, or until you request its deletion.</p>
+<h2>Sharing of information</h2>
+<p>Your information is not sold.</p>
+<p>It may be shared with service providers used to run the site, manage communications, host data, analyze traffic or serve advertising.</p>
+<h2>Security</h2>
+<p>Reasonable measures are taken to protect the information you submit. No system is perfect, but the goal is to limit access to the people and tools that need it.</p>
+<h2>Your rights</h2>
+<p>You can request access to, correction of, or deletion of the personal information we hold about you.</p>
+<p>For any question or request, write to:</p>
+<p><a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a></p>
+<h2 id="reservation-policy">Reservation Policy — DWS Vietnam Retreat (November 16, 2026)</h2>
+<div class="cap-resa-card">
+<p>This section applies specifically to the Deep Water Solo and climbing retreat in Vietnam.</p>
+<ul>
+<li><p>Dates: November 16 to 21, 2026 (6 days / 5 nights).</p></li>
+<li><p>Total price: 3,495 CAD per person (early payment discount: 3,195 CAD until October 5, 2026).</p></li>
+<li><p>Reservation deposit: 1,065 CAD per person until October 5, 2026 (1,165 CAD afterwards). The balance — 2,130 CAD with the early payment discount, 2,330 CAD at the regular rate — is due no later than November 2, 2026.</p></li>
+<li><p>Payment (deposit and balance) is processed by <strong>our licensed local partner</strong> (a local operator holding the licences required to run this type of trip, who operates the retreat on site). Core Aliveness Project does not receive participant payments directly.</p></li>
+<li><p>Included: accommodation on the boat and/or on land, main meals, climbing and DWS equipment, guiding during activities, on-water transport between sites.</p></li>
+<li><p>Not included: international flights, travel insurance, personal expenses, tips, alcoholic drinks.</p></li>
+<li><p>Cancellation by the organizer: if the retreat is cancelled by Core Aliveness Project or its licensed local partner (e.g. fewer than 5 participants, or weather or tide conditions making the activity impossible), the deposit and any amount paid are refunded at 100%.</p></li>
+<li><p>Cancellation by the participant: 80% of the deposit is refunded more than 60 days before departure; 50% between 60 and 30 days before departure; non-refundable less than 30 days before departure. Any balance already paid is refundable on the same schedule.</p></li>
+<li><p>Weather and tide flexibility: the program (schedule, sites, activities) may be adjusted for safety reasons based on weather conditions and tides. These adjustments do not entitle participants to a refund.</p></li>
+<li><p>Travel insurance: travel insurance covering climbing / adventure sports, cancellation, medical care and repatriation is required for all participants, under their own responsibility.</p></li>
+<li><p>Acknowledgement of risk: climbing, jumping and water activities carry inherent risks. By booking, you acknowledge these risks and confirm that you are participating voluntarily and knowingly.</p></li>
+<li><p>Questions about booking or payment: write to <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> or reach out on WhatsApp.</p></li>
+</ul>
+</div>
+<h2>Contact</h2>
+<p>Core Aliveness Project<br>Maxime X. St-Arnault<br><a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a><br>corealivenessproject.com</p>
+<hr>
+</div>								</div>
 				</div>
 				<div class="elementor-element elementor-element-4805ea3a elementor-align-left elementor-invisible elementor-widget elementor-widget-button" data-id="4805ea3a" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeIn&quot;,&quot;_animation_delay&quot;:600}" data-widget_type="button.default">
 				<div class="elementor-widget-container">
@@ -235,7 +321,7 @@ html, body {
 						<span class="elementor-button-content-wrapper">
 						<span class="elementor-button-icon">
 				<i aria-hidden="true" class="icon icon-right-arrow"></i>			</span>
-									<span class="elementor-button-text">Retour à la page de l'événement</span>
+									<span class="elementor-button-text"><span data-lang="fr">Retour à la page de l'événement</span><span data-lang="en">Back to the event page</span></span>
 					</span>
 					</a>
 				</div>
@@ -262,6 +348,25 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 <script id="elementor-frontend-js-after">
 var jkit_ajax_url = "/?jkit-ajax-request=jkit_elements", jkit_nonce = "9e8d2f5290";
 //# sourceURL=elementor-frontend-js-after
+</script>
+<script>
+// FR/EN : bascule + ouverture automatique dans la langue d'origine
+// (cap_lang est écrit par la page de l'événement; ?lang=en|fr gagne sur le stockage)
+function capSetLang(l){
+  document.body.classList.toggle('cap-en', l === 'en');
+  document.documentElement.lang = l;
+  var bf = document.getElementById('cap-btn-fr'), be = document.getElementById('cap-btn-en');
+  if (bf) bf.classList.toggle('active', l === 'fr');
+  if (be) be.classList.toggle('active', l === 'en');
+  try { localStorage.setItem('cap_lang', l); } catch(e) {}
+}
+(function(){
+  var l = null;
+  try { l = localStorage.getItem('cap_lang'); } catch(e) {}
+  var qp = new URLSearchParams(location.search).get('lang');
+  if (qp === 'en' || qp === 'fr') l = qp;
+  if (l === 'en') capSetLang('en');
+})();
 </script>
 <script id="cute-alert-js" src="/wp-content/plugins/metform/public/assets/lib/cute-alert/cute-alert.js?ver=4.1.4"></script>
 <script id="hello-theme-frontend-js" src="/wp-content/themes/hello-elementor/assets/js/hello-frontend.js?ver=3.4.7"></script>
