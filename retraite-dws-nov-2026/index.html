@@ -243,6 +243,43 @@ html, body {
     pointer-events: none;
 }
 
+/* Copie du toggle FR/EN en haut à droite du hero — même discrétion que celui
+   du footer; défile avec la page (pas de position fixe). */
+#dws-lang-top {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+#dws-lang-top button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    padding: 2px 0;
+    opacity: 0.45;
+    transition: opacity 0.2s, font-weight 0.1s;
+    text-transform: uppercase;
+    font-family: inherit;
+    line-height: 1;
+}
+#dws-lang-top button.active {
+    opacity: 1;
+    font-weight: 700;
+}
+#dws-lang-top .lang-sep {
+    color: rgba(255,255,255,.35);
+    font-size: 11px;
+    line-height: 1;
+    pointer-events: none;
+}
+
 @media (max-width: 1024px) {
     .elementor-46 .elementor-element.elementor-element-67b4a934 {
         width: 100% !important;
@@ -384,6 +421,11 @@ html, body {
 <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
 
 		<div data-elementor-type="wp-page" data-elementor-id="46" class="elementor elementor-46">
+			<div id="dws-lang-top">
+				<button class="lt-fr active" onclick="setLang('fr')" aria-label="Version française">FR</button>
+				<span class="lang-sep">/</span>
+				<button class="lt-en" onclick="setLang('en')" aria-label="English version">EN</button>
+			</div>
 				<div class="elementor-element elementor-element-9fba4ea e-con-full elementor-hidden-desktop elementor-hidden-tablet elementor-hidden-mobile e-flex e-con e-parent" data-id="9fba4ea" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
 				<div class="elementor-element elementor-element-57891dc8 elementor-widget elementor-widget-text-editor" data-id="57891dc8" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
@@ -2130,9 +2172,12 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
     function setButtons(l) {
         var bf = document.getElementById('btn-fr');
         var be = document.getElementById('btn-en');
-        if (!bf || !be) return;
-        bf.classList.toggle('active', l==='fr');
-        be.classList.toggle('active', l==='en');
+        if (bf && be) {
+            bf.classList.toggle('active', l==='fr');
+            be.classList.toggle('active', l==='en');
+        }
+        document.querySelectorAll('#dws-lang-top .lt-fr').forEach(function(b){ b.classList.toggle('active', l==='fr'); });
+        document.querySelectorAll('#dws-lang-top .lt-en').forEach(function(b){ b.classList.toggle('active', l==='en'); });
     }
 
     // Les CTA transmettent la langue au formulaire : en anglais, ils pointent
