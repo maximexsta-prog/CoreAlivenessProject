@@ -329,6 +329,39 @@ html, body {
     justify-content: center !important;
 }
 
+/* « Voyage multi-aventure » : sorti de la bannière photo (le texte blanc s'y
+   noyait). Vrai titre de section noir, centré, entre la bannière et le
+   carrousel, sur le fond clair de la page. */
+.dws-multiadv-head { padding: 40px 24px 6px; }
+@media (max-width: 767px) { .dws-multiadv-head { padding: 28px 18px 2px; } }
+.elementor-46 .elementor-element.elementor-element-67331638 .ekit-heading--title,
+.elementor-46 .elementor-element.elementor-element-67331638 .ekit-heading--title > span {
+    color: #111 !important;
+    font-size: 34px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+}
+.elementor-46 .elementor-element-67331638 .elementskit-section-title-wraper {
+    text-align: center !important;
+}
+.elementor-46 .elementor-element.elementor-element-7169d8cb .elementor-icon-list-text {
+    color: #3a4a56 !important;
+    font-size: 18px !important;
+}
+.elementor-46 .elementor-element-7169d8cb .elementor-icon-list-items {
+    justify-content: center !important;
+    text-align: center !important;
+}
+@media (max-width: 767px) {
+    .elementor-46 .elementor-element.elementor-element-67331638 .ekit-heading--title,
+    .elementor-46 .elementor-element.elementor-element-67331638 .ekit-heading--title > span {
+        font-size: 27px !important;
+    }
+    .elementor-46 .elementor-element.elementor-element-7169d8cb .elementor-icon-list-text {
+        font-size: 16px !important;
+    }
+}
+
 /* Footer mobile : compacte la pile politique / icônes / FR-EN.
    Espacements cibles : ~16px au-dessus de « Politique », ~12px vers les
    icônes, ~8px vers le toggle. */
@@ -1074,11 +1107,13 @@ Merci beaucoup pour ce merveilleux moment d’escalade, de kayak et de nature, e
 		</div>
 						</div>
 				</div>
-				<div class="elementor-element elementor-element-67331638 elementor-invisible elementor-widget elementor-widget-elementskit-heading" data-id="67331638" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeIn&quot;,&quot;_animation_delay&quot;:100}" data-widget_type="elementskit-heading.default">
+				</div>
+				<div class="dws-multiadv-head">
+				<div class="elementor-element elementor-element-67331638 elementor-widget elementor-widget-elementskit-heading" data-id="67331638" data-element_type="widget" data-e-type="widget" data-widget_type="elementskit-heading.default">
 				<div class="elementor-widget-container">
 					<div class="ekit-wid-con"><div class="ekit-heading elementskit-section-title-wraper text_left   ekit_heading_tablet-   ekit_heading_mobile-"><h2 class="ekit-heading--title elementskit-section-title ">Voyage multi-aventure</h2></div></div>				</div>
 				</div>
-				<div class="elementor-element elementor-element-7169d8cb elementor-icon-list--layout-inline elementor-list-item-link-full_width elementor-invisible elementor-widget elementor-widget-icon-list" data-id="7169d8cb" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeIn&quot;,&quot;_animation_delay&quot;:100}" data-widget_type="icon-list.default">
+				<div class="elementor-element elementor-element-7169d8cb elementor-icon-list--layout-inline elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="7169d8cb" data-element_type="widget" data-e-type="widget" data-widget_type="icon-list.default">
 				<div class="elementor-widget-container">
 							<ul class="elementor-icon-list-items elementor-inline-items">
 							<li class="elementor-icon-list-item elementor-inline-item">
