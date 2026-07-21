@@ -44,11 +44,16 @@ connaît rien au projet comprenne tout, sans historique, juste l'état actuel.*
 L'expérience monte en intensité au fil de la semaine :
 
 - **Jour 1 — Arrivée** : installation à Cat Ba, accueil, briefing, souper de groupe.
-- **Jour 2 — La vallée** : escalade sportive dans la vallée de Cat Ba (falaises
-  calcaires entre les rizières). On règle la technique et on bâtit la confiance
-  *avant* d'aller dans la baie.
-- **Jours 3-4 — La baie** : deep water solo au-dessus de l'eau turquoise, kayak,
-  baignade, exploration entre les karsts.
+- **Jour 2 — L'école de la baie** : escalade sportive sur les plages-écoles de
+  Lan Ha (Moody Beach, Tiger Beach — couenne équipée au pied des falaises).
+  Enseignement au sol : technique, pratique de la chute en moulinette, confiance —
+  *avant* de grimper sans corde. Décision de juillet 2026 : programme 100 % baie,
+  on ne va plus dans la vallée de l'île principale de Cat Ba.
+- **Jours 3-4 — La baie** : deep water solo de plus en plus haut, à son rythme.
+  Split possible : ceux qui ont leur dose de DWS continuent sur corde à la plage.
+  Entre les deux, journée de récupération active (yoga, kayak/SUP, Viet Hai) —
+  la peau et les avant-bras travaillent en cycles de 48 h, c'est ce qui rend la
+  journée phare possible.
 - **Jour 5 — Journée phare** : dernière journée de grimpe, la plus grosse, selon
   la météo, la mer et l'énergie du groupe. Souper de clôture.
 - **Jour 6 — Départ** : déjeuner, rangement, départ.
