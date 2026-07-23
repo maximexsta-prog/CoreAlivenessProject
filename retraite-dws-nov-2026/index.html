@@ -690,6 +690,10 @@ html, body {
   .dws-hero-cta:hover{ background:#a93226; }
   /* Boutons mi-page (jkit) : alignés sur le style rouge unique */
   .jkit-button-wrapper{ background:#c0392b !important; border-radius:99px !important; font-weight:800 !important; }
+  /* Texte toujours blanc, y compris au survol (un style de thème le passait au
+     brun foncé — lu comme noir — au hover). */
+  .jkit-button-wrapper, .jkit-button-wrapper:hover,
+  .jkit-button-wrapper *, .jkit-button-wrapper:hover *{ color:#fff !important; }
   /* Hover unifié : tous les boutons rouges se comportent comme le CTA du hero
      (fondu doux vers #a93226, même durée partout). */
   .dws-hero-cta, .dws-pb-cta, .jkit-button-wrapper,
