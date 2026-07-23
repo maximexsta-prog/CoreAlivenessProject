@@ -690,7 +690,21 @@ html, body {
   .dws-hero-cta:hover{ background:#a93226; }
   /* Boutons mi-page (jkit) : alignés sur le style rouge unique */
   .jkit-button-wrapper{ background:#c0392b !important; border-radius:99px !important; font-weight:800 !important; }
-  .jkit-button-wrapper:hover{ background:#a93226 !important; }
+  /* Hover unifié : tous les boutons rouges se comportent comme le CTA du hero
+     (fondu doux vers #a93226, même durée partout). */
+  .dws-hero-cta, .dws-pb-cta, .jkit-button-wrapper,
+  button.jkit-mailchimp-submit, .jkit-mailchimp-form button[type="submit"]{
+    transition: background-color .2s ease !important;
+  }
+  .dws-hero-cta:hover, .dws-pb-cta:hover, .jkit-button-wrapper:hover,
+  button.jkit-mailchimp-submit:hover, .jkit-mailchimp-form button[type="submit"]:hover{
+    background:#a93226 !important;
+  }
+  /* Bannière multi-aventure : image glissée vers le bas (~40px) pour révéler
+     un peu plus haut dans l'image (cimes des karsts / ciel). Hauteur inchangée. */
+  .elementor-46 .elementor-element.elementor-element-2d7ba5a5{
+    background-position: center calc(100% + 40px) !important;
+  }
   .swiper-notification{ display:none !important; }
   .elementor-widget-jkit_mailchimp > .elementor-widget-container{ text-align:center !important; }
   .dws-interview{ background:#fdf6ee; border-left:4px solid #c0392b; border-radius:10px; padding:16px 20px; margin:22px auto 0; max-width:640px; font-size:15px; }
