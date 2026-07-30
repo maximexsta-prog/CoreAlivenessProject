@@ -147,20 +147,19 @@ hébergement avant/après la retraite.
 | **Prix total** | **3 195 CAD** | 3 495 CAD |
 | **Équivalent USD affiché** (version EN seulement) | ≈ 2 350 USD | ≈ 2 550 USD |
 | **Dépôt de réservation** | **1 065 CAD** | 1 165 CAD |
+| **Versements** | — (paiement unique exigé) | 3 × 1 165 CAD |
 | **Solde** | 2 130 CAD | 2 330 CAD |
-| **Valide** | Jusqu'au **5 octobre 2026** | À partir du 6 octobre |
+| **Condition** | Montant total payé avant le **5 octobre 2026** | — |
 
 **Les règles qui comptent :**
 
 - Le vocabulaire officiel est « **Rabais de prépaiement** » (EN : *Early payment
   discount*). On ne dit jamais « early bird » ni « tarif fondateur ».
-- **Le dépôt = le premier des 3 versements mensuels.** 1 065 × 3 = 3 195. C'est voulu :
-  aucun chiffre mystère pour le client.
-- On dit toujours « **3 versements mensuels** », jamais « paiement en 3 fois ».
+- **Le rabais exige le paiement complet avant le 5 octobre.** Réserver ne suffit pas : le
+  montant total doit être reçu avant cette date, sinon c'est le tarif régulier.
+- Les **3 versements mensuels de 1 165 CAD** existent au **tarif régulier** seulement.
+  On dit toujours « 3 versements mensuels », jamais « paiement en 3 fois ».
 - Le solde est dû **au plus tard le 2 novembre 2026** (2 semaines avant le départ).
-- Réserver au rabais **verrouille le prix**, même si les versements suivants tombent
-  après le 5 octobre.
-- Paiement complet par **Interac = 50 $ de rabais** additionnel.
 - On n'écrit jamais « par grimpeur » ou « par personne » — c'est inutile.
 - L'équivalent USD s'affiche **uniquement en anglais**, sous le prix CAD.
 
