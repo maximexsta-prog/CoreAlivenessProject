@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de bord — Core Aliveness</title>
+  <!-- Private page: never index, never cache. -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#2d5a3d">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <style>
+    :root{
+      color-scheme:light;
+      --green:#2d5a3d; --green-2:#3a6b4a; --green-d:#234a30; --sage:#6fae84; --sage-soft:#e4f0e8;
+      --parch:#f4f2ed; --parch-2:#efeadd; --card:#ffffff; --ink:#1c1c1c; --text:#3d423d;
+      --muted:#8a8a8a; --line:#e3ddd0; --amber:#b07d00; --amber-soft:#fbf1d8; --red:#922b21;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--parch);line-height:1.5;-webkit-font-smoothing:antialiased}
+    a{color:var(--green);text-decoration:none}
+    button{font-family:inherit;cursor:pointer}
+    :focus-visible{outline:3px solid rgba(45,90,61,.4);outline-offset:2px;border-radius:6px}
+    .wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+    [hidden]{display:none!important}
+
+    /* ---- buttons ---- */
+    .btn{border:0;border-radius:10px;font-size:14px;font-weight:700;padding:0 16px;height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .15s,border-color .15s,color .15s}
+    .btn-green{background:var(--green);color:#fff}.btn-green:hover{background:var(--green-d)}
+    .btn-ghost{background:#fff;border:1.5px solid var(--line);color:var(--green)}.btn-ghost:hover{border-color:var(--sage);color:var(--green-d)}
+    .btn-sm{height:38px;font-size:13px;padding:0 13px;border-radius:9px}
+    .btn[disabled]{opacity:.55;cursor:not-allowed}
+    .linkbtn{background:none;border:0;color:var(--muted);font-size:13px;font-weight:600}
+    .linkbtn:hover{color:var(--green)}
+
+    /* ---- header ---- */
+    header{background:rgba(255,255,255,.85);backdrop-filter:saturate(1.4) blur(6px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+    .nav{display:flex;align-items:center;gap:12px;height:64px;max-width:1080px;margin:0 auto;padding:0 18px}
+    .brand{display:flex;align-items:center;gap:11px}
+    .brand .mark{width:38px;height:38px;flex:none}
+    .brand b{font-size:15px;font-weight:800;color:var(--ink);letter-spacing:.01em;display:block;line-height:1.15}
+    .brand span{display:block;font-size:9.5px;letter-spacing:.18em;color:var(--green);font-weight:800;text-transform:uppercase;margin-top:1px}
+    .nav .right{margin-left:auto;display:flex;gap:12px;align-items:center}
+    .pill-admin{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--green);background:var(--sage-soft);padding:5px 10px;border-radius:20px}
+
+    /* ---- hero ---- */
+    .hero{padding:30px 0 6px}
+    .hero h1{font-size:26px;color:var(--ink);font-weight:800;letter-spacing:-.01em}
+    .hero p{color:var(--muted);font-size:14.5px;margin-top:5px;max-width:640px}
+
+    section.block{padding:22px 0}
+    .sec-label{font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin:8px 0 14px}
+
+    /* ---- dashboard cards grid ---- */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px}
+    .tile{display:flex;flex-direction:column;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:15px;box-shadow:0 4px 20px rgba(28,40,28,.05);padding:18px 18px 16px;transition:transform .12s,box-shadow .15s,border-color .15s;position:relative}
+    .tile:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(28,40,28,.10);border-color:var(--sage)}
+    .tile .ic{width:44px;height:44px;border-radius:12px;background:var(--sage-soft);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:2px}
+    .tile h3{font-size:15.5px;color:var(--ink);font-weight:800}
+    .tile p{font-size:13px;color:var(--muted);line-height:1.45;flex:1}
+    .tile .go{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--green);margin-top:6px}
+    .tile .go svg{width:14px;height:14px}
+    .tile .hint{font-size:11px;color:var(--amber);background:var(--amber-soft);border-radius:7px;padding:4px 8px;margin-top:2px}
+    .tile a.cover{position:absolute;inset:0;border-radius:15px}
+
+    /* ---- notes panel ---- */
+    .panel{background:var(--card);border:1px solid var(--line);border-radius:15px;box-shadow:0 4px 20px rgba(28,40,28,.05);padding:18px}
+    .panel .phead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .panel .phead h3{font-size:15.5px;color:var(--ink);font-weight:800}
+    .panel .phead .save-state{margin-left:auto;font-size:12px;color:var(--muted);font-weight:600}
+    .panel textarea{width:100%;min-height:150px;resize:vertical;border:1px solid var(--line);border-radius:11px;padding:12px 13px;font-family:inherit;font-size:14px;line-height:1.55;color:var(--text);background:var(--parch);transition:border-color .15s}
+    .panel textarea:focus{border-color:var(--sage);background:#fff;outline:none}
+    .panel .prow{display:flex;align-items:center;gap:10px;margin-top:11px}
+    .panel .prow .mini{font-size:12px;color:var(--muted)}
+
+    /* ---- info strip ---- */
+    .info{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:6px}
+    .info .cell{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 16px}
+    .info .cell .k{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .info .cell .v{font-size:14px;color:var(--ink);font-weight:600;margin-top:4px;word-break:break-word}
+    .info .cell .v a{font-weight:600}
+
+    footer{color:var(--muted);font-size:12.5px;text-align:center;padding:34px 0 40px}
+    footer .dot{margin:0 7px;opacity:.5}
+
+    /* ---- gate + toast ---- */
+    .overlay{position:fixed;inset:0;background:linear-gradient(160deg,#2d5a3d,#1c3826);display:flex;align-items:center;justify-content:center;padding:18px;z-index:60}
+    .modal{background:#fff;border-radius:18px;max-width:412px;width:100%;padding:30px 28px;box-shadow:0 30px 80px rgba(12,26,16,.45)}
+    .modal .mmark{width:52px;height:52px;margin:0 auto 14px;display:block}
+    .modal h2{font-size:20px;color:var(--ink);font-weight:800;text-align:center}
+    .modal .lead{color:var(--muted);font-size:14px;margin-top:6px;text-align:center}
+    .modal label{display:block;font-size:13px;font-weight:700;color:var(--ink);margin:20px 0 7px}
+    .modal input{width:100%;height:48px;border:1px solid #d6ddd4;border-radius:11px;padding:0 14px;font-size:15px;font-family:inherit;color:var(--text);background:#fff;transition:border-color .15s}
+    .modal input:focus{border-color:var(--sage);outline:none}
+    .err{color:var(--red);font-size:13.5px;margin-top:10px;min-height:1px;text-align:center}
+    .mini{font-size:12px;color:var(--muted);margin-top:12px;text-align:center}
+    .mockflag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);background:var(--amber-soft);padding:4px 9px;border-radius:20px;margin:0 auto 14px}
+
+    .toast{position:fixed;z-index:200;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:11px;font-size:14px;font-weight:600;box-shadow:0 12px 34px rgba(12,26,16,.35);opacity:0;transition:opacity .2s,transform .2s;pointer-events:none}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+
+    @media(max-width:560px){ .hero h1{font-size:22px} .nav{height:58px} }
+  </style>
+</head>
+<body>
+
+  <!-- ============================ GATE (login) ============================ -->
+  <div class="overlay" id="gate">
+    <form class="modal" id="gateForm" autocomplete="off">
+      <svg class="mmark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <circle cx="24" cy="24" r="23" fill="#e4f0e8" stroke="#2d5a3d" stroke-width="1.5"/>
+        <path d="M9 32 L20 15 L27 26 L31 20 L39 32 Z" fill="#2d5a3d"/>
+        <circle cx="33" cy="14" r="3.4" fill="#b07d00"/>
+      </svg>
+      <h2>Tableau de bord</h2>
+      <p class="lead">Accès privé — Core Aliveness Project.</p>
+      <div style="text-align:center"><span class="mockflag" id="mockflag" hidden>Démo locale</span></div>
+      <label for="pw">Phrase de passe</label>
+      <input type="password" id="pw" autocomplete="current-password" autofocus>
+      <p class="err" id="gateErr" role="alert"></p>
+      <button class="btn btn-green" type="submit" id="gateBtn" style="width:100%;margin-top:6px">Entrer</button>
+      <p class="mini" id="gateHint"></p>
+    </form>
+  </div>
+
+  <!-- ============================ APP (dashboard) ======================== -->
+  <div id="app" hidden>
+    <header>
+      <div class="nav">
+        <div class="brand">
+          <svg class="mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="23" fill="#e4f0e8" stroke="#2d5a3d" stroke-width="1.5"/>
+            <path d="M9 32 L20 15 L27 26 L31 20 L39 32 Z" fill="#2d5a3d"/>
+            <circle cx="33" cy="14" r="3.4" fill="#b07d00"/>
+          </svg>
+          <div><b>Core Aliveness</b><span>Admin</span></div>
+        </div>
+        <div class="right">
+          <span class="pill-admin">Privé</span>
+          <button class="linkbtn" id="lockBtn" title="Verrouiller la session">🔒 Verrouiller</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="hero">
+        <h1>Centre de contrôle</h1>
+        <p>Tous vos tableaux de bord privés au même endroit, derrière une seule phrase de passe. Choisissez un outil ci-dessous.</p>
+      </div>
+
+      <!-- Dashboard tiles -->
+      <section class="block">
+        <div class="sec-label">Tableaux de bord</div>
+        <div class="grid" id="tiles"><!-- injected --></div>
+      </section>
+
+      <!-- Private notes / quick links -->
+      <section class="block">
+        <div class="sec-label">Notes privées &amp; liens rapides</div>
+        <div class="panel">
+          <div class="phead">
+            <h3>Bloc-notes</h3>
+            <span class="save-state" id="saveState"></span>
+          </div>
+          <textarea id="notes" placeholder="Notes, mots de passe d'accès, liens rapides, rappels… (enregistrés côté serveur, visibles uniquement après connexion)"></textarea>
+          <div class="prow">
+            <button class="btn btn-green btn-sm" id="saveNotes">Enregistrer</button>
+            <span class="mini" id="notesHint"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reference info -->
+      <section class="block">
+        <div class="sec-label">Site &amp; contact</div>
+        <div class="info">
+          <div class="cell"><div class="k">Site</div><div class="v"><a href="/" target="_blank" rel="noreferrer">corealivenessproject.com ↗</a></div></div>
+          <div class="cell"><div class="k">Contact</div><div class="v"><a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a></div></div>
+          <div class="cell"><div class="k">WhatsApp</div><div class="v">+1 438 345 1888</div></div>
+          <div class="cell"><div class="k">Prochaine retraite</div><div class="v">DWS Vietnam — oct. 2026</div></div>
+        </div>
+      </section>
+
+      <footer>
+        Core Aliveness Project <span class="dot">•</span> Espace privé <span class="dot">•</span> <span id="sessNote">session verrouillée automatiquement après inactivité</span>
+      </footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="/admin-store.js"></script>
+  <script>
+  /* =========================================================================
+   *  admin.html — the passphrase-gated private hub for corealivenessproject.com.
+   *  The passphrase you type IS the admin key: it's sent as an x-admin-key header
+   *  on every call (see admin-store.js → /api/admin) and never stored on a server
+   *  here. It lives only in this tab's sessionStorage until you lock or close it.
+   * ========================================================================= */
+  const $ = s => document.querySelector(s);
+  const esc = s => (s == null ? '' : String(s)).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+
+  /* ---- the existing private dashboards this hub gathers ---- */
+  const TILES = [
+    { icon:'🗓️', title:'Calendrier de contenu', desc:'Pipeline de publications Instagram → Buffer, statut de chaque post.', href:'/ca-dash-x7k2m9q4w8/', hint:'Peut demander sa propre clé d’accès la première fois.' },
+    { icon:'🏔️', title:'Mt. Saint-Anne — Logis', desc:'Tableau de bord logistique, miroir en direct de Google Sheets.', href:'/msa-dashboard-9b4k2f/' },
+    { icon:'🚀', title:'DWS — Cockpit de lancement', desc:'Suivi du lancement de la retraite Deep Water Solo Vietnam.', href:'/dws-launch-map-j6htw9sym2/' },
+    { icon:'🌊', title:'Marées — Baie de Lan Ha', desc:'Table des marées pour la baie de Ha Long / Lan Ha.', href:'/tides-hlb-7kx2m9/' },
+    { icon:'📈', title:'TSLA Watch', desc:'Suivi du cours de l’action TSLA.', href:'/tsla-watch-iwsvloxg/' }
+  ];
+
+  /* ---- toast ---- */
+  let toastT;
+  function toast (msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
+
+  /* ---- render the dashboard tiles ---- */
+  function renderTiles () {
+    $('#tiles').innerHTML = TILES.map(t => `
+      <div class="tile">
+        <a class="cover" href="${esc(t.href)}" aria-label="${esc(t.title)}"></a>
+        <div class="ic">${t.icon}</div>
+        <h3>${esc(t.title)}</h3>
+        <p>${esc(t.desc)}</p>
+        ${t.hint ? `<div class="hint">${esc(t.hint)}</div>` : ''}
+        <span class="go">Ouvrir
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </div>`).join('');
+  }
+
+  /* ---- session key (per-tab) ---- */
+  const KEYSTORE = 'ca-admin-key';
+  let KEY = sessionStorage.getItem(KEYSTORE) || '';
+
+  if (CA.isMock) { $('#mockflag').hidden = false; $('#gateHint').textContent = 'Démo locale : la phrase de passe est « demo ».'; }
+
+  /* ---- show the app once authenticated ---- */
+  function showApp (notes, persisted) {
+    $('#gate').hidden = true; $('#app').hidden = false;
+    renderTiles();
+    if (notes != null) $('#notes').value = notes;
+    if (persisted === false) $('#notesHint').textContent = 'Note : le stockage serveur (Netlify Blobs) n’est pas encore activé — les notes ne seront pas conservées.';
+    resetLockTimer();
+  }
+
+  // Already logged in this tab → re-validate the key and load fresh notes.
+  if (KEY) {
+    CA.store.login(KEY).then(res => {
+      if (res && res.ok) showApp(res.notes, res.persisted);
+      else { sessionStorage.removeItem(KEYSTORE); KEY = ''; }
+    }).catch(() => { sessionStorage.removeItem(KEYSTORE); KEY = ''; });
+  }
+
+  /* ---- gate (login) ---- */
+  $('#gateForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const pw = $('#pw').value.trim(); $('#gateErr').textContent = '';
+    if (!pw) return;
+    const btn = $('#gateBtn'); btn.disabled = true; btn.textContent = 'Connexion…';
+    const res = await CA.store.login(pw).catch(() => ({ error: true }));
+    btn.disabled = false; btn.textContent = 'Entrer';
+    if (res.auth === false) { $('#gateErr').textContent = 'Phrase de passe incorrecte.'; return; }
+    if (res.error) { $('#gateErr').textContent = 'Erreur de connexion. Réessayez.'; return; }
+    KEY = pw; sessionStorage.setItem(KEYSTORE, KEY);
+    showApp(res.notes, res.persisted);
+  });
+
+  /* ---- lock (forget the key + reload to the gate) ---- */
+  function lockNow () { sessionStorage.removeItem(KEYSTORE); location.reload(); }
+  $('#lockBtn').addEventListener('click', lockNow);
+
+  /* ---- notes: save to the server (or localStorage in mock) ---- */
+  $('#saveNotes').addEventListener('click', async () => {
+    const btn = $('#saveNotes'); btn.disabled = true; btn.textContent = 'Enregistrement…';
+    $('#saveState').textContent = '';
+    const res = await CA.store.notesSet(KEY, $('#notes').value).catch(() => ({ error: true }));
+    btn.disabled = false; btn.textContent = 'Enregistrer';
+    if (res && res.auth === false) { toast('Session expirée — reconnectez-vous.'); return lockNow(); }
+    if (res && res.ok) { $('#saveState').textContent = res.persisted === false ? 'Enregistré (local)' : 'Enregistré ✓'; toast('Notes enregistrées'); }
+    else { $('#saveState').textContent = 'Échec'; toast('Échec de l’enregistrement'); }
+    setTimeout(() => { $('#saveState').textContent = ''; }, 2600);
+  });
+
+  /* ---- inactivity auto-lock (15 min) — a private page shouldn't stay open forever ---- */
+  let lockT;
+  const LOCK_MS = 15 * 60 * 1000;
+  function resetLockTimer () { clearTimeout(lockT); lockT = setTimeout(lockNow, LOCK_MS); }
+  ['click','keydown','mousemove','touchstart'].forEach(ev => document.addEventListener(ev, () => { if (!$('#app').hidden) resetLockTimer(); }, { passive: true }));
+  </script>
+</body>
+</html>
