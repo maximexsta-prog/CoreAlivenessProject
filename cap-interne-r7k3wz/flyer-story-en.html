@@ -35,14 +35,12 @@
                rgba(18,42,58,.12) 50%,rgba(18,42,58,0) 68%);}
   .head{position:absolute;top:70px;left:34px;right:34px;z-index:2;
         display:flex;align-items:center;min-height:56px;}
-  /* Disque cercle plutot qu'un degrade : sur le ciel clair de la story, un
-     voile sombre se voyait comme une tache. Le disque fait la paire avec la
-     pastille, meme trait blanc, et tient sur n'importe quel fond. */
+  /* Pas de cercle : le logo est deja blanc, il tient seul sur le fond.
+     Juste une ombre douce, invisible comme forme, qui lui donne un bord
+     la ou le ciel est clair. */
   .mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-        width:138px;height:138px;border-radius:50%;
-        background:rgba(18,42,58,.62);border:2px solid rgba(255,255,255,.85);
         display:flex;align-items:center;justify-content:center;}
-  .logo{width:92px;height:92px;}
+  .logo{width:126px;height:126px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.45));}
   .chip{
     border:2px solid rgba(255,255,255,.9);border-radius:99px;padding:12px 26px;
         color:#fff;font-size:22px;font-weight:700;letter-spacing:3px;}
@@ -78,8 +76,8 @@
     <div class="rule"></div>
     <div class="sub">Deep water solo &middot; sport climbing &middot; yoga &middot; kayak</div>
     <div class="facts">
-      <div class="fact"><b>November 16&ndash;21, 2026</b><span>6 days, 5 nights &middot; Lan Ha Bay, Vietnam</span></div>
-      <div class="fact"><b>Early rate ends October 5</b><span>Spots confirmed in order of deposit</span></div>
+      <div class="fact"><b>November 16&ndash;21, 2026</b><span>6 days, 5 nights &middot; Ha Long Bay, Vietnam</span></div>
+      <div class="fact"><b>Early rate ends October 5</b></div>
     </div>
     <div class="url">corealivenessproject.com/dws</div>
   </div>
