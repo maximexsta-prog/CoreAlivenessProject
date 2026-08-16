@@ -35,14 +35,12 @@
         padding:11px 24px;color:#fff;font-size:20px;font-weight:700;letter-spacing:3px;}
   /* Ombre portee : le logo est un trait blanc fin et il tombe sur la
      falaise claire. Sans elle il disparait dans le calcaire. */
-  /* Disque cercle plutot qu'un degrade : sur le ciel clair de la story, un
-     voile sombre se voyait comme une tache. Le disque fait la paire avec la
-     pastille, meme trait blanc, et tient sur n'importe quel fond. */
+  /* Pas de cercle : le logo est deja blanc, il tient seul sur le fond.
+     Juste une ombre douce, invisible comme forme, qui lui donne un bord
+     la ou le ciel est clair. */
   .mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-        width:138px;height:138px;border-radius:50%;
-        background:rgba(18,42,58,.62);border:2px solid rgba(255,255,255,.85);
         display:flex;align-items:center;justify-content:center;}
-  .logo{width:92px;height:92px;}
+  .logo{width:126px;height:126px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.45));}
   h1{color:#fff;font-size:100px;font-weight:700;line-height:.93;letter-spacing:-1.5px;
      margin:38px 0 0;text-shadow:0 3px 26px rgba(0,0,0,.35);}
   .country{color:rgba(255,255,255,.92);font-size:40px;font-weight:700;letter-spacing:2px;margin-top:14px;}
@@ -68,9 +66,8 @@
     <div class="rule"></div>
     <div class="sub">Deep water solo &middot; sport climbing &middot; yoga &middot; kayak &middot; life on the bay</div>
     <div class="facts">
-      <div class="fact"><b>6 days, 5 nights</b><span>Lan Ha Bay, Vietnam</span></div>
-      <div class="fact"><b>November 16&ndash;21, 2026</b><span>Monday to Saturday, one week off work</span></div>
-      <div class="fact"><b>Early rate ends October 5</b><span>Spots confirmed in order of deposit</span></div>
+      <div class="fact"><b>November 16&ndash;21, 2026</b><span>6 days, 5 nights &middot; Ha Long Bay, Vietnam</span></div>
+      <div class="fact"><b>Early rate ends October 5</b></div>
     </div>
     <div class="foot">
       <div class="cta">APPLY NOW &rarr;</div>
