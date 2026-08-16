@@ -51,8 +51,15 @@
   .fact b{display:block;color:#fff;font-size:31px;font-weight:700;letter-spacing:.3px;}
   .fact span{display:block;color:rgba(255,255,255,.72);font-size:21px;margin-top:3px;}
   .foot{margin-top:48px;display:flex;align-items:flex-end;}
-  .cta{background:#c0392b;color:#fff;border-radius:99px;padding:27px 52px;
-       font-size:33px;font-weight:700;letter-spacing:1.6px;white-space:nowrap;}
+  /* La fleche est un trace SVG, pas le glyphe &rarr;. Liberation Sans n'a
+     pas ce caractere : il tombait dans une police de repli qui ignore le
+     gras, d'ou une fleche fine a cote de capitales lourdes, trop petite et
+     posee sous l'axe optique. En SVG on regle l'epaisseur sur celle des
+     fûts de la police et on centre a la main. */
+  .cta{background:#c0392b;color:#fff;border-radius:99px;padding:27px 48px;
+       font-size:33px;font-weight:700;letter-spacing:1.6px;white-space:nowrap;
+       display:inline-flex;align-items:center;gap:18px;}
+  .arw{width:32px;height:22px;flex:none;margin-top:-2px;}
   .url{margin-top:24px;color:#fff;font-size:31px;font-weight:700;letter-spacing:.4px;}
 </style></head><body>
   <div class="scrim"></div>
@@ -70,7 +77,7 @@
       <div class="fact"><b>Early rate ends October 5</b></div>
     </div>
     <div class="foot">
-      <div class="cta">APPLY NOW &rarr;</div>
+      <div class="cta">APPLY NOW<svg class="arw" viewBox="0 0 26 18" fill="none" aria-hidden="true"><path d="M2 9h20M15.5 2.2 22.4 9l-6.9 6.8" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
     <div class="url">corealivenessproject.com/dws</div>
   </div>
