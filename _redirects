@@ -2,3 +2,4 @@
 /retraite-dws             /retraite-dws-nov-2026     301
 /retraite-dws-oct-2026    /retraite-dws-nov-2026     301
 /retraite-dws-oct-2026/*  /retraite-dws-nov-2026/:splat  301
+/dws                      /retraite-dws-nov-2026/?lang=en  301
