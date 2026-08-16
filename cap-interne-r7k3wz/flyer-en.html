@@ -9,9 +9,10 @@
   relancer le script Playwright du depot. Le fond et le QR sont encodes en
   base64 dans le fichier, donc il est autonome.
 
-  LE QR ET L'URL pointent vers /dws, une redirection dediee vers la version anglaise.
-  URL courte volontairement : un QR long ne se decode plus une fois l'image
-  compressee et affichee en petit dans WhatsApp.
+  PAS DE QR CODE, volontairement. Ce flyer vit dans Facebook et WhatsApp :
+  personne ne scanne un code sur le telephone qu'il tient deja. L'espace va a
+  l'URL, qui se retient et se retape. /dws est une redirection dediee vers la
+  version anglaise de la page.
 -->
 <html lang="en"><head><meta charset="utf-8"><style>
   *{margin:0;padding:0;box-sizing:border-box}
@@ -35,12 +36,10 @@
   .fact{border-left:5px solid #6fae84;padding-left:20px;}
   .fact b{display:block;color:#fff;font-size:31px;font-weight:700;letter-spacing:.3px;}
   .fact span{display:block;color:rgba(255,255,255,.72);font-size:21px;margin-top:3px;}
-  .foot{margin-top:44px;display:flex;align-items:flex-end;gap:28px;}
-  .cta{background:#c0392b;color:#fff;border-radius:99px;padding:24px 42px;
-       font-size:29px;font-weight:700;letter-spacing:1.4px;white-space:nowrap;}
-  .qr{width:178px;height:178px;border-radius:14px;background:#fff;padding:11px;}
-  .qr img{width:100%;height:100%;display:block;}
-  .url{margin-top:26px;color:rgba(255,255,255,.9);font-size:22px;letter-spacing:.2px;}
+  .foot{margin-top:48px;display:flex;align-items:flex-end;}
+  .cta{background:#c0392b;color:#fff;border-radius:99px;padding:27px 52px;
+       font-size:33px;font-weight:700;letter-spacing:1.6px;white-space:nowrap;}
+  .url{margin-top:24px;color:#fff;font-size:31px;font-weight:700;letter-spacing:.4px;}
 </style></head><body>
   <div class="scrim"></div>
   <div class="wrap">
@@ -56,7 +55,6 @@
     </div>
     <div class="foot">
       <div class="cta">APPLY NOW &rarr;</div>
-      <div class="qr"><img src="data:image/png;base64,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" alt=""></div>
     </div>
     <div class="url">corealivenessproject.com/dws</div>
   </div>
