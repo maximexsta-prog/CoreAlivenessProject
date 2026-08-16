@@ -27,18 +27,22 @@
     background:linear-gradient(100deg,rgba(18,42,58,.86) 0%,rgba(18,42,58,.76) 34%,
                rgba(18,42,58,.34) 56%,rgba(18,42,58,.06) 74%,rgba(18,42,58,0) 100%);}
   .wrap{position:absolute;inset:0;padding:76px 72px 64px;display:flex;flex-direction:column;}
-  .head{display:flex;align-items:center;justify-content:space-between;}
+  /* Logo centre sur la largeur de la toile, a hauteur de la pastille. Sur
+     le bord droit il tombait sur le calcaire clair et se perdait dans la
+     texture ; au centre il est sur le ciel, dans la partie voilee. */
+  .head{position:relative;display:flex;align-items:center;min-height:56px;}
   .chip{border:2px solid rgba(255,255,255,.85);border-radius:99px;
         padding:11px 24px;color:#fff;font-size:20px;font-weight:700;letter-spacing:3px;}
   /* Ombre portee : le logo est un trait blanc fin et il tombe sur la
      falaise claire. Sans elle il disparait dans le calcaire. */
-  /* Le logo est un trait blanc fin et il tombe sur une falaise claire et
-     texturee. Un degrade radial sombre le detache localement, sans dessiner
-     de cercle visible comme le ferait un fond plein. */
-  .mark{width:168px;height:168px;margin:-30px -30px -30px 0;
-        display:flex;align-items:center;justify-content:center;
-        background:radial-gradient(circle,rgba(14,32,45,.80) 34%,rgba(14,32,45,.45) 54%,rgba(14,32,45,0) 72%);}
-  .logo{width:108px;height:108px;filter:drop-shadow(0 1px 6px rgba(0,0,0,.55));}
+  /* Disque cercle plutot qu'un degrade : sur le ciel clair de la story, un
+     voile sombre se voyait comme une tache. Le disque fait la paire avec la
+     pastille, meme trait blanc, et tient sur n'importe quel fond. */
+  .mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+        width:138px;height:138px;border-radius:50%;
+        background:rgba(18,42,58,.62);border:2px solid rgba(255,255,255,.85);
+        display:flex;align-items:center;justify-content:center;}
+  .logo{width:92px;height:92px;}
   h1{color:#fff;font-size:100px;font-weight:700;line-height:.93;letter-spacing:-1.5px;
      margin:38px 0 0;text-shadow:0 3px 26px rgba(0,0,0,.35);}
   .country{color:rgba(255,255,255,.92);font-size:40px;font-weight:700;letter-spacing:2px;margin-top:14px;}

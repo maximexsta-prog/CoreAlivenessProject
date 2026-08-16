@@ -33,14 +33,16 @@
   .card:after{content:"";position:absolute;inset:0;
     background:linear-gradient(to top,rgba(18,42,58,.92) 0%,rgba(18,42,58,.70) 26%,
                rgba(18,42,58,.12) 50%,rgba(18,42,58,0) 68%);}
-  .head{position:absolute;top:34px;left:34px;right:34px;z-index:2;
-        display:flex;align-items:center;justify-content:space-between;}
-  /* Le logo est un trait blanc fin et il tombe sur une falaise claire et
-     texturee. Un degrade radial sombre le detache localement, sans dessiner
-     de cercle visible comme le ferait un fond plein. */
-  .mark{width:168px;height:168px;display:flex;align-items:center;justify-content:center;
-        background:radial-gradient(circle,rgba(14,32,45,.80) 34%,rgba(14,32,45,.45) 54%,rgba(14,32,45,0) 72%);}
-  .logo{width:108px;height:108px;filter:drop-shadow(0 1px 6px rgba(0,0,0,.55));}
+  .head{position:absolute;top:70px;left:34px;right:34px;z-index:2;
+        display:flex;align-items:center;min-height:56px;}
+  /* Disque cercle plutot qu'un degrade : sur le ciel clair de la story, un
+     voile sombre se voyait comme une tache. Le disque fait la paire avec la
+     pastille, meme trait blanc, et tient sur n'importe quel fond. */
+  .mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+        width:138px;height:138px;border-radius:50%;
+        background:rgba(18,42,58,.62);border:2px solid rgba(255,255,255,.85);
+        display:flex;align-items:center;justify-content:center;}
+  .logo{width:92px;height:92px;}
   .chip{
     border:2px solid rgba(255,255,255,.9);border-radius:99px;padding:12px 26px;
         color:#fff;font-size:22px;font-weight:700;letter-spacing:3px;}
