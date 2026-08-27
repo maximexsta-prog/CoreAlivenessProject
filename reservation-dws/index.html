@@ -97,8 +97,8 @@
 
   <div class="hold">
     <div class="price"><span class="n"><span data-lang="fr">1&nbsp;065&nbsp;CAD</span><span data-lang="en">1,065&nbsp;CAD</span></span><span class="sub" data-lang="fr">dépôt qui confirme ta place</span><span class="sub" data-lang="en">deposit that confirms your spot</span></div>
-    <p style="margin:.4em 0 0" data-lang="fr">Le prix est de <b>3&nbsp;495&nbsp;CAD</b>. Rabais de prépaiement : <b>3&nbsp;195&nbsp;CAD</b> si le montant total est payé avant le 5 octobre 2026. Au tarif régulier, le solde après dépôt est payable avant le départ, avec possibilité de 3 versements mensuels. Les places sont limitées (max 9) et <b>confirmées dans l'ordre des dépôts reçus</b>.</p>
-    <p style="margin:.4em 0 0" data-lang="en">Early payment discount: <b>3,195&nbsp;CAD</b> until October 5, 2026 (then 3,495&nbsp;CAD) — the balance after deposit is payable before departure. Spots are limited (max 9) and <b>confirmed in the order deposits are received</b>.</p>
+    <p style="margin:.4em 0 0" data-lang="fr">Le prix est de <b>3&nbsp;495&nbsp;CAD</b>. Rabais de prépaiement : <b>3&nbsp;195&nbsp;CAD</b> si le montant total est payé avant le 5 octobre 2026. Au tarif régulier, le solde après dépôt est payable avant le départ, avec possibilité de 3 versements mensuels. Les places sont limitées et <b>confirmées dans l'ordre des dépôts reçus</b>.</p>
+    <p style="margin:.4em 0 0" data-lang="en">Early payment discount: <b>3,195&nbsp;CAD</b> until October 5, 2026 (then 3,495&nbsp;CAD) — the balance after deposit is payable before departure. Spots are limited and <b>confirmed in the order deposits are received</b>.</p>
   </div>
 
   <label class="consent">
@@ -144,15 +144,30 @@
   if (PRICE_FLIPPED) (function(){
     document.querySelectorAll('.hold p').forEach(function(e){
       if (e.getAttribute('data-lang')==='fr' && /Rabais de prépaiement/.test(e.textContent))
-        e.innerHTML = "Tarif régulier : <b>3&nbsp;495&nbsp;CAD</b> — le solde après dépôt est payable avant le départ. Les places sont limitées (max 9) et <b>confirmées dans l'ordre des dépôts reçus</b>.";
+        e.innerHTML = "Tarif régulier : <b>3&nbsp;495&nbsp;CAD</b> — le solde après dépôt est payable avant le départ. Les places sont limitées et <b>confirmées dans l'ordre des dépôts reçus</b>.";
       if (e.getAttribute('data-lang')==='en' && /Early payment discount/.test(e.textContent))
-        e.innerHTML = "Regular rate: <b>3,495&nbsp;CAD</b> — the balance after deposit is payable before departure. Spots are limited (max 9) and <b>confirmed in the order deposits are received</b>.";
+        e.innerHTML = "Regular rate: <b>3,495&nbsp;CAD</b> — the balance after deposit is payable before departure. Spots are limited and <b>confirmed in the order deposits are received</b>.";
     });
     var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
     while ((n = w.nextNode())) {
       n.nodeValue = n.nodeValue.replace(/1[\u00a0\u202f ]065/g, '1\u00a0165').replace(/1,065/g, '1,165');
     }
-    if (STRIPE_LINK_1165) { var s = document.querySelector('a.pay.stripe'); if (s) s.href = STRIPE_LINK_1165; }
+    var sbtn = document.querySelector('a.pay.stripe');
+    if (STRIPE_LINK_1165) {
+      if (sbtn) sbtn.href = STRIPE_LINK_1165;
+    } else if (sbtn) {
+      // Aucun lien Stripe au tarif regulier : on desactive le bouton plutot que
+      // de laisser quelqu'un payer 1 065 alors que la page affiche 1 165.
+      sbtn.removeAttribute('href');
+      sbtn.setAttribute('aria-disabled','true');
+      sbtn.style.opacity = '.45';
+      sbtn.style.pointerEvents = 'none';
+      var note = document.createElement('p');
+      note.style.cssText = 'margin:.5em 0 0;font-size:14px;line-height:1.5;';
+      note.innerHTML = '<span data-lang="fr">Le paiement par carte est momentan\u00e9ment indisponible au tarif r\u00e9gulier. \u00c9cris \u00e0 hello@corealivenessproject.com et je t\u2019envoie ton lien de paiement.</span>'
+                     + '<span data-lang="en">Card payment is temporarily unavailable at the regular rate. Write to hello@corealivenessproject.com and I will send you your payment link.</span>';
+      sbtn.parentNode.insertBefore(note, sbtn.nextSibling);
+    }
   })();
 
   // Fire the REAL Purchase when the payment provider redirects back with ?paid=1
