@@ -12,8 +12,6 @@
 3. **Une ou deux questions a la fois**, jamais une liste de cinq.
 4. **Reponse longue, puis TLDR a la fin.** Il veut toute l'information, pas une
    version courte. Le resume va en bas, il ne remplace jamais le detail.
-3b. **Reponse longue, puis TLDR a la fin.** Il veut toute l'information, pas une
-   version courte. Le resume va en bas, il ne remplace pas le detail.
 5. **Dire quand je ne suis pas sur**, dans la ligne meme, au lieu d'ecrire
    autour de facon fluide.
 
