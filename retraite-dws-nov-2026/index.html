@@ -2249,7 +2249,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
        À partir du 6 octobre 2026, 00:00 heure de l'Est, la page affiche seule le
        tarif régulier (3 495 CAD, dépôt/versements 1 165 CAD). Les dictionnaires
        EN sont dérivés automatiquement pour que la traduction continue de marcher.
-       ⚠️ Le montant du lien Stripe doit être changé à la main dans Stripe. */
+       ⚠️ Les liens de paiement doivent être mis à jour à la main chez le fournisseur. */
     var PRICE_FLIPPED = Date.now() >= Date.parse('2026-10-06T04:00:00Z');
     if (PRICE_FLIPPED) (function(){
         document.querySelectorAll('.dws-pb-label').forEach(function(e){ e.textContent = 'Tarif régulier'; });
