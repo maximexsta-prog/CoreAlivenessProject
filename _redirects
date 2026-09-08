@@ -14,3 +14,5 @@
 /hello-world               /   404!
 /author                    /   404!
 /category                  /   404!
+/backups/*                 /   404!
+/backups                   /   404!
