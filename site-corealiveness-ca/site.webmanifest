@@ -1,0 +1,27 @@
+{
+  "name": "Core Aliveness Project",
+  "short_name": "Core Aliveness",
+  "description": "Retraites d'aventure et d'escalade – Deep Water Solo au Vietnam",
+  "start_url": "/retraite-dws-oct-2026/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

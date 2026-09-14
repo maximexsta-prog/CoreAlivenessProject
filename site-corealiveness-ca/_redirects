@@ -1,0 +1,12 @@
+# Raccourcis vers la retraite, qui reste hebergee sur corealivenessproject.com
+/dws        https://corealivenessproject.com/retraite-dws-nov-2026/?lang=en  301
+/retraite   https://corealivenessproject.com/retraite-dws-nov-2026/?lang=en  301
+/retreat    https://corealivenessproject.com/retraite-dws-nov-2026/?lang=en  301
+
+# Raccourcis de langue
+/en   /?lang=en  301
+/fr   /?lang=fr  301
+
+# Ne pas servir les fichiers de travail
+/CLAUDE.md   /   404!
+/README.md   /   404!
