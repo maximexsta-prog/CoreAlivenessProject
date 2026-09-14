@@ -499,7 +499,7 @@ section{padding-block:clamp(72px,9vw,124px)}
 
         <p data-i18n="ret.note">La retraite se déroule en anglais. Un partenaire local agréé assure l'accès aux meilleurs secteurs de la baie.</p>
 
-        <a class="btn btn-primary" href="https://corealivenessproject.com/retraite-dws-nov-2026/?lang=en">
+        <a class="btn btn-primary" href="https://corealivenessproject.com/retraite-dws-nov-2026/?lang=fr" data-retreat>
           <span data-i18n="ret.cta">Voir la page complète de la retraite</span>
           <span class="btn-arrow">&rarr;</span>
         </a>
@@ -679,7 +679,7 @@ section{padding-block:clamp(72px,9vw,124px)}
         <summary data-i18n="faq.q2">Faut-il être grimpeur expérimenté pour la retraite ?</summary>
         <div class="faq-body">
           <p data-i18n="faq.a2">La réponse complète est sur la page de la retraite, avec le détail de l'itinéraire et du niveau requis.</p>
-          <p><a href="https://corealivenessproject.com/retraite-dws-nov-2026/?lang=en" data-i18n="faq.a2link">Voir la page de la retraite &rarr;</a></p>
+          <p><a href="https://corealivenessproject.com/retraite-dws-nov-2026/?lang=fr" data-retreat data-i18n="faq.a2link">Voir la page de la retraite &rarr;</a></p>
         </div>
       </details>
       <details>
@@ -726,7 +726,7 @@ section{padding-block:clamp(72px,9vw,124px)}
       <div>
         <h4 data-i18n="ft.contact">Contact</h4>
         <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a>
-        <a href="https://corealivenessproject.com/retraite-dws-nov-2026/?lang=en" data-i18n="ft.retreatpage">Page de la retraite</a>
+        <a href="https://corealivenessproject.com/retraite-dws-nov-2026/?lang=fr" data-retreat data-i18n="ft.retreatpage">Page de la retraite</a>
         <a href="https://corealivenessproject.com/politique-de-confidentialite/" data-i18n="ft.privacy">Politique de confidentialité</a>
       </div>
     </div>
@@ -871,6 +871,12 @@ const DICT = {
         if(el.tagName === 'META') el.setAttribute('content', v);
         else el.setAttribute('placeholder', v);
       }
+    });
+
+    // Les liens vers la retraite suivent la langue choisie.
+    // La retraite vit sur l'autre domaine, d'ou l'adresse absolue.
+    document.querySelectorAll('[data-retreat]').forEach(function(a){
+      a.setAttribute('href','https://corealivenessproject.com/retraite-dws-nov-2026/?lang=' + lang);
     });
 
     document.documentElement.lang = lang;
