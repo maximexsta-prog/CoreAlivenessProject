@@ -40,7 +40,10 @@
   .price .sub{ color:var(--muted); font-size:14px; align-self:end; }
   h2{ font-size:15px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin:30px 0 12px; }
   .pay{ display:block; width:100%; text-align:center; text-decoration:none; font-weight:800; padding:15px 18px; border-radius:12px; margin:10px 0; border:1px solid var(--line); color:#fff; }
-  .pay.card{ background:#ffc439; color:#111; border-color:#ffc439; }
+  /* Or chaud : 10,13:1 avec le texte et 6,57:1 sur le fond marine. Le rouge
+     de marque #c0392b tombait a 2,25:1 sur ce fond, trop faible pour le
+     bouton principal d'une page de paiement. Decale du #ffc439 de PayPal. */
+  .pay.card{ background:#f0b429; color:#111; border-color:#f0b429; }
   .pay.interac{ background:transparent; }
   .pay{ pointer-events:none; opacity:.45; transition:opacity .2s; }          /* locked until consent */
   body.consented .pay{ pointer-events:auto; opacity:1; }
