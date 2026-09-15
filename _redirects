@@ -13,7 +13,7 @@
 # plus sur « / » qui est maintenant une redirection externe.
 /CLAUDE.md                /404.html   404!
 /README.md                /404.html   404!
-/cap-interne-r7k3wz/*.md  /404.html   404!
+/cap-interne-r7k3wz/*    /404.html   404!
 /hello-world/*            /404.html   404!
 /hello-world              /404.html   404!
 /author/*                 /404.html   404!
