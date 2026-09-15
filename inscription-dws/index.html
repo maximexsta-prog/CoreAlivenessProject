@@ -181,7 +181,9 @@ var qEmail = new URLSearchParams(location.search).get('email') || "";
 /* Draft persistence — a reload mid-application must not lose the answers. */
 try{
   var _draft = JSON.parse(sessionStorage.getItem('dws_app_draft')||'null');
-  if(_draft && _draft.data){ data = _draft.data; i = Math.min(_draft.i||0, Q.length-1); }
+  // Le consentement ne se restaure jamais : une case pre-cochee ne vaut pas
+  // une case cochee volontairement. Le reste du brouillon est conserve.
+  if(_draft && _draft.data){ data = _draft.data; delete data.consent; i = Math.min(_draft.i||0, Q.length-1); }
 }catch(e){}
 function saveDraft(){ try{ sessionStorage.setItem('dws_app_draft', JSON.stringify({data:data, i:i})); }catch(e){} }
 
