@@ -2,6 +2,9 @@ User-agent: *
 Disallow: /wp-admin/
 Allow: /wp-admin/admin-ajax.php
 Disallow: /wp-content/uploads/wpo/wpo-plugins-tables-list.json
+# Tableau de bord prive et son API
+Disallow: /admin
+Disallow: /api/
 
 # AI search crawlers — explicitly allowed
 User-agent: GPTBot
