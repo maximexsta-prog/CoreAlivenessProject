@@ -301,10 +301,10 @@ function submit(){
       document.getElementById('bar').style.width='100%';
       try{ var nav=document.querySelector('.nav'); if(nav) nav.style.display='none'; }catch(e){}
       document.getElementById('stage').innerHTML = '<div class="center">'
-        + '<h1>'+t('Candidature reçue ! 🎉','Application received! 🎉')+'</h1>'
-        + '<p class="lede">'+t('On te redirige vers la page de dépôt…','Taking you to the deposit page…')+'</p>'
+        + '<h1>'+t('Dernière étape : le dépôt','Last step: the deposit')+'</h1>'
+        + '<p class="lede">'+t('On t\'amène à la page de paiement…','Taking you to the payment page…')+'</p>'
         + '</div>';
-      window.setTimeout(function(){ window.location.href = REDIRECT_URL; }, 900); }
+      window.setTimeout(function(){ window.location.href = REDIRECT_URL; }, 400); }
       else { throw new Error('http'); } })
     .catch(function(){ sending=false; nb.disabled=false; nb.textContent=t('Réessayer','Try again');
       document.getElementById('stage').insertAdjacentHTML('beforeend','<p class="err">'+t('Oups, envoi échoué. Réessaie ou écris à hello@corealivenessproject.com','Oops, send failed. Retry or email hello@corealivenessproject.com')+'</p>'); });
