@@ -142,7 +142,7 @@ var Q = [
     hintfr:"Confirme que tu as 18 ans ou plus.", hinten:"Confirms you're 18+." },
   { id:"payment_pref", type:"radio", req:true,
     fr:"Préférence de paiement", en:"Payment preference",
-    hintfr:"Aucun paiement maintenant. Après ta candidature, on fait un court appel — puis tu reçois ton lien de dépôt (1 065 CAD) pour confirmer ta place.", hinten:"No payment now. After your application, we have a short call — then you receive your deposit link (1,065 CAD) to confirm your spot.",
+    hintfr:"À la fin du formulaire, tu seras dirigé·e vers la page de dépôt (1 065 CAD). C'est le dépôt qui confirme ta place.", hinten:"At the end of this form you go straight to the deposit page (1,065 CAD). The deposit is what confirms your spot.",
     opts:[["Paiement complet avant le 5 octobre — 3 195 CAD (rabais de prépaiement)","Pay in full before October 5 — 3,195 CAD (early payment discount)"],["3 versements mensuels de 1 165 CAD (tarif régulier)","3 monthly payments of 1,165 CAD (regular rate)"],["J'aimerais discuter d'un arrangement","I'd like to discuss a custom plan"]] },
   { id:"gender", type:"radio", req:true,
     fr:"Pour l'attribution des chambres : ton genre", en:"For room assignment: your gender",
@@ -152,7 +152,13 @@ var Q = [
     opts:[["Instagram (Core Aliveness)","Instagram (Core Aliveness)"],["Pub Instagram/Facebook","IG/FB ad"],["Recherche Google","Google search"],["Bouche à oreille","Word of mouth"],["YouTube","YouTube"],["Autre","Other"]] },
   { id:"anything", type:"textarea", req:false,
     fr:"Autre chose à partager ?", en:"Anything else to share?",
-    hintfr:"Allergies, questions, besoins de paiement particuliers…", hinten:"Allergies, questions, custom payment needs…" }
+    hintfr:"Allergies, questions, besoins de paiement particuliers…", hinten:"Allergies, questions, custom payment needs…" },
+  { id:"consent", type:"consent", req:true,
+    fr:"Avant de continuer", en:"Before you continue",
+    labelfr:"Je confirme que j'ai de l'expérience en escalade, que je comprends les risques de l'escalade en eau profonde, et que j'ai le niveau nécessaire pour participer à cette retraite.",
+    labelen:"I confirm that I have climbing experience, that I understand the risks of deep water soloing, and that I have the level required to join this retreat.",
+    hintfr:"Cette case est obligatoire. Elle ne remplace pas la décharge que tu signeras avant le départ.",
+    hinten:"This box is required. It does not replace the waiver you will sign before departure." }
 ];
 
 /* Flip automatique du 5 octobre 2026 : après la date limite du rabais, les
@@ -231,9 +237,13 @@ function render(){
         + '<input type="text" id="d_d" inputmode="numeric" maxlength="2" placeholder="JJ" value="'+(d.d||'')+'">'
         + '<input type="text" id="d_m" inputmode="numeric" maxlength="2" placeholder="MM" value="'+(d.m||'')+'">'
         + '<input type="text" id="d_y" inputmode="numeric" maxlength="4" placeholder="AAAA" value="'+(d.y||'')+'"></div>';
+    } else if(q.type==='consent'){
+      h += '<label class="consent" style="display:flex;gap:12px;align-items:flex-start;cursor:pointer;line-height:1.55;font-size:16px;">'
+        + '<input type="checkbox" id="consent_box" style="width:22px;height:22px;flex:0 0 auto;margin-top:2px;cursor:pointer;"'+(v===true?' checked':'')+'>'
+        + '<span>'+t(q.labelfr,q.labelen)+'</span></label>';
     }
     h += '<div class="err" id="err"></div>';
-    nextBtn.textContent = (i===Q.length-1) ? t('Envoyer ma candidature','Submit application') : 'OK';
+    nextBtn.textContent = (i===Q.length-1) ? t('Envoyer et payer le dépôt →','Submit and pay deposit →') : 'OK';
   }
   s.innerHTML = h;
   var first = s.querySelector('textarea,input'); if(first) first.focus();
@@ -265,6 +275,9 @@ function collect(){
     if(yr<1930) return fail(t("Vérifie l'année de naissance.","Check the birth year."));
     if(yr>2008) return fail(t('Tu dois avoir 18 ans ou plus.','You must be 18 or older.')); }
   else if(q.type==='radio'){ if(q.req && !data[q.id]) return fail(t('Choisis une option.','Pick an option.')); }
+  else if(q.type==='consent'){
+    var box=document.getElementById('consent_box'); data[q.id] = !!(box && box.checked);
+    if(!data[q.id]) return fail(t('Tu dois cocher la case pour continuer.','You must tick the box to continue.')); }
   saveDraft();
   return true;
   function v(id){ var e=document.getElementById(id); return e?(e.value||'').trim():''; }
@@ -282,16 +295,16 @@ function submit(){
   fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body:JSON.stringify(payload) })
     .then(function(r){ if(r.ok){ try{sessionStorage.removeItem('dws_app_draft')}catch(e){}
       if(window.gtag) gtag('event','generate_lead',{value:0,currency:'CAD'}); if(window.fbq) fbq('track','Lead',{content_name:'DWS application'});
-      // Call-first flow: no redirect to payment. Show the confirmation screen —
-      // Maxime books a short fit/safety call, then sends the payment link.
+      // Parcours paiement-d'abord : la candidature est deja partie chez Formspree,
+      // donc le lead est garde meme si la personne ne paie pas. On l'envoie
+      // directement a la page de depot.
       document.getElementById('bar').style.width='100%';
-      document.querySelector('.nav').style.display='none';
+      try{ var nav=document.querySelector('.nav'); if(nav) nav.style.display='none'; }catch(e){}
       document.getElementById('stage').innerHTML = '<div class="center">'
         + '<h1>'+t('Candidature reçue ! 🎉','Application received! 🎉')+'</h1>'
-        + '<p class="lede">'+t("Dernière étape : un court appel avec Maxime (15 min) pour s'assurer que c'est le bon fit — dans les deux sens.","Last step: a short call with Maxime (15 min) to make sure it's the right fit — both ways.")+'</p>'
-        + '<p class="lede">'+t('Je te contacte d\'ici 48 h par WhatsApp ou courriel. Les places sont confirmées dans l\'ordre des dépôts reçus.','I\'ll reach out within 48 hours by WhatsApp or email. Spots are confirmed in the order deposits are received.')+'</p>'
-        + '<p class="lede">'+t('Trop hâte ? Écris-moi directement :','Can\'t wait? Message me directly:')+' <a href="https://wa.me/14383451888" style="color:var(--accent2)">WhatsApp +1 438 345 1888</a></p>'
-        + '</div>'; }
+        + '<p class="lede">'+t('On te redirige vers la page de dépôt…','Taking you to the deposit page…')+'</p>'
+        + '</div>';
+      window.setTimeout(function(){ window.location.href = REDIRECT_URL; }, 900); }
       else { throw new Error('http'); } })
     .catch(function(){ sending=false; nb.disabled=false; nb.textContent=t('Réessayer','Try again');
       document.getElementById('stage').insertAdjacentHTML('beforeend','<p class="err">'+t('Oups, envoi échoué. Réessaie ou écris à hello@corealivenessproject.com','Oops, send failed. Retry or email hello@corealivenessproject.com')+'</p>'); });
