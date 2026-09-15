@@ -249,6 +249,29 @@ function render(){
   }
   s.innerHTML = h;
   var first = s.querySelector('textarea,input'); if(first) first.focus();
+  trackStep();
+}
+
+/* Suivi d'etape. Chaque question atteinte envoie une vue de page virtuelle du
+   genre /inscription-dws/04-grade_lead. Elles apparaissent telles quelles dans
+   Analytics > Pages et ecrans, numerotees, donc la liste se lit directement
+   comme un entonnoir : on voit a quelle question les gens arretent.
+   Une seule fois par etape et par session, pour compter « combien de personnes
+   ont atteint cette question » et non « combien de fois elle a ete affichee ». */
+var _stepsSeen = {};
+function trackStep(){
+  try{
+    var q = Q[i]; if(!q) return;
+    var num = q.type==='intro' ? '00'
+            : ('0' + (Q.slice(0,i).filter(function(x){return x.id;}).length + 1)).slice(-2);
+    var key = num + '-' + (q.id || 'intro');
+    if(_stepsSeen[key]) return;
+    _stepsSeen[key] = true;
+    if(window.gtag) gtag('event','page_view',{
+      page_location: location.origin + '/inscription-dws/' + key,
+      page_title: 'Formulaire etape ' + key
+    });
+  }catch(e){}
 }
 
 function pick(el){
