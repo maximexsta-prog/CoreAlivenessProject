@@ -1,8 +1,16 @@
-/                         /retraite-dws-nov-2026     301
+# La racine part vers le nouveau site. Le « ! » force la regle malgre
+# l'existence de index.html, sinon le fichier gagne et la regle ne joue jamais.
+# Une regle sur « / » ne vise QUE la racine : les sous-chemins ne sont pas touches.
+/                         https://corealiveness.ca/   301!
+
+# La retraite et son tunnel restent ici, intacts
 /retraite-dws             /retraite-dws-nov-2026     301
 /retraite-dws-oct-2026    /retraite-dws-nov-2026     301
 /retraite-dws-oct-2026/*  /retraite-dws-nov-2026/:splat  301
 /dws                      /retraite-dws-nov-2026/?lang=en  301
-/CLAUDE.md                /   404!
-/cap-interne-r7k3wz/*.md  /   404!
-/README.md                /   404!
+
+# Fichiers de travail : 404 sur une vraie page 404, plus sur « / »
+# qui est maintenant une redirection externe
+/CLAUDE.md                /404.html   404!
+/cap-interne-r7k3wz/*.md  /404.html   404!
+/README.md                /404.html   404!
