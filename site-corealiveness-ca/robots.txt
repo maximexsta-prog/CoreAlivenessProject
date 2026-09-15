@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://corealiveness.ca/sitemap.xml
