@@ -271,8 +271,19 @@ function trackStep(){
       page_location: location.origin + '/inscription-dws/' + key,
       page_title: 'Formulaire etape ' + key
     });
+
+    /* Signal a mi-parcours pour Meta. « Lead » n'arrive que sur un formulaire
+       termine, donc deux ou trois fois par semaine au mieux : trop rare pour que
+       l'algorithme apprenne. Des que la personne a valide ses coordonnees, on
+       envoie l'evenement standard « Contact », cinq a dix fois plus frequent.
+       Une seule fois par visite, et seulement s'il y a vraiment un courriel. */
+    if(!_contactSent && data.contact && data.contact.email){
+      _contactSent = true;
+      if(window.fbq) fbq('track','Contact',{content_name:'DWS application'});
+    }
   }catch(e){}
 }
+var _contactSent = false;
 
 function pick(el){
   var q=Q[i]; data[q.id]=el.getAttribute('data-val');
