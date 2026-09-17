@@ -529,11 +529,11 @@ html, body {
 				</div>
 				<div class="elementor-element elementor-element-3180b0 elementor-widget__width-initial elementor-widget elementor-widget-elementskit-heading" data-id="3180b0" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_animation&quot;:&quot;none&quot;,&quot;_animation_delay&quot;:0}" data-widget_type="elementskit-heading.default">
 				<div class="elementor-widget-container">
-					<div class="ekit-wid-con"><div class="ekit-heading elementskit-section-title-wraper text_center   ekit_heading_tablet-   ekit_heading_mobile-"><h1 class="ekit-heading--title elementskit-section-title ">Grimpe sans corde au-dessus des eaux turquoise de la baie d'Halong</h1></div></div>				</div>
+					<div class="ekit-wid-con"><div class="ekit-heading elementskit-section-title-wraper text_center   ekit_heading_tablet-   ekit_heading_mobile-"><h1 class="ekit-heading--title elementskit-section-title ">Six jours à grimper sans corde au-dessus de la mer</h1></div></div>				</div>
 				</div>
 				<div class="elementor-element elementor-element-16058ed8 elementor-widget elementor-widget-text-editor" data-id="16058ed8" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-									<p data-start="543" data-end="656">6 jours dans la baie d’Halong pour grimper, sauter, explorer et vivre sur l’eau en petit groupe.</p>								</div>
+									<p>Un bateau, un petit groupe, des falaises qui tombent droit dans l’eau. Tu grimpes aussi haut que tu veux, et tu sautes. Puis tu remontes sur le bateau et tu regardes le suivant.</p><p>Baie de Lan Ha, dans la région d’Halong, Vietnam. Aucune expérience de deep water solo requise.</p>								</div>
 				</div>
 				<div class="elementor-element elementor-element-2d2f3ce6 elementor-icon-list--layout-inline elementor-align-center elementor-widget-mobile__width-inherit elementor-widget__width-inherit elementor-list-item-link-full_width elementor-invisible elementor-widget elementor-widget-icon-list" data-id="2d2f3ce6" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeIn&quot;,&quot;_animation_delay&quot;:100}" data-widget_type="icon-list.default">
 				<div class="elementor-widget-container">
@@ -637,6 +637,15 @@ html, body {
 				</div>
 				</div>
 				</div>
+<section class="dws-moment">
+  <div class="dws-block elementor-widget-text-editor"><div class="elementor-widget-container">
+    <h2>Le moment</h2>
+    <p>Tu es haut. Plus haut que tu pensais monter ce matin. Tes avant-bras brûlent. En bas il y a le bateau, et ton groupe qui crie.</p>
+    <p>Il n’y a pas de corde. Personne ne va te redescendre. Il y a tes doigts sur la prise, et la seconde où tu décides.</p>
+    <p>Tu lâches.</p>
+    <p>Une seconde de chute. L’eau. Tu remontes sur le bateau. Le prochain se prépare à monter.</p>
+  </div></div>
+</section>
 				<section class="elementor-section elementor-top-section elementor-element elementor-element-af11803 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="af11803" data-element_type="section" data-e-type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
 							<div class="elementor-background-overlay"></div>
 							<div class="elementor-container elementor-column-gap-no">
@@ -655,6 +664,9 @@ html, body {
 		</section>
 <style id="dws-longform-css">
   .dws-block{ max-width:860px; margin:0 auto; padding:56px 24px; }
+.dws-moment .dws-block, .dws-ramene .dws-block{ max-width:720px; }
+.dws-moment p, .dws-ramene p{ margin:0 0 18px; }
+.dws-ramene p:last-child{ margin-bottom:0; }
   .dws-block h2{ text-align:center; margin:0 0 18px; }
   .dws-pricebox{ background:#18384E; color:#fff; }
   .dws-pricebox .dws-block{ max-width:640px; text-align:center; }
@@ -1833,6 +1845,14 @@ document.addEventListener('dragstart', function(e) {
 				</div>
 					</div>
 				</div>
+<section class="dws-ramene">
+  <div class="dws-block elementor-widget-text-editor"><div class="elementor-widget-container">
+    <h2>Ce que tu ramènes</h2>
+    <p>La vidéo de ton saut, filmée depuis le bateau.</p>
+    <p>Une histoire qui commence par « la fois où j’ai sauté d’une falaise au Vietnam ».</p>
+    <p>Ceux qui étaient sur le bateau quand tu as sauté.</p>
+  </div></div>
+</section>
 <section class="dws-close">
   <div class="dws-block elementor-widget-text-editor"><div class="elementor-widget-container">
     <h2>Tu hésites ?</h2>
@@ -1967,7 +1987,16 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
     /* ─── TEXT dictionary (FR → EN, textContent-based) ─── */
     var T = {
         /* H1 */
-        "Grimpe sans corde au-dessus des eaux turquoise de la baie d'Halong": 'Climb ropeless above the turquoise waters of Halong Bay',
+        "Six jours à grimper sans corde au-dessus de la mer": 'Six days climbing ropeless above the sea',
+        "Le moment": 'The moment',
+        "Ce que tu ramènes": 'What you bring home',
+        "Tu es haut. Plus haut que tu pensais monter ce matin. Tes avant-bras brûlent. En bas il y a le bateau, et ton groupe qui crie.": 'You are high. Higher than you thought you would go this morning. Your forearms are burning. Below there is the boat, and your group shouting.',
+        "Il n’y a pas de corde. Personne ne va te redescendre. Il y a tes doigts sur la prise, et la seconde où tu décides.": 'There is no rope. Nobody is going to lower you. There are your fingers on the hold, and the second when you decide.',
+        "Tu lâches.": 'You let go.',
+        "Une seconde de chute. L’eau. Tu remontes sur le bateau. Le prochain se prépare à monter.": 'One second of falling. The water. You climb back on the boat. The next one is getting ready.',
+        "La vidéo de ton saut, filmée depuis le bateau.": 'The video of your jump, filmed from the boat.',
+        "Une histoire qui commence par « la fois où j’ai sauté d’une falaise au Vietnam ».": 'A story that starts with "the time I jumped off a cliff in Vietnam".',
+        "Ceux qui étaient sur le bateau quand tu as sauté.": 'The people who were on the boat when you jumped.',
         /* H2 */
         "Une aventure d'escalade unique au monde": 'A Climbing Adventure Unlike Any Other',
         "DWS, escalade et vie sur l'eau dans la région de la baie d'Halong": 'DWS, Climbing & Life on the Water in Halong Bay',
@@ -2148,8 +2177,8 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         "« J'ai vécu une expérience incroyable ! Maxime a été un guide parfait ! Bienveillant, professionnel, à l'écoute, il dégage une superbe énergie communicative ! Grâce à lui je me suis sentie en confiance pour l'escalade. Les paysages étaient magnifiques et les activités parfaitement organisées. Un grand merci, Maxime ! »": "I had an incredible experience! Maxime was a perfect guide! Caring, professional, a good listener, and his energy is contagious! Thanks to him I felt confident climbing. The scenery was magnificent and the activities were perfectly organised. Thank you so much, Maxime!",
         "« J'ai vecu une experience incroyable ! Maxime a ete un guide parfait ! Bienveillant, professionnel, a l'ecoute, il degage une superbe energie communicative ! Grace a lui je me suis sentie en confiance pour l'escalade. Les paysages etaient magnifiques et les activites parfaitement organisees. Un grand merci, Maxime ! »": "I had an incredible experience! Maxime was a perfect guide! Caring, professional, a good listener, and his energy is contagious! Thanks to him I felt confident climbing. The scenery was magnificent and the activities were perfectly organised. Thank you so much, Maxime!",
         /* Bio paragraphs */
-        "6 jours dans la baie d'Halong pour grimper, sauter, explorer et vivre sur l'eau en petit groupe.": "6 days in Halong Bay to climb, jump, explore and live on the water in a small group.",
-        "6 jours dans la baie d'Halong pour grimper, sauter, explorer et vivre sur l'eau en petit groupe.": "6 days in Halong Bay to climb, jump, explore and live on the water in a small group.",
+        "Un bateau, un petit groupe, des falaises qui tombent droit dans l’eau. Tu grimpes aussi haut que tu veux, et tu sautes. Puis tu remontes sur le bateau et tu regardes le suivant.": 'A boat, a small group, and cliffs that drop straight into the water. You climb as high as you want, and you jump. Then you get back on the boat and watch the next one.',
+        "Baie de Lan Ha, dans la région d’Halong, Vietnam. Aucune expérience de deep water solo requise.": 'Lan Ha Bay, in the Halong area, Vietnam. No deep water solo experience required.',
         "Les inscriptions ne sont pas encore ouvertes. Rejoins la liste d'attente pour recevoir les détails en premier.": "Registrations aren't open yet. Join the waitlist to receive details first.",
         "Les inscriptions ne sont pas encore ouvertes. Rejoins la liste d'attente pour recevoir les details en premier.": "Registrations aren't open yet. Join the waitlist to receive details first.",
         "Opérée localement avec un partenaire vietnamien.": 'Operated locally with a Vietnamese partner.',
