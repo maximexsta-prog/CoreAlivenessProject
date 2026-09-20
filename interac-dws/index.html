@@ -69,7 +69,7 @@
 
   <div class="box">
     <div class="kv"><span class="k" data-lang="fr">Envoie à</span><span class="k" data-lang="en">Send to</span><span class="v big">438-345-1888</span></div>
-    <div class="kv"><span class="k" data-lang="fr">Montant du dépôt</span><span class="k" data-lang="en">Deposit amount</span><span class="v"><span data-lang="fr">1&nbsp;065&nbsp;CAD</span><span data-lang="en">1,065&nbsp;CAD</span></span></div>
+    <div class="kv"><span class="k" data-lang="fr">Montant du dépôt</span><span class="k" data-lang="en">Deposit amount</span><span class="v"><span data-lang="fr">995&nbsp;CAD</span><span data-lang="en">995&nbsp;CAD</span></span></div>
     <div class="kv"><span class="k" data-lang="fr">Mémo / message</span><span class="k" data-lang="en">Memo / message</span><span class="v" data-lang="fr">ton nom complet</span><span class="v" data-lang="en">your full name</span></div>
     <div class="kv"><span class="k" data-lang="fr">Frais</span><span class="k" data-lang="en">Fees</span><span class="v" data-lang="fr">aucun</span><span class="v" data-lang="en">none</span></div>
   </div>
@@ -96,11 +96,20 @@
   (function(){ try{ var l=localStorage.getItem('cap_lang'); if(l) setLang(l); }catch(e){} })();
   // Flip automatique du 5 octobre 2026 : après cette date, montants au tarif régulier.
   var PRICE_FLIPPED = Date.now() >= Date.parse('2026-10-06T04:00:00Z');
-  var DEPOSIT = PRICE_FLIPPED ? 1165 : 1065;
+  var DEPOSIT = PRICE_FLIPPED ? 1095 : 995;
   if (PRICE_FLIPPED) (function(){
+    var TOK = '\u0001';
     var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
     while ((n = w.nextNode())) {
-      n.nodeValue = n.nodeValue.replace(/1[\u00a0\u202f ]065/g, '1\u00a0165').replace(/1,065/g, '1,165');
+      if (n.nodeValue.indexOf('995') === -1) continue;
+      var host = n.parentElement && n.parentElement.closest('[data-lang]');
+      var en = host && host.getAttribute('data-lang') === 'en';
+      // Le tarif rabais « 2 995 » est mis de cote sous un jeton, sinon son propre
+      // « 995 » serait pris pour le depot.
+      n.nodeValue = n.nodeValue
+        .replace(/2[\u00a0\u202f ]995/g, TOK)
+        .replace(/995/g, en ? '1,095' : '1\u00a0095')
+        .replace(new RegExp(TOK, 'g'), en ? '2,995' : '2\u00a0995');
     }
   })();
   // Interac has no payment callback — record intent on arrival.

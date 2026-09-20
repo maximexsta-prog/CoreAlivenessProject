@@ -2,7 +2,7 @@
 <!--
   DWS retreat — reservation / deposit page (DRAFT, standalone).
   Replaces the passive "you're on the waitlist" thank-you with an action page:
-  "your spot is held 48h — confirm it with a 1,065 CAD deposit".
+  "your spot is held 48h — confirm it with a 995 CAD deposit".
 
   Publish target: e.g. /reservation-dws/  (set Tally's redirect-on-submit here).
   Wired (LIVE): Stripe payment link uniquement (carte, redirige vers
@@ -95,26 +95,26 @@
   </p>
 
   <div class="hold">
-    <div class="price"><span class="n"><span data-lang="fr">1&nbsp;065&nbsp;CAD</span><span data-lang="en">1,065&nbsp;CAD</span></span><span class="sub" data-lang="fr">dépôt qui confirme ta place</span><span class="sub" data-lang="en">deposit that confirms your spot</span></div>
-    <p style="margin:.4em 0 0" data-lang="fr">Le solde se règle avant le départ. Tarif complet <b>3&nbsp;495&nbsp;CAD</b>, ou <b>3&nbsp;195&nbsp;CAD</b> si tout est payé avant le 5 octobre. Les places sont <b>confirmées dans l'ordre des dépôts reçus</b>.</p>
-    <p style="margin:.4em 0 0" data-lang="en">The balance is due before departure. Full price <b>3,495&nbsp;CAD</b>, or <b>3,195&nbsp;CAD</b> if paid in full before October 5. Spots are <b>confirmed in the order deposits are received</b>.</p>
+    <div class="price"><span class="n"><span data-lang="fr">995&nbsp;CAD</span><span data-lang="en">995&nbsp;CAD</span></span><span class="sub" data-lang="fr">dépôt qui confirme ta place</span><span class="sub" data-lang="en">deposit that confirms your spot</span></div>
+    <p style="margin:.4em 0 0" data-lang="fr">Le solde se règle avant le départ. Tarif complet <b>3&nbsp;395&nbsp;CAD</b>, ou <b>2&nbsp;995&nbsp;CAD</b> si tout est payé avant le 5 octobre. Les places sont <b>confirmées dans l'ordre des dépôts reçus</b>.</p>
+    <p style="margin:.4em 0 0" data-lang="en">The balance is due before departure. Full price <b>3,395&nbsp;CAD</b>, or <b>2,995&nbsp;CAD</b> if paid in full before October 5. Spots are <b>confirmed in the order deposits are received</b>.</p>
   </div>
 
   <label class="consent">
     <input type="checkbox" id="consent" onchange="onConsent()">
     <span>
-      <span data-lang="fr">J'ai lu et j'accepte la <a href="/politique-de-confidentialite/" target="_blank" rel="noopener">politique de réservation et d'annulation</a>, je m'engage à détenir l'assurance obligatoire (sports extrêmes + rapatriement), et je comprends qu'un dépôt de 1&nbsp;065&nbsp;CAD confirme ma place.</span>
-      <span data-lang="en">I have read and accept the <a href="/politique-de-confidentialite/" target="_blank" rel="noopener">booking & cancellation policy</a>, agree to hold the mandatory insurance (extreme sports + repatriation), and understand a 1,065&nbsp;CAD deposit confirms my spot.</span>
+      <span data-lang="fr">J'ai lu et j'accepte la <a href="/politique-de-confidentialite/" target="_blank" rel="noopener">politique de réservation et d'annulation</a>, je m'engage à détenir l'assurance obligatoire (sports extrêmes + rapatriement), et je comprends qu'un dépôt de 995&nbsp;CAD confirme ma place.</span>
+      <span data-lang="en">I have read and accept the <a href="/politique-de-confidentialite/" target="_blank" rel="noopener">booking & cancellation policy</a>, agree to hold the mandatory insurance (extreme sports + repatriation), and understand a 995&nbsp;CAD deposit confirms my spot.</span>
     </span>
   </label>
 
   <p class="lock-hint"><span data-lang="fr">☝️ Coche la case ci-dessus pour débloquer le paiement.</span><span data-lang="en">☝️ Check the box above to unlock payment.</span></p>
 
-  <a class="pay card" href="https://buy.stripe.com/5kQ5kC8bE7zKazX5vg4F203" onclick="return track('stripe')"><span data-lang="fr">💳 Carte — 1&nbsp;065&nbsp;CAD</span><span data-lang="en">💳 Card — 1,065&nbsp;CAD</span></a>
+  <a class="pay card" href="https://buy.stripe.com/5kQ5kC8bE7zKazX5vg4F203" onclick="return track('stripe')"><span data-lang="fr">💳 Carte — 995&nbsp;CAD</span><span data-lang="en">💳 Card — 995&nbsp;CAD</span></a>
   <p style="text-align:center;font-size:13px;color:var(--muted);margin:8px 0 0;"><span data-lang="fr">Paiement sécurisé par Stripe</span><span data-lang="en">Secure payment by Stripe</span></p>
 
-  <p class="lede" data-lang="fr">Tu préfères <b>3 versements mensuels de 1&nbsp;165&nbsp;CAD</b> (tarif régulier) ou tu as une question ? Écris-moi : <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
-  <p class="lede" data-lang="en">Prefer <b>3 monthly payments of 1,165&nbsp;CAD</b> (regular rate) or have a question? Email <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
+  <p class="lede" data-lang="fr">Tu préfères <b>3 versements : 1&nbsp;095 puis 2 × 1&nbsp;150&nbsp;CAD</b> (tarif régulier) ou tu as une question ? Écris-moi : <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
+  <p class="lede" data-lang="en">Prefer <b>3 payments: 1,095 then 2 × 1,150&nbsp;CAD</b> (regular rate) or have a question? Email <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
 
 </div>
 
@@ -123,19 +123,33 @@
   (function(){ try{ var l=localStorage.getItem('cap_lang'); if(l) setLang(l); }catch(e){} })();
 
   // ── Flip automatique du 5 octobre 2026 : après cette date, la page affiche le
-  //    tarif régulier (3 495 CAD, dépôt 1 165 CAD) sans intervention.
+  //    tarif régulier (3 395 CAD, dépôt 1 095 CAD) sans intervention.
   var PRICE_FLIPPED = Date.now() >= Date.parse('2026-10-06T04:00:00Z');
-  var DEPOSIT = PRICE_FLIPPED ? 1165 : 1065;
+  var DEPOSIT = PRICE_FLIPPED ? 1095 : 995;
   if (PRICE_FLIPPED) (function(){
     document.querySelectorAll('.hold p').forEach(function(e){
       if (e.getAttribute('data-lang')==='fr' && /Rabais de prépaiement/.test(e.textContent))
-        e.innerHTML = "Tarif régulier : <b>3&nbsp;495&nbsp;CAD</b> — le solde après dépôt est payable avant le départ. Les places sont limitées et <b>confirmées dans l'ordre des dépôts reçus</b>.";
+        e.innerHTML = "Tarif régulier : <b>3&nbsp;395&nbsp;CAD</b> — le solde après dépôt est payable avant le départ. Les places sont limitées et <b>confirmées dans l'ordre des dépôts reçus</b>.";
       if (e.getAttribute('data-lang')==='en' && /Early payment discount/.test(e.textContent))
-        e.innerHTML = "Regular rate: <b>3,495&nbsp;CAD</b> — the balance after deposit is payable before departure. Spots are limited and <b>confirmed in the order deposits are received</b>.";
+        e.innerHTML = "Regular rate: <b>3,395&nbsp;CAD</b> — the balance after deposit is payable before departure. Spots are limited and <b>confirmed in the order deposits are received</b>.";
+      // Le paragraphe de prix vantait encore le rabais du 5 octobre apres son expiration.
+      if (e.getAttribute('data-lang')==='fr' && /Tarif complet/.test(e.textContent))
+        e.innerHTML = "Le solde se règle avant le départ. Tarif complet <b>3&nbsp;395&nbsp;CAD</b>. Les places sont <b>confirmées dans l'ordre des dépôts reçus</b>.";
+      if (e.getAttribute('data-lang')==='en' && /Full price/.test(e.textContent))
+        e.innerHTML = "The balance is due before departure. Full price <b>3,395&nbsp;CAD</b>. Spots are <b>confirmed in the order deposits are received</b>.";
     });
+    var TOK = '\u0001';
     var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
     while ((n = w.nextNode())) {
-      n.nodeValue = n.nodeValue.replace(/1[\u00a0\u202f ]065/g, '1\u00a0165').replace(/1,065/g, '1,165');
+      if (n.nodeValue.indexOf('995') === -1) continue;
+      var host = n.parentElement && n.parentElement.closest('[data-lang]');
+      var en = host && host.getAttribute('data-lang') === 'en';
+      // Le tarif rabais « 2 995 » est mis de cote sous un jeton, sinon son propre
+      // « 995 » serait pris pour le depot.
+      n.nodeValue = n.nodeValue
+        .replace(/2[\u00a0\u202f ]995/g, TOK)
+        .replace(/995/g, en ? '1,095' : '1\u00a0095')
+        .replace(new RegExp(TOK, 'g'), en ? '2,995' : '2\u00a0995');
     }
   })();
 
@@ -168,9 +182,9 @@
   /* ===== Fire the REAL Purchase conversion on the payment SUCCESS page =====
      Put this on the provider's success or return page, NOT here:
 
-     gtag('event','conversion',{ send_to:'{{AW_CONVERSION_ID}}/{{AW_LABEL}}', value:1065.0, currency:'CAD', transaction_id: ORDER_ID });
-     gtag('event','purchase',{ value:1065.0, currency:'CAD', transaction_id: ORDER_ID });
-     fbq('track','Purchase',{ value:1065.0, currency:'CAD' });
+     gtag('event','conversion',{ send_to:'{{AW_CONVERSION_ID}}/{{AW_LABEL}}', value:995.0, currency:'CAD', transaction_id: ORDER_ID });
+     gtag('event','purchase',{ value:995.0, currency:'CAD', transaction_id: ORDER_ID });
+     fbq('track','Purchase',{ value:995.0, currency:'CAD' });
   ======================================================================= */
 </script>
 </body>
