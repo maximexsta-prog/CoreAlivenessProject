@@ -113,8 +113,8 @@
   <a class="pay card" href="https://buy.stripe.com/dRmeVc8bE9HS6jH7Do4F204" onclick="return track('stripe')"><span data-lang="fr">💳 Carte — 995&nbsp;CAD</span><span data-lang="en">💳 Card — 995&nbsp;CAD</span></a>
   <p style="text-align:center;font-size:13px;color:var(--muted);margin:8px 0 0;"><span data-lang="fr">Paiement sécurisé par Stripe</span><span data-lang="en">Secure payment by Stripe</span></p>
 
-  <p class="lede" data-lang="fr">Tu préfères <b>3 versements : 1&nbsp;095 puis 2 × 1&nbsp;150&nbsp;CAD</b> (tarif régulier) ou tu as une question ? Écris-moi : <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
-  <p class="lede" data-lang="en">Prefer <b>3 payments: 1,095 then 2 × 1,150&nbsp;CAD</b> (regular rate) or have a question? Email <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
+  <p class="lede" data-lang="fr">Tu préfères <b>3 versements : 995 puis 2 × 1&nbsp;200&nbsp;CAD</b> (tarif régulier) ou tu as une question ? Écris-moi : <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
+  <p class="lede" data-lang="en">Prefer <b>3 payments: 995 then 2 × 1,200&nbsp;CAD</b> (regular rate) or have a question? Email <a href="mailto:hello@corealivenessproject.com">hello@corealivenessproject.com</a> · WhatsApp <a href="https://wa.me/14383451888">+1&nbsp;438&nbsp;345&nbsp;1888</a>.</p>
 
 </div>
 
@@ -123,9 +123,9 @@
   (function(){ try{ var l=localStorage.getItem('cap_lang'); if(l) setLang(l); }catch(e){} })();
 
   // ── Flip automatique du 5 octobre 2026 : après cette date, la page affiche le
-  //    tarif régulier (3 395 CAD, dépôt 1 095 CAD) sans intervention.
+  //    tarif régulier (3 395 CAD). Le depot reste a 995 CAD dans les deux cas.
   var PRICE_FLIPPED = Date.now() >= Date.parse('2026-10-06T04:00:00Z');
-  var DEPOSIT = PRICE_FLIPPED ? 1095 : 995;
+  var DEPOSIT = 995;
   if (PRICE_FLIPPED) (function(){
     document.querySelectorAll('.hold p').forEach(function(e){
       if (e.getAttribute('data-lang')==='fr' && /Rabais de prépaiement/.test(e.textContent))
@@ -138,19 +138,6 @@
       if (e.getAttribute('data-lang')==='en' && /Full price/.test(e.textContent))
         e.innerHTML = "The balance is due before departure. Full price <b>3,395&nbsp;CAD</b>. Spots are <b>confirmed in the order deposits are received</b>.";
     });
-    var TOK = '\u0001';
-    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
-    while ((n = w.nextNode())) {
-      if (n.nodeValue.indexOf('995') === -1) continue;
-      var host = n.parentElement && n.parentElement.closest('[data-lang]');
-      var en = host && host.getAttribute('data-lang') === 'en';
-      // Le tarif rabais « 2 995 » est mis de cote sous un jeton, sinon son propre
-      // « 995 » serait pris pour le depot.
-      n.nodeValue = n.nodeValue
-        .replace(/2[\u00a0\u202f ]995/g, TOK)
-        .replace(/995/g, en ? '1,095' : '1\u00a0095')
-        .replace(new RegExp(TOK, 'g'), en ? '2,995' : '2\u00a0995');
-    }
   })();
 
   // Fire the REAL Purchase when the payment provider redirects back with ?paid=1

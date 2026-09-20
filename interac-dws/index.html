@@ -94,24 +94,8 @@
 <script>
   function setLang(l){ document.body.classList.toggle('en', l==='en'); document.getElementById('fr').classList.toggle('on', l==='fr'); document.getElementById('en').classList.toggle('on', l==='en'); document.documentElement.lang=l; try{localStorage.setItem('cap_lang',l)}catch(e){} }
   (function(){ try{ var l=localStorage.getItem('cap_lang'); if(l) setLang(l); }catch(e){} })();
-  // Flip automatique du 5 octobre 2026 : après cette date, montants au tarif régulier.
-  var PRICE_FLIPPED = Date.now() >= Date.parse('2026-10-06T04:00:00Z');
-  var DEPOSIT = PRICE_FLIPPED ? 1095 : 995;
-  if (PRICE_FLIPPED) (function(){
-    var TOK = '\u0001';
-    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
-    while ((n = w.nextNode())) {
-      if (n.nodeValue.indexOf('995') === -1) continue;
-      var host = n.parentElement && n.parentElement.closest('[data-lang]');
-      var en = host && host.getAttribute('data-lang') === 'en';
-      // Le tarif rabais « 2 995 » est mis de cote sous un jeton, sinon son propre
-      // « 995 » serait pris pour le depot.
-      n.nodeValue = n.nodeValue
-        .replace(/2[\u00a0\u202f ]995/g, TOK)
-        .replace(/995/g, en ? '1,095' : '1\u00a0095')
-        .replace(new RegExp(TOK, 'g'), en ? '2,995' : '2\u00a0995');
-    }
-  })();
+  // Le depot est le meme avant et apres le 5 octobre, il n'y a rien a basculer.
+  var DEPOSIT = 995;
   // Interac has no payment callback — record intent on arrival.
   if(window.fbq) fbq('track','InitiateCheckout',{value:DEPOSIT,currency:'CAD',content_name:'DWS deposit',payment_rail:'interac'});
   if(window.gtag) gtag('event','begin_checkout',{value:DEPOSIT,currency:'CAD',items:[{item_name:'DWS deposit (Interac)'}]});

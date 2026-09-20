@@ -232,7 +232,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
   try{
     var src = new URLSearchParams(window.location.search).get('src');
     if(src === 'declare') return;
-    var DEPOSIT = Date.now() >= Date.parse('2026-10-06T04:00:00Z') ? 1095 : 995;
+    var DEPOSIT = 995;
     if(window.gtag) gtag('event','deposit_paid',{value:DEPOSIT,currency:'CAD'});
     if(window.fbq)  fbq('track','Purchase',{value:DEPOSIT,currency:'CAD',content_name:'DWS deposit'});
   }catch(e){}
