@@ -6,36 +6,49 @@ Disallow: /wp-content/uploads/wpo/wpo-plugins-tables-list.json
 Disallow: /admin
 Disallow: /api/
 
-# AI search crawlers — explicitly allowed
+# Robots d'IA : acces au site, sauf la page retraite qui redevient privee.
+# Googlebot et Bingbot ne sont PAS bloques ici : il faut qu'ils puissent lire
+# la balise noindex de la page pour la retirer de leur index. Les bloquer les
+# empecherait de voir la balise, et l'ancienne fiche resterait affichee.
 User-agent: GPTBot
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: Applebot
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: Bytespider
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: CCBot
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: Googlebot
 Allow: /
@@ -45,27 +58,34 @@ Allow: /
 
 User-agent: Meta-ExternalAgent
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: FacebookBot
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: Amazonbot
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: YouBot
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: DuckAssistBot
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: cohere-ai
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: Diffbot
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 User-agent: AI2Bot
 Allow: /
+Disallow: /retraite-dws-nov-2026/
 
 Sitemap: https://corealivenessproject.com/sitemap_index.xml
-Llms-txt: https://corealivenessproject.com/llms.txt
