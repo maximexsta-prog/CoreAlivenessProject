@@ -142,8 +142,8 @@ var Q = [
     hintfr:"Confirme que tu as 18 ans ou plus.", hinten:"Confirms you're 18+." },
   { id:"payment_pref", type:"radio", req:true,
     fr:"Préférence de paiement", en:"Payment preference",
-    hintfr:"À la fin du formulaire, tu seras dirigé·e vers la page de dépôt (995 CAD). C'est le dépôt qui confirme ta place.", hinten:"At the end of this form you go straight to the deposit page (995 CAD). The deposit is what confirms your spot.",
-    opts:[["Paiement complet avant le 5 octobre — 2 995 CAD (rabais de prépaiement)","Pay in full before October 5 — 2,995 CAD (early payment discount)"],["3 versements : 995 puis 2 × 1 200 CAD (tarif régulier)","3 payments: 995 then 2 × 1,200 CAD (regular rate)"]] },
+    hintfr:"À la fin du formulaire, tu seras dirigé·e vers la page de dépôt (700 CAD). C'est le dépôt qui confirme ta place.", hinten:"At the end of this form you go straight to the deposit page (700 CAD). The deposit is what confirms your spot.",
+    opts:[["Paiement complet avant le 20 octobre — 1 895 CAD (rabais de prépaiement)","Pay in full before October 20 — 1,895 CAD (early payment discount)"],["Je paierai après le 20 octobre — 2 145 CAD","I will pay after October 20 — 2,145 CAD"]] },
   { id:"gender", type:"radio", req:true,
     fr:"Pour l'attribution des chambres : ton genre", en:"For room assignment: your gender",
     opts:[["Homme","Male"],["Femme","Female"],["Autre","Other"]] },
@@ -161,12 +161,11 @@ var Q = [
     hinten:"This box is required. It does not replace the waiver you will sign before departure." }
 ];
 
-/* Flip automatique du 5 octobre 2026 : seule l'option « paiement complet »
-   change. Le depot reste a 995 CAD et l'option en versements est deja au
-   tarif regulier, donc ni l'aide ni la deuxieme option ne bougent. */
-if (Date.now() >= Date.parse('2026-10-06T04:00:00Z')) (function(){
+/* Flip automatique du 20 octobre 2026 : passe la date limite, il ne reste
+   qu'un seul tarif, donc la question se reduit a une option. */
+if (Date.now() >= Date.parse('2026-10-21T04:00:00Z')) (function(){
   for (var qi=0; qi<Q.length; qi++) if (Q[qi].id==='payment_pref') {
-    Q[qi].opts[0] = ["Paiement complet — 3 395 CAD", "Pay in full — 3,395 CAD"];
+    Q[qi].opts = [["Paiement complet — 2 145 CAD", "Pay in full — 2,145 CAD"]];
   }
 })();
 
